@@ -119,11 +119,11 @@ def _groq_create(**kwargs):
     rapid consecutive runs hit the cap. One 10-second sleep + retry recovers."""
     import time
     try:
-        return _groq_create(**kwargs)
+        return _groq_client.chat.completions.create(**kwargs)
     except Exception as e:
         if '429' in str(e) or 'rate_limit' in str(e).lower() or 'rate limit' in str(e).lower():
             time.sleep(10)
-            return _groq_create(**kwargs)
+            return _groq_client.chat.completions.create(**kwargs)
         raise
 
 
