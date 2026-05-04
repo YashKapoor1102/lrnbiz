@@ -112,6 +112,21 @@ except Exception as e:
     GROQ_AVAILABLE = False
     _groq_init_error = e  # stored for post-app-init logging
 
+
+def _groq_create(**kwargs):
+    """Wrapper around groq chat completions with one automatic 429 retry.
+    Groq free tier allows 30 req/min — eval runs 10 calls per persona, so
+    rapid consecutive runs hit the cap. One 10-second sleep + retry recovers."""
+    import time
+    try:
+        return _groq_create(**kwargs)
+    except Exception as e:
+        if '429' in str(e) or 'rate_limit' in str(e).lower() or 'rate limit' in str(e).lower():
+            time.sleep(10)
+            return _groq_create(**kwargs)
+        raise
+
+
 app = Flask(__name__)
 _secret = os.environ.get('LRNBIZ_SECRET_KEY')
 if not _secret:
@@ -635,7 +650,7 @@ def call_context_pure_llm(answers: dict, scores: dict) -> str:
         if v not in (None, '') and k not in _CONTEXT_EXCLUDE
     )
     try:
-        rsp = _groq_client.chat.completions.create(
+        rsp = _groq_create(
             model="llama-3.1-8b-instant",
             messages=[
                 {
@@ -691,7 +706,7 @@ def call_hybrid_llm(answers: dict, scores: dict, triggered_rules: list) -> str:
 
     if not triggered_rules:
         try:
-            rsp = _groq_client.chat.completions.create(
+            rsp = _groq_create(
                 model="llama-3.1-8b-instant",
                 messages=[
                     {
@@ -737,7 +752,7 @@ def call_hybrid_llm(answers: dict, scores: dict, triggered_rules: list) -> str:
     n_errors = sum(1 for r in triggered_rules if r.get('severity') == 'error')
 
     try:
-        rsp = _groq_client.chat.completions.create(
+        rsp = _groq_create(
             model="llama-3.1-8b-instant",
             messages=[
                 {
@@ -1337,7 +1352,7 @@ def _llm_element_present(idea_text: str, rule_id: str) -> bool:
     if not question:
         return False
     try:
-        rsp = _groq_client.chat.completions.create(
+        rsp = _groq_create(
             model='llama-3.1-8b-instant',
             messages=[
                 {'role': 'system', 'content':
@@ -1732,7 +1747,7 @@ def _check_solution_alignment(idea_text: str, archetype: str = 'other') -> list:
     if archetype == 'marketplace':
         return []
     try:
-        rsp = _groq_client.chat.completions.create(
+        rsp = _groq_create(
             model='llama-3.1-8b-instant',
             messages=[
                 {'role': 'system', 'content':
@@ -1806,7 +1821,7 @@ def _detect_archetype(idea_text: str, stage1_answers: dict) -> str:
                 "- Custom physical items (non-food) made to order → maker, not physical-product.\n\n"
                 "Reply with ONLY the archetype name, nothing else."
             )
-            rsp = _groq_client.chat.completions.create(
+            rsp = _groq_create(
                 model='llama-3.1-8b-instant',
                 messages=[
                     {'role': 'system', 'content': 'You classify business ideas into archetypes. Reply with exactly one archetype name.'},
@@ -1911,7 +1926,7 @@ def _detect_contradictions(answers_snapshot: dict) -> list:
             '  "message": one clear sentence stating the contradiction and what to fix\n\n'
             "Return [] if no contradictions are found. Return ONLY valid JSON, no explanation."
         )
-        rsp = _groq_client.chat.completions.create(
+        rsp = _groq_create(
             model='llama-3.1-8b-instant',
             messages=[
                 {'role': 'system', 'content': 'You are a business plan contradiction detector. Output only valid JSON arrays.'},
@@ -2270,7 +2285,7 @@ def call_niche_pure_llm(niche_text: str, stage1_answers: dict) -> str:
         return _NO_KEY_MSG
     profile = '\n'.join(f"{k}: {v}" for k, v in stage1_answers.items() if v)[:300]
     try:
-        rsp = _groq_client.chat.completions.create(
+        rsp = _groq_create(
             model="llama-3.1-8b-instant",
             messages=[
                 {
@@ -2325,7 +2340,7 @@ def call_niche_socratic_llm(niche_text: str, violations: list, stage1_answers: d
             # NOTE: Uses 8b instead of 70b to avoid rate-limiting on eval runs (25 personas).
             # Main call_hybrid_llm uses 70b — this is a known model-size inconsistency
             # documented as a limitation in Section 5.7 of the paper.
-            rsp = _groq_client.chat.completions.create(
+            rsp = _groq_create(
                 model="llama-3.1-8b-instant",
                 messages=[
                     {
@@ -2490,7 +2505,7 @@ def call_customer_pure_llm(answers: dict) -> str:
     profile = '\n'.join(f"{k}: {v}" for k, v in answers.items()
                         if v not in (None, '', 'Not sure', 'Not sure yet') and k not in _CUSTOMER_EXCLUDE)
     try:
-        rsp = _groq_client.chat.completions.create(
+        rsp = _groq_create(
             model="llama-3.1-8b-instant",
             messages=[
                 {"role": "system", "content": (
@@ -2516,7 +2531,7 @@ def call_money_pure_llm(answers: dict) -> str:
         return _NO_KEY_MSG
     profile = '\n'.join(f"{k}: {v}" for k, v in answers.items() if v not in (None, ''))
     try:
-        rsp = _groq_client.chat.completions.create(
+        rsp = _groq_create(
             model="llama-3.1-8b-instant",
             messages=[
                 {"role": "system", "content": (
@@ -2544,7 +2559,7 @@ def call_discovery_pure_llm(answers: dict) -> str:
         return _NO_KEY_MSG
     profile = '\n'.join(f"{k}: {v}" for k, v in answers.items() if v not in (None, ''))
     try:
-        rsp = _groq_client.chat.completions.create(
+        rsp = _groq_create(
             model="llama-3.1-8b-instant",
             messages=[
                 {"role": "system", "content": (
@@ -2578,7 +2593,7 @@ def call_customer_hybrid_llm(answers: dict, violations: list) -> str:
         try:
             # NOTE: Uses 8b to avoid rate-limiting. Known model-size inconsistency vs
             # main call_hybrid_llm (70b). Documented in paper Section 5.7.
-            rsp = _groq_client.chat.completions.create(
+            rsp = _groq_create(
                 model="llama-3.1-8b-instant",
                 messages=[
                     {"role": "system", "content": (
@@ -2625,7 +2640,7 @@ def api_idea_hints():
                 {'type': 'edge',    'emoji': '⭐',        'title': 'What\'s your edge?',  'question': 'Why would someone choose you over existing options — what can you offer that they can\'t get elsewhere?'},
             ]})
         ctx_summary = ', '.join(f'{k}={v}' for k, v in context.items() if v)[:200]
-        rsp = _groq_client.chat.completions.create(
+        rsp = _groq_create(
             model='llama-3.1-8b-instant',
             messages=[
                 {'role': 'system', 'content': (
@@ -2692,7 +2707,7 @@ def api_validate_niche():
                 and 'inappropriate_content' not in _existing_flags
                 and 'too_short' not in _existing_flags):
             try:
-                _sem_rsp = _groq_client.chat.completions.create(
+                _sem_rsp = _groq_create(
                     model="llama-3.1-8b-instant",
                     temperature=0.0,
                     max_tokens=60,
@@ -3016,7 +3031,7 @@ def api_idea_rivals():
         idea_text = request.json.get('idea_text', '').strip()
         if not idea_text or not GROQ_AVAILABLE:
             return jsonify({'rivals': FALLBACK[:2]})
-        rsp = _groq_client.chat.completions.create(
+        rsp = _groq_create(
             model='llama-3.1-8b-instant',
             messages=[
                 {'role': 'system', 'content': (
@@ -3061,7 +3076,7 @@ def api_parse_idea_sentence():
         if not GROQ_AVAILABLE:
             return jsonify(fallback)
 
-        rsp = _groq_client.chat.completions.create(
+        rsp = _groq_create(
             model='llama-3.1-8b-instant',
             messages=[
                 {'role': 'system', 'content': (
@@ -4594,7 +4609,7 @@ def api_hint():
         "Don't give the answer. Be encouraging and specific to their situation."
     )
     try:
-        rsp = _groq_client.chat.completions.create(
+        rsp = _groq_create(
             model='llama-3.1-8b-instant',
             messages=[{'role': 'user', 'content': prompt}],
             temperature=0.0, max_tokens=80,
@@ -4624,7 +4639,7 @@ def api_regenerate_story():
         "Make it personal, celebratory, and specific to their idea. Keep it under 100 words."
     )
     try:
-        rsp = _groq_client.chat.completions.create(
+        rsp = _groq_create(
             model='llama-3.1-8b-instant',
             messages=[{'role': 'user', 'content': prompt}],
             temperature=0.8, max_tokens=150,
