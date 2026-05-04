@@ -4110,7 +4110,29 @@ def api_eval_run_full(persona_id):
         try:
             uc = float(money_ans.get('unit_cost', 0) or 0)
             up = float(money_ans.get('unit_price', 0) or 0)
-            money_ans['unit_price_gt_unit_cost']   = 'Yes' if up > uc else 'No'
+            monthly_units = float(money_ans.get('monthly_units', 0) or 0)
+            startup_cost  = float(money_ans.get('startup_cost', 0) or 0)
+            monthly_profit = (up - uc) * monthly_units
+            months_to_be   = (startup_cost / monthly_profit) if monthly_profit > 0 else 999
+            _arch = p.get('context', {}).get('business_type', '')
+            # unit_price_gt_unit_cost (MR001)
+            money_ans['unit_price_gt_unit_cost'] = 'Yes' if up > uc else 'No'
+            # monthly_profit_lt_threshold (MR003) — archetype-aware floor
+            _profit_floor = {'food-beverage': 25, 'resale-retail': 25, 'content-media': 10,
+                             'digital-product': 10}.get(_arch, 20)
+            money_ans['monthly_profit_lt_threshold'] = 'Yes' if 0 < monthly_profit < _profit_floor else 'No'
+            # months_to_breakeven_gt_threshold (MR002) — archetype-aware cap
+            _be_caps = {'food-beverage': 6, 'physical-product': 6, 'maker': 6,
+                        'service': 12, 'skills-for-hire': 12, 'expert': 12, 'resale-retail': 12,
+                        'digital-product': 18, 'content-media': 36, 'event-experience': 9, 'marketplace': 12}
+            _be_cap = _be_caps.get(_arch, 12)
+            money_ans['months_to_breakeven_gt_threshold'] = 'Yes' if months_to_be > _be_cap else 'No'
+            # hourly_rate_lt_minimum (MR006)
+            _hrs_pw = float(str(p.get('context', {}).get('hours_per_week', '0') or '0'))
+            if _hrs_pw > 0 and monthly_profit > 0:
+                money_ans['hourly_rate_lt_minimum'] = 'Yes' if (monthly_profit / (_hrs_pw * 4)) < 5 else 'No'
+            else:
+                money_ans['hourly_rate_lt_minimum'] = 'No'
         except (ValueError, TypeError):
             pass
         viols  = validate_simple_rules(money_ans, money_rules)
@@ -4118,6 +4140,17 @@ def api_eval_run_full(persona_id):
         pure_t = call_money_pure_llm(money_ans)
         hyb_t  = call_hybrid_llm(money_ans, {'symbolic': sym},
                                   [r for r in money_rules if any(v['id'] == r['id'] for v in viols)])
+        # MENTOR_SCORE override — mirrors live money route
+        if viols and hyb_t:
+            import re as _re_money_eval
+            _n_err  = sum(1 for v in viols if v.get('severity') == 'error')
+            _n_warn = sum(1 for v in viols if v.get('severity') == 'warning')
+            _money_score = max(15, min(55, 100 - _n_err * 30 - _n_warn * 8)) if _n_err > 0 \
+                           else max(50, min(75, 100 - _n_warn * 10))
+            if _re_money_eval.search(r'MENTOR_SCORE:\s*\d', hyb_t):
+                hyb_t = _re_money_eval.sub(r'MENTOR_SCORE:\s*\d{1,3}', f'MENTOR_SCORE: {_money_score}', hyb_t)
+            else:
+                hyb_t += f'\nMENTOR_SCORE: {_money_score}'
         triples['money'] = _auditor.triple_truth(sym, pure_t, hyb_t, 'money')
 
         # Discovery
@@ -4131,6 +4164,17 @@ def api_eval_run_full(persona_id):
         pure_t = call_discovery_pure_llm(disc_ans)
         hyb_t  = call_hybrid_llm(disc_ans, {'symbolic': sym},
                                   [r for r in disc_rules if any(v['id'] == r['id'] for v in viols)])
+        # MENTOR_SCORE override — mirrors live discovery route
+        if viols and hyb_t:
+            import re as _re_disc_eval
+            _n_err  = sum(1 for v in viols if v.get('severity') == 'error')
+            _n_warn = sum(1 for v in viols if v.get('severity') == 'warning')
+            _disc_score = max(20, min(55, 100 - _n_err * 30 - _n_warn * 8)) if _n_err > 0 \
+                          else max(50, min(75, 100 - _n_warn * 10))
+            if _re_disc_eval.search(r'MENTOR_SCORE:\s*\d', hyb_t):
+                hyb_t = _re_disc_eval.sub(r'MENTOR_SCORE:\s*\d{1,3}', f'MENTOR_SCORE: {_disc_score}', hyb_t)
+            else:
+                hyb_t += f'\nMENTOR_SCORE: {_disc_score}'
         triples['discovery'] = _auditor.triple_truth(sym, pure_t, hyb_t, 'discovery')
 
         return jsonify({'persona_id': persona_id, 'name': p['name'], 'triples': triples})
@@ -4184,7 +4228,25 @@ def api_eval_run_all_full():
                 try:
                     uc = float(money_ans.get('unit_cost', 0) or 0)
                     up = float(money_ans.get('unit_price', 0) or 0)
+                    monthly_units = float(money_ans.get('monthly_units', 0) or 0)
+                    startup_cost  = float(money_ans.get('startup_cost', 0) or 0)
+                    monthly_profit = (up - uc) * monthly_units
+                    months_to_be   = (startup_cost / monthly_profit) if monthly_profit > 0 else 999
+                    _arch = p.get('context', {}).get('business_type', '')
                     money_ans['unit_price_gt_unit_cost'] = 'Yes' if up > uc else 'No'
+                    _profit_floor = {'food-beverage': 25, 'resale-retail': 25, 'content-media': 10,
+                                     'digital-product': 10}.get(_arch, 20)
+                    money_ans['monthly_profit_lt_threshold'] = 'Yes' if 0 < monthly_profit < _profit_floor else 'No'
+                    _be_caps = {'food-beverage': 6, 'physical-product': 6, 'maker': 6,
+                                'service': 12, 'skills-for-hire': 12, 'expert': 12, 'resale-retail': 12,
+                                'digital-product': 18, 'content-media': 36, 'event-experience': 9, 'marketplace': 12}
+                    _be_cap = _be_caps.get(_arch, 12)
+                    money_ans['months_to_breakeven_gt_threshold'] = 'Yes' if months_to_be > _be_cap else 'No'
+                    _hrs_pw = float(str(p.get('context', {}).get('hours_per_week', '0') or '0'))
+                    if _hrs_pw > 0 and monthly_profit > 0:
+                        money_ans['hourly_rate_lt_minimum'] = 'Yes' if (monthly_profit / (_hrs_pw * 4)) < 5 else 'No'
+                    else:
+                        money_ans['hourly_rate_lt_minimum'] = 'No'
                 except (ValueError, TypeError):
                     pass
                 viols  = validate_simple_rules(money_ans, money_rules)
@@ -4192,6 +4254,17 @@ def api_eval_run_all_full():
                 pure_t = call_money_pure_llm(money_ans)
                 hyb_t  = call_hybrid_llm(money_ans, {'symbolic': sym},
                                          [r for r in money_rules if any(v['id'] == r['id'] for v in viols)])
+                # MENTOR_SCORE override — mirrors live money route
+                if viols and hyb_t:
+                    import re as _re_money_all
+                    _n_err  = sum(1 for v in viols if v.get('severity') == 'error')
+                    _n_warn = sum(1 for v in viols if v.get('severity') == 'warning')
+                    _money_score = max(15, min(55, 100 - _n_err * 30 - _n_warn * 8)) if _n_err > 0 \
+                                   else max(50, min(75, 100 - _n_warn * 10))
+                    if _re_money_all.search(r'MENTOR_SCORE:\s*\d', hyb_t):
+                        hyb_t = _re_money_all.sub(r'MENTOR_SCORE:\s*\d{1,3}', f'MENTOR_SCORE: {_money_score}', hyb_t)
+                    else:
+                        hyb_t += f'\nMENTOR_SCORE: {_money_score}'
                 triples['money'] = _auditor.triple_truth(sym, pure_t, hyb_t, 'money')
 
                 # Discovery
@@ -4205,6 +4278,17 @@ def api_eval_run_all_full():
                 pure_t = call_discovery_pure_llm(disc_ans)
                 hyb_t  = call_hybrid_llm(disc_ans, {'symbolic': sym},
                                          [r for r in disc_rules if any(v['id'] == r['id'] for v in viols)])
+                # MENTOR_SCORE override — mirrors live discovery route
+                if viols and hyb_t:
+                    import re as _re_disc_all
+                    _n_err  = sum(1 for v in viols if v.get('severity') == 'error')
+                    _n_warn = sum(1 for v in viols if v.get('severity') == 'warning')
+                    _disc_score = max(20, min(55, 100 - _n_err * 30 - _n_warn * 8)) if _n_err > 0 \
+                                  else max(50, min(75, 100 - _n_warn * 10))
+                    if _re_disc_all.search(r'MENTOR_SCORE:\s*\d', hyb_t):
+                        hyb_t = _re_disc_all.sub(r'MENTOR_SCORE:\s*\d{1,3}', f'MENTOR_SCORE: {_disc_score}', hyb_t)
+                    else:
+                        hyb_t += f'\nMENTOR_SCORE: {_disc_score}'
                 triples['discovery'] = _auditor.triple_truth(sym, pure_t, hyb_t, 'discovery')
 
                 results.append({'id': p['id'], 'name': p['name'], 'triples': triples})
