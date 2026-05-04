@@ -1891,8 +1891,11 @@ def _detect_contradictions(answers_snapshot: dict) -> list:
             "- Differentiation is 'Cheaper' but problem is 'Helpless' (helpless customers are willing to pay premium)\n"
             "- 'Just a minor annoyance' problem but high willingness to pay\n"
             "- Discovery changed plan but student didn't select any change option\n\n"
-            "DO NOT flag time/capacity or hours-vs-units issues — the rules engine handles that separately.\n"
-            "DO NOT flag price, cost, or margin issues — the rules engine handles that separately.\n\n"
+            "DO NOT flag these — they are NOT contradictions:\n"
+            "- Word of mouth / referrals with in-person or local customers (this is correct and expected)\n"
+            "- Any channel paired with 'In-person (same area)' or 'Local' proximity\n"
+            "- Time, capacity, or hours-vs-units issues — the rules engine handles that separately.\n"
+            "- Price, cost, or margin issues — the rules engine handles that separately.\n\n"
             "Return a JSON array of objects. Each object has:\n"
             '  "flag": short_snake_case_name\n'
             '  "severity": "error" or "warning"\n'
