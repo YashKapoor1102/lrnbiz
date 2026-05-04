@@ -1,0 +1,294 @@
+{% extends "base.html" %}
+{% block title %}LrnBiz — Start Your Journey{% endblock %}
+
+{% block content %}
+<div class="welcome-page">
+
+    <!-- Welcome modal for first-time visitors -->
+    <div class="welcome-modal-overlay" id="welcomeModalOverlay" style="display:none">
+        <div class="welcome-modal">
+            <div style="font-size:2.5rem;margin-bottom:8px">👋</div>
+            <h2>Welcome to LrnBiz!</h2>
+            <p>Build your first real business plan — step by step — with an honest AI mentor scoring your work.</p>
+            <div class="welcome-steps">
+                <div class="welcome-step"><span>📝</span>Fill a chapter</div>
+                <div class="welcome-step"><span>🔬</span>Click Run Analysis</div>
+                <div class="welcome-step"><span>🧠</span>Read feedback &amp; improve</div>
+                <div class="welcome-step"><span>➡️</span>Move to next chapter</div>
+            </div>
+            <!-- Name capture -->
+            <div style="margin:12px 0 4px">
+                <input id="welcomeNameInput" type="text" maxlength="60" placeholder="Your first name (e.g. Jamie)"
+                       autocomplete="given-name"
+                       style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.07);border:1px solid rgba(167,139,250,0.35);border-radius:10px;padding:9px 14px;font-family:Nunito,sans-serif;font-size:0.9rem;color:var(--text);outline:none"
+                       onfocus="this.style.borderColor='rgba(167,139,250,0.7)'"
+                       onblur="this.style.borderColor='rgba(167,139,250,0.35)'"
+                       onkeydown="if(event.key==='Enter')_welcomeStart()">
+            </div>
+            <!-- Highlighted tip -->
+            <div style="background:rgba(255,217,61,0.1);border:1px solid rgba(255,217,61,0.35);border-radius:10px;padding:10px 14px;margin:8px 0 12px;font-size:0.78rem;color:#FFD93D;line-height:1.6;text-align:left">
+                ⚡ <strong>Key tip:</strong> After filling in each chapter, always press <strong>🔬 Run Analysis</strong> before moving on — that's how you get your score and feedback!
+            </div>
+            <button class="btn-play" style="margin:0;width:100%;cursor:pointer;border:none" onclick="_welcomeStart()">Let's Go! 🚀</button>
+            <div style="margin-top:12px"><a href="javascript:void(0)" style="font-size:0.72rem;color:var(--muted)" onclick="_welcomeSkip()">Skip intro</a></div>
+        </div>
+    </div>
+
+    <!-- Header row -->
+    <div style="display:flex;align-items:center;justify-content:space-between;width:100%;max-width:480px;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:9px">
+            <span style="font-size:1.6rem">🧠</span>
+            <div>
+                <div style="font-size:1.15rem;font-weight:900;color:var(--text);line-height:1">LrnBiz</div>
+                <div style="font-size:0.62rem;color:var(--muted)">The AI mentor that tells you the truth</div>
+            </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:7px">
+            <span id="streakBadge" style="display:none;background:rgba(255,107,53,0.15);border:1px solid rgba(255,107,53,0.3);color:#FF6B35;font-size:0.7rem;font-weight:800;padding:3px 9px;border-radius:99px">🔥 <span id="streakDays">0</span>-day streak</span>
+            <div id="almostDoneBanner" style="display:none">
+                <a href="#" id="almostDoneLink" style="background:rgba(52,211,153,0.15);border:1px solid rgba(52,211,153,0.3);color:#34D399;font-size:0.7rem;font-weight:800;padding:3px 9px;border-radius:99px;text-decoration:none">🏁 Almost done →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- How It Works — step-by-step flow per chapter -->
+    <div style="width:100%;max-width:480px;margin-bottom:10px;background:rgba(255,217,61,0.05);border:1px solid rgba(255,217,61,0.2);border-radius:14px;padding:12px 14px">
+        <div style="font-size:0.65rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;color:#FFD93D;margin-bottom:8px">⚡ How each chapter works</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
+            <div style="text-align:center;padding:8px 4px">
+                <div style="font-size:1.2rem">📝</div>
+                <div style="font-size:0.63rem;font-weight:800;color:var(--text);margin-top:4px;line-height:1.2">1. Fill it in</div>
+                <div style="font-size:0.58rem;color:var(--muted);margin-top:2px;line-height:1.3">Answer the questions in the chapter</div>
+            </div>
+            <div style="text-align:center;padding:8px 4px;position:relative">
+                <div style="font-size:1.2rem">🔬</div>
+                <div style="font-size:0.63rem;font-weight:800;color:#FFD93D;margin-top:4px;line-height:1.2">2. Run Analysis</div>
+                <div style="font-size:0.58rem;color:var(--muted);margin-top:2px;line-height:1.3">Press the button to get your score</div>
+            </div>
+            <div style="text-align:center;padding:8px 4px">
+                <div style="font-size:1.2rem">🧠</div>
+                <div style="font-size:0.63rem;font-weight:800;color:var(--text);margin-top:4px;line-height:1.2">3. Read &amp; improve</div>
+                <div style="font-size:0.58rem;color:var(--muted);margin-top:2px;line-height:1.3">Fix what the mentor flags, re-run</div>
+            </div>
+            <div style="text-align:center;padding:8px 4px">
+                <div style="font-size:1.2rem">➡️</div>
+                <div style="font-size:0.63rem;font-weight:800;color:var(--text);margin-top:4px;line-height:1.2">4. Next chapter</div>
+                <div style="font-size:0.58rem;color:var(--muted);margin-top:2px;line-height:1.3">Move on when happy with your score</div>
+            </div>
+        </div>
+        <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,217,61,0.15);font-size:0.68rem;color:rgba(255,217,61,0.8);font-weight:700;text-align:center">
+            ⚠️ Don't skip Run Analysis — without it, you won't get a score or feedback!
+        </div>
+    </div>
+
+    <!-- Chapter list — structured rows per chapter -->
+    <div style="display:flex;flex-direction:column;gap:7px;width:100%;max-width:480px">
+        {% set done_ids = audit_scores.keys() | list %}
+        {% set chapter_emojis = ['👤','💡','🎯','💰','🔍'] %}
+        {% for ch in chapters %}
+        {% set prev_id = chapters[loop.index0 - 1].id if loop.index0 > 0 else '' %}
+        {% set unlocked = (loop.index0 == 0) or (prev_id in done_ids) %}
+        {% set is_done  = ch.id in done_ids %}
+        {% set is_next  = unlocked and not is_done %}
+
+        <div style="background:{% if is_done %}rgba(52,211,153,0.05){% elif is_next %}rgba(255,217,61,0.06){% else %}rgba(255,255,255,0.02){% endif %};border:1px solid {% if is_done %}rgba(52,211,153,0.2){% elif is_next %}rgba(255,217,61,0.3){% else %}rgba(255,255,255,0.06){% endif %};border-radius:13px;padding:10px 14px;display:flex;align-items:center;gap:12px;{% if not unlocked %}opacity:0.45{% endif %}">
+
+            <!-- Emoji circle -->
+            <div style="width:38px;height:38px;border-radius:50%;background:{% if is_done %}rgba(52,211,153,0.12){% elif is_next %}rgba(255,217,61,0.12){% else %}rgba(255,255,255,0.05){% endif %};display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">
+                {% if not unlocked %}🔒{% else %}{{ ch.emoji }}{% endif %}
+            </div>
+
+            <!-- Chapter info -->
+            <div style="flex:1;min-width:0">
+                <div style="font-size:0.58rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;color:{% if is_done %}#34D399{% elif is_next %}#FFD93D{% else %}var(--muted){% endif %}">Chapter {{ ch.chapter }}</div>
+                <div style="font-size:0.85rem;font-weight:800;color:{% if unlocked %}var(--text){% else %}var(--muted){% endif %};line-height:1.2;margin-top:1px">{{ ch.name }}</div>
+                {% if is_done and audit_scores[ch.id].hybrid_truth %}
+                {% set sc = audit_scores[ch.id].hybrid_truth %}
+                <div style="display:flex;align-items:center;gap:6px;margin-top:4px">
+                    <div style="flex:1;background:rgba(255,255,255,0.07);border-radius:99px;height:3px;overflow:hidden">
+                        <div style="height:100%;border-radius:99px;width:{{ sc }}%;background:{% if sc >= 70 %}#34D399{% elif sc >= 50 %}#A78BFA{% else %}#F87171{% endif %}"></div>
+                    </div>
+                    <span style="font-size:0.6rem;font-weight:800;color:{% if sc >= 70 %}#34D399{% elif sc >= 50 %}#A78BFA{% else %}#F87171{% endif %}">🧠 {{ sc }}/100</span>
+                </div>
+                {% elif not unlocked %}
+                <div style="font-size:0.6rem;color:var(--muted);margin-top:2px">Finish Chapter {{ loop.index0 }} first</div>
+                {% endif %}
+            </div>
+
+            <!-- Action button -->
+            {% if unlocked %}
+            <a href="{{ ch.route }}" style="text-decoration:none;flex-shrink:0">
+                <div style="background:{% if is_done %}rgba(52,211,153,0.12){% else %}rgba(255,217,61,0.12){% endif %};border:1px solid {% if is_done %}rgba(52,211,153,0.3){% else %}rgba(255,217,61,0.35){% endif %};border-radius:8px;padding:6px 10px;text-align:center">
+                    <div style="font-size:1rem">{% if is_done %}🔄{% elif is_next %}▶️{% else %}📖{% endif %}</div>
+                    <div style="font-size:0.58rem;font-weight:800;color:{% if is_done %}#34D399{% else %}#FFD93D{% endif %};margin-top:2px;white-space:nowrap">{% if is_done %}Re-run{% elif is_next %}Start{% else %}Open{% endif %}</div>
+                </div>
+            </a>
+            {% else %}
+            <div style="flex-shrink:0;width:48px"></div>
+            {% endif %}
+
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- CTA button -->
+    {% set ns = namespace(next_route='/context', found=false) %}
+    {% for ch in chapters %}
+        {% if not ns.found and ch.id not in done_ids %}
+            {% set ns.next_route = ch.route %}
+            {% set ns.found = true %}
+        {% endif %}
+    {% endfor %}
+    <a href="{{ ns.next_route }}" class="btn-play" style="margin-top:14px">{% if audit_scores %}Continue →{% else %}Start Mission 🚀{% endif %}</a>
+
+    {% if weakest and audit_scores %}
+    <div style="margin-top:8px;width:100%;max-width:480px;background:rgba(255,217,61,0.06);border:1px solid rgba(255,217,61,0.18);border-radius:10px;padding:8px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px">
+        <span style="font-size:0.72rem;color:rgba(240,239,244,0.75);line-height:1.5">
+            💡 Your weakest area: <strong style="color:#FFD93D">{{ weakest }}</strong>
+        </span>
+        <a href="{{ weakest_route }}" style="font-size:0.7rem;font-weight:800;color:#FFD93D;text-decoration:none;white-space:nowrap;flex-shrink:0">Improve it →</a>
+    </div>
+    {% endif %}
+
+    <!-- C8-17: Sample plan link — always visible -->
+    <div style="margin-top:8px;text-align:center">
+        <a href="/share/sample" style="font-size:0.72rem;color:var(--muted);text-decoration:none;font-weight:700">📋 See a sample completed plan →</a>
+    </div>
+
+    <!-- Daily challenge — compact pill below button -->
+    <div id="dailyChallengeCard" style="display:none;margin-top:10px;background:rgba(255,217,61,0.07);border:1px solid rgba(255,217,61,0.2);border-radius:10px;padding:10px 14px;display:none;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="font-size:0.65rem;font-weight:900;text-transform:uppercase;letter-spacing:0.07em;color:#FFD93D;white-space:nowrap">⚡ Today</span>
+        <span id="dailyChallengeText" style="font-size:0.78rem;font-weight:600;color:var(--text);flex:1"></span>
+        <a id="dailyChallengeLink" href="#" style="font-size:0.72rem;font-weight:800;color:#FFD93D;text-decoration:none;white-space:nowrap">Go →</a>
+    </div>
+
+    <!-- Score summary — only shown if chapters done, below fold is fine -->
+    {% if audit_scores %}
+    <div class="home-auditor" style="margin-top:20px">
+        <div class="ha-title">📊 Your Score Summary</div>
+        <p class="ha-sub">Your <strong>Mentor score</strong> is your most honest score. The <strong>AI Honesty Score</strong> shows how much the AI inflated your result.</p>
+        <div class="ha-table">
+            <div class="ha-row ha-row--header">
+                <span>Chapter</span>
+                <span>🐍 Rules</span>
+                <span>🤖 AI</span>
+                <span>🧠 Mentor</span>
+                <span>Honesty</span>
+            </div>
+            {% for ch in chapters %}
+            {% set s = audit_scores.get(ch.id) %}
+            {% if s %}
+            {% set gap = s.sycophancy_gap %}
+            {% set gap_abs = gap | abs %}
+            <div class="ha-row">
+                <span class="ha-mod">{{ ch.emoji }} {{ ch.name }}</span>
+                <span class="ha-val">{{ s.symbolic_score }}</span>
+                <span class="ha-val">{{ s.pure_truth }}</span>
+                <span class="ha-val ha-val--hybrid">{{ s.hybrid_truth }}</span>
+                <span class="ha-gap {% if gap_abs > 20 %}ha-gap--bad{% elif gap_abs > 10 %}ha-gap--warn{% else %}ha-gap--ok{% endif %}">
+                    {% if gap_abs > 20 %}⚠️ Very optimistic
+                    {% elif gap_abs > 10 %}ℹ️ A bit optimistic
+                    {% else %}✅ Aligned
+                    {% endif %}
+                </span>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="ha-footer">
+            <a href="/progress" class="ha-detail-link">Full Report Card →</a>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Welcome modal helpers
+async function _welcomeStart() {
+    localStorage.setItem('lrnbiz_visited', '1');
+    const name = (document.getElementById('welcomeNameInput').value || '').trim();
+    if (name) {
+        try {
+            await fetch('/api/set_name', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({name})
+            });
+        } catch(_) {}
+    }
+    window.location.href = '/context';
+}
+function _welcomeSkip() {
+    localStorage.setItem('lrnbiz_visited', '1');
+    document.getElementById('welcomeModalOverlay').style.display = 'none';
+}
+
+(function() {
+    // Welcome modal for first-time visitors
+    if (!localStorage.getItem('lrnbiz_visited')) {
+        document.getElementById('welcomeModalOverlay').style.display = 'flex';
+        // Focus the name field so users can type immediately
+        setTimeout(() => {
+            const inp = document.getElementById('welcomeNameInput');
+            if (inp) inp.focus();
+        }, 100);
+    }
+
+    // Streak counter
+    const _today = new Date().toDateString();
+    const _lastVisit = localStorage.getItem('lrnbiz_last_visit');
+    let _streak = parseInt(localStorage.getItem('lrnbiz_streak') || '0');
+    if (_lastVisit) {
+        const _yesterday = new Date(Date.now() - 86400000).toDateString();
+        if (_lastVisit === _yesterday) _streak++;
+        else if (_lastVisit !== _today) _streak = 1;
+    } else { _streak = 1; }
+    if (_lastVisit !== _today) localStorage.setItem('lrnbiz_last_visit', _today);
+    localStorage.setItem('lrnbiz_streak', _streak);
+    if (_streak >= 2) {
+        document.getElementById('streakDays').textContent = _streak;
+        document.getElementById('streakBadge').style.display = 'inline-flex';
+    }
+
+    // Almost-done nudge
+    const _doneIds = {{ audit_scores.keys() | list | tojson | safe }};
+    const _allChapters = {{ chapters | map(attribute='id') | list | tojson | safe }};
+    const _remaining = _allChapters.filter(id => !_doneIds.includes(id));
+    if (_remaining.length === 1) {
+        const _routes = {{ chapters | map(attribute='route') | list | tojson | safe }};
+        const _names  = {{ chapters | map(attribute='name')  | list | tojson | safe }};
+        const _idx = _allChapters.indexOf(_remaining[0]);
+        const _link = document.getElementById('almostDoneLink');
+        if (_link && _idx >= 0) {
+            _link.href = _routes[_idx];
+            _link.textContent = '🏁 Finish ' + _names[_idx] + ' →';
+            document.getElementById('almostDoneBanner').style.display = 'block';
+        }
+    }
+
+    // Daily challenge
+    const CHALLENGES = [
+        {text:'Describe your customer in ONE sentence — be as specific as possible!', href:'/customer'},
+        {text:'Add a real number to your pricing. What would you actually charge?', href:'/money'},
+        {text:'Talk to one real person today about your business idea!', href:'/discovery'},
+        {text:'Write down your business idea in 10 words or less.', href:'/idea'},
+        {text:'Name 2 competitors. How are you different from each?', href:'/customer'},
+        {text:'Calculate: if you sold 10 units this week, what\'s your profit?', href:'/money'},
+        {text:'Ask someone: "Would you pay $X for this?" — get a real answer!', href:'/discovery'},
+    ];
+    const _dayIdx = Math.floor(Date.now() / 86400000) % CHALLENGES.length;
+    const _ch = CHALLENGES[_dayIdx];
+    const _card = document.getElementById('dailyChallengeCard');
+    const _text = document.getElementById('dailyChallengeText');
+    const _link2 = document.getElementById('dailyChallengeLink');
+    if (_card && _text && _link2) {
+        _text.textContent = _ch.text;
+        _link2.href = _ch.href;
+        _card.style.display = 'flex';
+    }
+})();
+</script>
+{% endblock %}

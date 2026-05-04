@@ -1,0 +1,1305 @@
+{% extends "base.html" %}
+{% block title %}LrnBiz — Customer Discovery{% endblock %}
+
+{% block story_banner %}
+<div class="story-banner" id="storyBanner">
+    <div class="story-banner-icon">🔍</div>
+    <div class="story-banner-body">
+        <div class="story-banner-quest">Quest 5 of 5 · Prove Your Idea</div>
+        <div class="story-banner-text">
+            Real entrepreneurs test their ideas in the real world! 🌍 Tell us about the conversations you had with real customers. The more you talk to people, the stronger your business becomes!
+        </div>
+    </div>
+    <button class="story-banner-close" onclick="this.closest('.story-banner').style.display='none'" title="Close">✕</button>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="idea-page idea-page--lab">
+
+    <!-- Item 9 – Back link -->
+    <div class="chapter-back-row">
+        <a href="javascript:void(0)" class="chapter-back-link"
+           onclick="if(!window._pageDirty || confirm('⚠️ Leave? Unsaved changes may be lost.')) window.history.back()">← Back</a>
+    </div>
+
+    {% if cc020_mismatch %}
+    <div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.4);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:0.75rem;line-height:1.6">
+        <strong style="color:#f87171">⚠️ Cross-chapter conflict:</strong> You selected <strong>{{ cc020_mismatch.business_type }}</strong> as your business type in Chapter 1, but your Chapter 2 idea was classified as <strong>{{ cc020_mismatch.archetype }}</strong>. These chapters are telling different stories.
+        <div style="margin-top:4px">👉 <a href="/context" style="color:#60a5fa;text-decoration:underline">Update Chapter 1</a> or <a href="/idea" style="color:#60a5fa;text-decoration:underline">revise your idea in Chapter 2</a> to make them consistent.</div>
+    </div>
+    {% endif %}
+
+    <!-- Item 41 – Why does this chapter matter? -->
+    <details class="why-matters-box">
+        <summary>💡 Why does this chapter matter?</summary>
+        <p>The best businesses are built on real conversations, not guesses. Even 3 short interviews can completely change your plan — and save you from building something nobody wants. 🔍</p>
+        <div style="margin-top:10px;border-top:1px solid rgba(255,255,255,0.07);padding-top:10px">
+            <div style="font-size:0.65rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;color:var(--purple);margin-bottom:6px">📚 What you'll learn in this chapter:</div>
+            <ul style="font-size:0.75rem;color:rgba(240,239,244,0.8);padding-left:16px;line-height:1.8;margin:0">
+                <li>How to interview real customers effectively</li>
+                <li>Why diverse sources give better quality insights</li>
+                <li>How to extract a key insight from your research</li>
+                <li>How research changes (or confirms) your original idea</li>
+            </ul>
+        </div>
+        <!-- C8-21: Real-world failure example -->
+        <div style="margin-top:10px;border-top:1px solid rgba(255,255,255,0.07);padding-top:10px;background:rgba(248,113,113,0.05);border-radius:8px;padding:8px 10px;margin-top:10px">
+            <div style="font-size:0.65rem;font-weight:900;color:#F87171;margin-bottom:4px">⚠️ When businesses skip this chapter:</div>
+            <div style="font-size:0.72rem;color:rgba(240,239,244,0.75);line-height:1.6">Juicero raised $120 million to sell a $700 juice press — without ever asking customers if they'd pay that price. It shut down in 2017 when users discovered they could just squeeze the juice packs by hand. This chapter exists so you talk to real people <em>before</em> building anything expensive.</div>
+        </div>
+    </details>
+
+    <header class="idea-header">
+        <a href="/money" class="back-link">← Back</a>
+        <div class="module-chip module-chip--blue" style="margin:0">🔍 Chapter 5 — Customer Discovery</div>
+    </header>
+
+    <div class="idea-body idea-body--liveradar">
+
+        <!-- ── FAR-LEFT: Live Radar ── -->
+        <aside class="live-radar-col" id="liveRadarCol">
+            <div class="live-radar-title">🧬 Business DNA — Live</div>
+            <div class="mini-radar-wrap" id="miniRadarWrap">
+                <svg viewBox="0 0 180 28" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" style="width:100%;height:24px;display:block;margin-bottom:4px;opacity:0.85">
+                    <line x1="15" y1="5" x2="15" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="45" y1="5" x2="45" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="75" y1="5" x2="75" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="105" y1="5" x2="105" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="135" y1="5" x2="135" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="165" y1="5" x2="165" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <path d="M 0,14 C 4,23 11,23 15,23 C 19,23 26,14 30,14 C 34,5 41,5 45,5 C 49,5 56,14 60,14 C 64,23 71,23 75,23 C 79,23 86,14 90,14 C 94,5 101,5 105,5 C 109,5 116,14 120,14 C 124,23 131,23 135,23 C 139,23 146,14 150,14 C 154,5 161,5 165,5 C 169,5 176,14 180,14" fill="none" stroke="#A78BFA" stroke-width="1.8" stroke-linecap="round"/>
+                    <path d="M 0,14 C 4,5 11,5 15,5 C 19,5 26,14 30,14 C 34,23 41,23 45,23 C 49,23 56,14 60,14 C 64,5 71,5 75,5 C 79,5 86,14 90,14 C 94,23 101,23 105,23 C 109,23 116,14 120,14 C 124,5 131,5 135,5 C 139,5 146,14 150,14 C 154,23 161,23 165,23 C 169,23 176,14 180,14" fill="none" stroke="#34D399" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+                <canvas id="miniRadarChart" class="mini-radar-canvas" height="200"></canvas>
+                <div id="miniRadarPlaceholder" style="display:none;text-align:center;padding:18px 10px 10px;color:var(--muted);font-size:0.72rem;line-height:1.5">🌱 Complete Chapter 1 first<br>to unlock your Business DNA!</div>
+                <div class="radar-axis-toast" id="radarAxisToast"></div>
+            </div>
+            <div style="font-size:0.62rem;color:var(--muted);text-align:center;line-height:1.6">
+                🔥 70+ Strong &nbsp;·&nbsp; 📚 40+ Learning &nbsp;·&nbsp; 🌱 &lt;40 Starting
+            </div>
+            <details style="margin-top:2px">
+                <summary style="font-size:0.66rem;font-weight:900;color:var(--purple);cursor:pointer;list-style:none;padding:2px 0">🧬 Axes explained ▾</summary>
+                <div style="margin-top:6px;display:grid;gap:4px">
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#FFD93D">🔥 Passion</strong> — Excitement &amp; motivation</div>
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#34D399">⚡ Energy</strong> — Hours &amp; commitment</div>
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#FFD93D">💰 Gold</strong> — Financial readiness</div>
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#A78BFA">🗣️ Influence</strong> — Customer knowledge</div>
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#60A5FA">📚 Knowledge</strong> — Industry insight ← fills here</div>
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#F472B6">🎯 Target</strong> — Idea specificity</div>
+                </div>
+            </details>
+        </aside>
+
+        <!-- ── CENTER: Form ── -->
+        <main class="idea-main">
+
+            <div class="idea-mascot-row">
+                <div class="idea-mascot">🔍</div>
+                <div class="idea-bubble">
+                    <p id="mentorIntro">The best entrepreneurs talk to real people before spending any money. How much have you actually tested your assumptions? Honest answers here = a more accurate picture of your readiness. 🎤</p>
+                </div>
+            </div>
+
+            <!-- Item 29 – Auto-save indicator -->
+            <div id="autoSaveIndicator" style="font-size:0.7rem;color:var(--muted);text-align:right;margin-bottom:4px;min-height:1em"></div>
+
+            <form id="discoveryForm" method="POST" action="/discovery" novalidate>
+
+                <!-- C7-20: Nuanced plan-change question (replaced binary Yes/No) -->
+                <div class="idea-card" style="border-color:rgba(167,139,250,0.3)">
+                    <div class="idea-card-label">⚡ How much did your discovery change your plan?</div>
+                    <p class="field-sub" style="margin-bottom:8px">Honest reflection here = the most valuable lesson of the whole course.</p>
+                    <input type="hidden" name="discovery_changed_plan" id="f-discovery_changed_plan" value="{{ saved_discovery_changed_plan or '' }}">
+                    <div class="pill-row" data-field="discovery_changed_plan">
+                        <button type="button" class="pill {% if saved_discovery_changed_plan == 'Major pivot' %}active{% endif %}" data-val="Major pivot">🔀 Yes — I changed my idea a lot</button>
+                        <button type="button" class="pill {% if saved_discovery_changed_plan == 'Small adjustments' %}active{% endif %}" data-val="Small adjustments">🔧 A little — small tweaks</button>
+                        <button type="button" class="pill {% if saved_discovery_changed_plan == 'Confirmed my idea' %}active{% endif %}" data-val="Confirmed my idea">✅ No — it confirmed my idea was good</button>
+                        <button type="button" class="pill pill--warn {% if saved_discovery_changed_plan == "I'm not sure" %}active{% endif %}" data-val="I'm not sure">🤷 Haven't interviewed anyone yet</button>
+                    </div>
+                    <div id="changePlanFeedback" style="display:none;margin-top:8px;font-size:0.72rem;padding:6px 10px;border-radius:8px;line-height:1.6"></div>
+                </div>
+
+                <!-- Interviews done — C6-12: max=20, validation message -->
+                <div class="idea-card">
+                    <div class="idea-card-label">How many customer interviews have you actually done? <button type="button" class="hint-btn" aria-label="Show hint" aria-expanded="false" onclick="toggleHint('hint-interview')" title="What counts as an interview?">ℹ️</button></div>
+                    <input type="number" name="interviews_completed" id="interviewsInput" class="money-input"
+                           placeholder="0" min="0" max="20" step="1" value="{{ saved_interviews_completed or '' }}">
+                    <div id="hint-interview" class="hint-pop">A real interview means talking to someone (face-to-face, call, or message) and asking them about their problem — not just "Would you buy this?". Good example: "Tell me about the last time you were frustrated with X." Even 1 conversation counts!</div>
+                    <!-- O12-03: Interview progress bar — live client-side, archetype floor as target -->
+                    <div id="interviewProgressWrap" style="margin-top:8px;display:none">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
+                            <span id="interviewProgressLabel" style="font-size:0.67rem;color:var(--muted)">0 interviews</span>
+                            <span id="interviewFloorLabel" style="font-size:0.65rem;color:rgba(167,139,250,0.7)">Aim for <strong id="interviewFloorNum">5</strong> — but even 1 teaches you something! 🎉</span>
+                        </div>
+                        <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden">
+                            <div id="interviewProgressBar" style="height:100%;width:0%;border-radius:99px;transition:width 0.4s,background 0.4s;background:#F87171"></div>
+                        </div>
+                        <div id="interviewProgressMsg" style="font-size:0.68rem;margin-top:4px;color:var(--muted)"></div>
+                    </div>
+                    <div id="interviewCountMsg" style="display:none;font-size:0.75rem;margin-top:4px;padding:4px 8px;border-radius:6px"></div>
+                    <!-- C7-17: Why 5+ matters -->
+                    <div id="interviewWhyMsg" style="display:none;margin-top:6px;font-size:0.7rem;color:rgba(240,239,244,0.6);font-style:italic;line-height:1.6;padding:4px 8px;border-left:2px solid rgba(167,139,250,0.3)">
+                        📊 Research shows that 5 interviews reveal ~85% of the patterns you'll find. Fewer than 5 is like reading 1 weather forecast and deciding to move countries — interesting, but not enough data!
+                    </div>
+                    <!-- C7-19: Interview quality indicator -->
+                    <div id="interviewQualityMsg" style="display:none;margin-top:6px;font-size:0.72rem;padding:5px 8px;border-radius:6px;font-weight:700"></div>
+                </div>
+
+                <!-- Interview sources — C6-22: ⚠️ notice on Friends and family only -->
+                <div class="idea-card">
+                    <div class="idea-card-label">Who did you interview?</div>
+                    <input type="hidden" name="interview_sources" id="f-interview_sources" value="{{ saved_interview_sources or '' }}">
+                    <div class="pill-row" data-field="interview_sources">
+                        {% for opt in ['Friends and family only', 'Mix of known + strangers', 'Mostly strangers', 'Online community / survey'] %}
+                        <button type="button" class="pill {% if opt == 'Friends and family only' %}pill--warn{% endif %} {% if opt == saved_interview_sources %}active{% endif %}"
+                                data-val="{{ opt }}">{% if opt == 'Friends and family only' %}⚠️ {% endif %}{{ opt }}</button>
+                        {% endfor %}
+                    </div>
+                    <div id="familyWarnMsg" style="display:none;font-size:0.75rem;color:#FFD93D;margin-top:6px;padding:4px 8px;background:rgba(255,217,61,0.07);border-radius:6px">💡 Friends are a great start! But try to talk to at least 1 person who isn't a friend — they give more honest feedback since they won't say yes just to be nice.</div>
+                </div>
+
+                <!-- Question type -->
+                <div class="idea-card">
+                    <div class="idea-card-label">What type of questions did you mostly ask? <button type="button" class="hint-btn" aria-label="Show hint" aria-expanded="false" onclick="toggleHint('hint-qtype')" title="What's the difference?">ℹ️</button></div>
+                    <div id="hint-qtype" class="hint-pop">Leading questions push people toward the answer you want — e.g. "You'd buy this if it was cheap, right?" (they say yes to be nice, not because it's true). Open questions let them tell their real story — e.g. "Tell me about the last time you felt frustrated with X." Open questions give you honest data.</div>
+                    <div style="font-size:0.68rem;color:rgba(240,239,244,0.5);margin-bottom:8px;line-height:1.6">
+                        🚫 <strong style="color:#F87171">Leading</strong> = "You'd buy this, right?" (biased) &nbsp;·&nbsp; ✅ <strong style="color:#34D399">Open-ended</strong> = "Tell me about the last time you needed X" (honest)
+                    </div>
+                    <input type="hidden" name="question_type" id="f-question_type" value="{{ saved_question_type or '' }}">
+                    <div class="pill-row" data-field="question_type">
+                        {% for opt in ['Leading questions', 'Mix of both', 'Open-ended questions'] %}
+                        <button type="button" class="pill {% if opt == 'Leading questions' %}pill--danger{% endif %} {% if opt == saved_question_type %}active{% endif %}"
+                                data-val="{{ opt }}">{% if opt == 'Leading questions' %}⚠️ {% endif %}{{ opt }}</button>
+                        {% endfor %}
+                    </div>
+                    <div id="leadingQWarning" style="display:none;margin-top:6px;font-size:0.72rem;color:#F87171;padding:5px 10px;background:rgba(248,113,113,0.08);border-radius:8px;line-height:1.5">
+                        ⚠️ <strong>Leading questions give unreliable data.</strong> People say yes to be polite — not because they'd actually buy. Try asking open questions next time: "What's the hardest part about X for you?" or "Walk me through the last time this was a problem."
+                    </div>
+                </div>
+
+                <!-- Insight applied -->
+                <div class="idea-card">
+                    <div class="idea-card-label">Did you apply any insights to update your customer profile or pricing?</div>
+                    <input type="hidden" name="insight_applied" id="f-insight_applied" value="{{ saved_insight_applied or '' }}">
+                    <div class="pill-row" data-field="insight_applied">
+                        <button type="button" class="pill {% if saved_insight_applied == 'Yes' %}active{% endif %}" data-val="Yes">✅ Yes, I went back and refined</button>
+                        <button type="button" class="pill pill--warn {% if saved_insight_applied == 'No' %}active{% endif %}" data-val="No">❌ No, I left them as-is</button>
+                    </div>
+                </div>
+
+                <!-- C7-18: 3-field guided insight entry (replaced single textarea) -->
+                <!-- C18-21: Conditional — only shown after at least 1 interview -->
+                <div class="idea-card">
+                    <div class="idea-card-label">What's the most important thing you learned? 💡</div>
+
+                    <!-- No-interview placeholder — hidden once interviews_completed >= 1 -->
+                    <div id="insightNoInterviewMsg" style="background:rgba(139,92,246,0.1);border:1px dashed rgba(139,92,246,0.4);border-radius:10px;padding:12px 14px;font-size:0.75rem;color:rgba(240,239,244,0.65);line-height:1.6">
+                        📋 <strong style="color:rgba(240,239,244,0.85)">You haven't done any interviews yet</strong> — that's OK! <br>
+                        Write what you <em>plan</em> to ask your first customer:<br>
+                        <input type="text" id="insightPrePlan" name="insight_pre_plan" class="niche-input" maxlength="140"
+                               placeholder="e.g. I want to ask: What's the hardest part about ___?" style="width:100%;box-sizing:border-box;margin-top:8px">
+                        <span style="font-size:0.65rem;color:rgba(240,239,244,0.4)">Come back and fill in the 3 questions below after your first real conversation.</span>
+                    </div>
+
+                    <!-- Real insight fields — hidden until interviews_completed >= 1 -->
+                    <div id="insightRealFields" style="display:none">
+                        <div style="font-size:0.72rem;color:var(--purple);margin-bottom:10px;font-weight:700">Three short answers beat one long vague paragraph every time:</div>
+                        <div style="display:grid;gap:10px">
+                            <div>
+                                <label style="font-size:0.72rem;font-weight:900;color:rgba(240,239,244,0.7);display:block;margin-bottom:3px">😮 1. What surprised you most?</label>
+                                <!-- C7-37: Starter buttons -->
+                                <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:5px">
+                                    <button type="button" class="starter-btn" onclick="_starter('insightSurprise','I was surprised that people ')">People actually…</button>
+                                    <button type="button" class="starter-btn" onclick="_starter('insightSurprise','Nobody mentioned price — they cared about ')">Price wasn't the issue</button>
+                                    <button type="button" class="starter-btn" onclick="_starter('insightSurprise','The biggest thing I didn\'t expect was ')">Didn't expect…</button>
+                                </div>
+                                <input type="text" name="insight_surprise" id="insightSurprise" class="niche-input" maxlength="120"
+                                       placeholder="e.g. Students didn't care about price — they cared about convenience" style="width:100%;box-sizing:border-box">
+                            </div>
+                            <div>
+                                <label style="font-size:0.72rem;font-weight:900;color:rgba(240,239,244,0.7);display:block;margin-bottom:3px">🔧 2. What changed in your plan?</label>
+                                <input type="text" name="insight_change" id="insightChange" class="niche-input" maxlength="120"
+                                       placeholder="e.g. I moved my selling spot closer to the school entrance" style="width:100%;box-sizing:border-box">
+                            </div>
+                            <div>
+                                <label style="font-size:0.72rem;font-weight:900;color:rgba(240,239,244,0.7);display:block;margin-bottom:3px">🚀 3. What would you do differently next time?</label>
+                                <input type="text" name="insight_next" id="insightNext" class="niche-input" maxlength="120"
+                                       placeholder="e.g. Ask more open questions, interview people I don't know" style="width:100%;box-sizing:border-box">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hidden combined field for backend -->
+                    <input type="hidden" name="discovery_insight_text" id="discoveryInsightText">
+                </div>
+
+                <button type="button" id="validateBtn" class="btn-validate" style="display:none">🔬 Run Analysis</button>
+                <!-- CTA subtitle hidden — Run Analysis is now in the side panel -->
+                <p class="validate-sub-hint" style="display:none">⏳ Runs Rules Check + AI Optimist + Mentor Feedback — about 5–10 secs</p>
+                <p class="validate-hint" id="validateHint" style="display:none">👆 Done with your questions? Click above to get your discovery score!</p>
+
+                <!-- Module summary (shown after validation) -->
+                <div id="moduleSummary" style="display:none;margin-top:16px">
+                    <div class="module-cert-card">
+                        <div class="mcc-badge">🔍</div>
+                        <div class="mcc-title">Chapter 5 Complete!</div>
+                        <div class="mcc-body" id="mccBody">
+                            Customer research done! Your mentor score: <strong id="mccScore">—</strong>
+                        </div>
+                        <div class="mcc-hint" id="mccHint"></div>
+                    </div>
+                </div>
+
+                <!-- C6-25: Before/After summary card (shown after analysis) -->
+                <div id="beforeAfterCard" style="display:none;margin-top:16px;background:rgba(52,211,153,0.05);border:1px solid rgba(52,211,153,0.2);border-radius:12px;padding:14px 16px">
+                    <div style="font-size:0.72rem;font-weight:900;color:#34D399;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px">🔄 Your Discovery Journey</div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                        <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:10px">
+                            <div style="font-size:0.65rem;font-weight:900;color:var(--muted);margin-bottom:6px">📋 ORIGINAL IDEA (Ch. 2)</div>
+                            <p id="beforeAfterOriginal" style="font-size:0.78rem;color:rgba(240,239,244,0.8);margin:0;line-height:1.5">Loading…</p>
+                        </div>
+                        <div style="background:rgba(52,211,153,0.07);border-radius:8px;padding:10px">
+                            <div style="font-size:0.65rem;font-weight:900;color:#34D399;margin-bottom:6px">✨ AFTER DISCOVERY</div>
+                            <p id="beforeAfterAfter" style="font-size:0.78rem;color:rgba(240,239,244,0.8);margin:0;line-height:1.5">—</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Name for certificate — only shown after validation passes -->
+                <div class="idea-card" id="nameCard" style="display:none;margin-top:12px">
+                    <div class="idea-card-label">🎓 One last thing — what's your name?</div>
+                    <p class="field-sub">This goes on your Certificate of Innovation!</p>
+                    <input type="text" name="student_name" id="studentName" class="money-input"
+                           placeholder="e.g. Alex Johnson" maxlength="60" autocomplete="name">
+                </div>
+
+                <button type="submit" id="submitBtn" class="btn-analyse" disabled style="margin-top:12px">
+                    🏁 Finish &amp; Get My Certificate →
+                </button>
+
+            </form>
+        </main>
+
+        <!-- ── RIGHT: ITS Panel ── -->
+        <aside class="research-panel" id="labPanel">
+
+            <div class="rp-header" style="display:flex;align-items:center;justify-content:space-between;">
+                <span>🔬 ITS Lab</span>
+                <a href="/progress" style="font-size:0.68rem;font-weight:900;color:var(--muted);text-decoration:none;padding:3px 8px;border:1px solid rgba(255,255,255,0.1);border-radius:99px;" title="View full journey audit">📊 Audit</a>
+            </div>
+
+            <!-- Run Analysis — always visible -->
+            <div class="lab-run-row" style="margin:8px 0">
+                <button id="analyseLabBtn" class="lab-btn-run" title="Check your answers — takes about 10 seconds">🔬 Run Analysis</button>
+            </div>
+
+            <!-- Research toggle -->
+            <div class="rt-wrap">
+                <span class="rt-label">Kid View</span>
+                <label class="rt-toggle">
+                    <input type="checkbox" id="researchToggle" class="rt-input">
+                    <span class="rt-slider"></span>
+                </label>
+                <span class="rt-label rt-label--research">Mentor Feedback</span>
+                <span class="rt-info" data-tip="Shows the 3-way AI scoring: Rules Check (logic), AI Optimist (cheerful AI), and Mentor Feedback (honest mentor). Great for understanding how AI feedback works!">i</span>
+            </div>
+
+            <!-- Kid View (default) -->
+            <div id="kidView">
+                <div class="its-pillar">
+                    <div class="its-p-head">🐍 Rules Check</div>
+                    <div class="its-p-icons" id="rulesIcons">
+                        <span class="its-icon--placeholder">Run Analysis to see your check results! ✅</span>
+                    </div>
+                </div>
+                <div class="its-pillar">
+                    <div class="its-p-head">📊 Mentor Score</div>
+                    <div class="its-p-icons" id="hybridScoreIcon">
+                        <span class="its-icon--placeholder">—</span>
+                    </div>
+                </div>
+                <div class="its-pillar its-pillar--hybrid">
+                    <div class="its-p-head">🧑‍🏫 Mentor Says</div>
+                    <div id="whyScoreBox" style="display:none;background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 10px;margin-bottom:8px;border-left:2px solid rgba(167,139,250,0.4)"></div>
+                    <div class="its-p-text" id="hybridText">
+                        <span class="np-placeholder">Fill in your answers, then tap <strong>Run Analysis</strong> to get tips from your AI mentor! 🤖</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Research View (toggle ON) -->
+            <div id="researchView" style="display:none">
+                <div class="rs-tabs">
+                    <button class="rs-tab rs-tab--active" onclick="switchRsTab(this,'rules')">
+                        🐍 Rules<span class="rs-tab-score" id="rsSymScore">—</span>
+                    </button>
+                    <button class="rs-tab" onclick="switchRsTab(this,'pure')">
+                        🤖 AI Optimist<span class="rs-tab-score" id="rsPureTruth">—</span>
+                    </button>
+                    <button class="rs-tab" onclick="switchRsTab(this,'hybrid')">
+                        🧠 Mentor Feedback<span class="rs-tab-score" id="rsHybridTruth">—</span>
+                    </button>
+                </div>
+                <div class="rs-pane" id="rsPane-rules">
+                    <div class="rs-violations" id="rsViolations"><span style="color:var(--muted);font-size:0.78rem">Run analysis to see rule results.</span></div>
+                </div>
+                <div class="rs-pane rs-pane--hidden" id="rsPane-pure">
+                    <div class="rs-text" id="pureLlmBox" style="color:var(--muted);font-size:0.78rem">🤖 <em>AI Optimist:</em> Waiting for analysis…</div>
+                    <div class="truth-bar-wrap" id="pureTruth"></div>
+                    <!-- Item 17 – Grade band for pure -->
+                    <div id="rsBandPure" style="display:none;font-size:0.72rem;font-weight:800;margin-top:4px;padding:3px 0"></div>
+                </div>
+                <div class="rs-pane rs-pane--hidden" id="rsPane-hybrid">
+                    <div class="rs-text" id="hybridLlmBox" style="color:var(--muted);font-size:0.78rem">🧠 <em>Mentor Feedback:</em> Waiting for analysis…</div>
+                    <div class="truth-bar-wrap" id="hybridTruth"></div>
+                    <!-- Item 17 – Grade band for hybrid -->
+                    <div id="rsBandHybrid" style="display:none;font-size:0.72rem;font-weight:800;margin-top:6px;padding:3px 0"></div>
+                    <!-- Item 19 – Next step CTA -->
+                    <div id="rsNextStep" style="display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:0.75rem;line-height:1.6"></div>
+                    <!-- Item 23 – Growth mindset -->
+                    <div id="rsGrowthHint" style="display:none;margin-top:6px;font-size:0.7rem;color:var(--muted);padding:6px 8px;border-top:1px solid rgba(255,255,255,0.07)">
+                        📝 Update your answers and re-run the analysis — your best score is always saved! 💪
+                    </div>
+                </div>
+                <div class="rs-gap rs-gap--ok" id="rsGap" style="display:none"></div>
+                <div id="discoveryGapExplainer" style="display:none"></div>
+                <div id="rsScoreDelta" style="display:none;font-size:0.7rem;font-weight:800;text-align:center;padding:4px 8px;margin-top:4px;background:rgba(52,211,153,0.08);border-radius:6px"></div>
+                <!-- O16-01: Score history strip -->
+                <div id="rsScoreHistory" style="display:none;margin-top:4px;font-size:0.68rem;color:var(--muted);text-align:center;line-height:2"></div>
+            </div>
+
+        </aside>
+
+    </div>
+</div>
+
+<!-- Run Analysis reminder modal -->
+<div id="analysisReminderOverlay" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(9,9,15,0.75);align-items:center;justify-content:center;padding:20px">
+    <div style="background:#16161E;border:1px solid rgba(167,139,250,0.35);border-radius:16px;padding:24px 28px;max-width:420px;width:100%;font-family:Nunito,sans-serif;box-shadow:0 8px 40px rgba(0,0,0,0.6)">
+        <div style="font-size:1.6rem;text-align:center;margin-bottom:10px">🔬</div>
+        <div style="font-size:1rem;font-weight:900;color:var(--text);text-align:center;margin-bottom:8px">Don't forget to Run Analysis!</div>
+        <div style="font-size:0.82rem;color:rgba(240,239,244,0.75);line-height:1.6;text-align:center;margin-bottom:20px">
+            You've logged your interviews but haven't checked them yet.<br>
+            <strong style="color:#A78BFA">Running Analysis</strong> gives you AI feedback and a score — it only takes 10 seconds! 🚀
+        </div>
+        <div style="display:flex;gap:10px;flex-direction:column">
+            <button id="reminderRunBtn" style="background:linear-gradient(135deg,#A78BFA,#60A5FA);color:#09090F;font-weight:900;font-size:0.9rem;border:none;border-radius:99px;padding:12px 20px;cursor:pointer;font-family:Nunito,sans-serif">🔬 Run Analysis Now</button>
+            <button id="reminderContinueBtn" style="background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(240,239,244,0.6);font-size:0.8rem;font-weight:700;border-radius:99px;padding:9px 20px;cursor:pointer;font-family:Nunito,sans-serif">Continue without analysing →</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const DISCOVERY_RULES   = {{ discovery_rules_json | safe }};
+const RADAR             = {{ radar_scores_json | safe }};
+const INTERVIEW_FLOOR   = {{ interview_floor | int }};
+const answers = {};
+
+// Seed answers from saved session values — deferred until after all functions are defined
+// (runs via _seedSavedAnswers() call after _toggleInsightFields is declared below)
+function _seedSavedAnswers() {
+    const _iv = document.getElementById('interviewsInput');
+    if (_iv && _iv.value) {
+        answers.interviews_completed = _iv.value;
+        const n = parseInt(_iv.value) || 0;
+        _toggleInsightFields(n);
+        if (typeof _updateInterviewProgressBar === 'function') _updateInterviewProgressBar(n);
+    }
+    ['f-discovery_changed_plan','f-interview_sources','f-question_type','f-insight_applied'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.value) answers[el.name || id.replace('f-','')] = el.value;
+    });
+}
+
+const _RADAR_AXES = ['Passion','Energy','Gold','Influence','Knowledge','Target'];
+let _radarData = _RADAR_AXES.map(k => RADAR[k] || 0);
+let _miniChart  = null;
+
+// Item 14 – Restore Mentor panel state on load
+if (localStorage.getItem('lrnbiz_disc_rs_open') === '1') {
+    const _rtDisc = document.querySelector('.rt-toggle input[type="checkbox"]');
+    const _rvDisc = document.getElementById('researchView');
+    const _kvDisc = document.getElementById('kidView');
+    if (_rtDisc && _rvDisc && _kvDisc) {
+        _rtDisc.checked = true;
+        _rvDisc.style.display = '';
+        _kvDisc.style.display = 'none';
+        const _hybBtnRestore = document.querySelector('.rs-tab[onclick*="hybrid"]');
+        if (_hybBtnRestore) switchRsTab(_hybBtnRestore, 'hybrid');
+    }
+}
+
+function _axisColors(data) {
+    return data.map(v => v >= 70 ? '#34D399' : v >= 40 ? '#FFD93D' : v > 0 ? '#FF6B6B' : 'rgba(255,255,255,0.15)');
+}
+
+function initMiniRadar() {
+    const hasData = _radarData.some(v => v > 0);
+    document.getElementById('miniRadarChart').style.display       = hasData ? '' : 'none';
+    document.getElementById('miniRadarPlaceholder').style.display = hasData ? 'none' : '';
+    if (!hasData) return;
+    // Start at zero so the radar visibly animates in on page load
+    _miniChart = new Chart(document.getElementById('miniRadarChart'), {
+        type: 'radar',
+        data: {
+            labels: _RADAR_AXES,
+            datasets: [{
+                data: _RADAR_AXES.map(() => 0),
+                backgroundColor: 'rgba(96,165,250,0.08)',
+                borderColor: '#60A5FA',
+                borderWidth: 2,
+                pointRadius: 4,
+                pointBackgroundColor: _axisColors(_radarData),
+                pointBorderColor: 'rgba(9,9,15,0.6)',
+                pointBorderWidth: 1,
+            }]
+        },
+        options: {
+            responsive: true, animation: {duration: 400},
+            scales: { r: {
+                min: 0, max: 100,
+                ticks: { display: false },
+                grid:        { color: 'rgba(255,255,255,0.07)' },
+                angleLines:  { color: 'rgba(255,255,255,0.1)' },
+                pointLabels: { color: 'rgba(240,239,244,0.7)', font: { size: 9, weight: '900', family: "'Nunito',sans-serif" } }
+            }},
+            plugins: { legend: { display: false } }
+        }
+    });
+    // Animate in to the real saved values
+    setTimeout(() => pulseRadar(_miniChart, _radarData, _axisColors), 120);
+}
+
+function updateMiniRadar(radarObj) {
+    if (!radarObj) return;
+    const axIdx = {Passion:0, Energy:1, Gold:2, Influence:3, Knowledge:4, Target:5};
+    let changed = false; let boostedAxis = null;
+    Object.entries(radarObj).forEach(([k, v]) => {
+        const i = axIdx[k];
+        if (i !== undefined && v > _radarData[i]) { _radarData[i] = v; changed = true; boostedAxis = k; }
+    });
+    if (!changed) return;
+    if (!_miniChart) { initMiniRadar(); return; }
+    document.getElementById('miniRadarChart').style.display       = '';
+    document.getElementById('miniRadarPlaceholder').style.display = 'none';
+    _miniChart.data.datasets[0].data = [..._radarData];
+    _miniChart.data.datasets[0].pointBackgroundColor = _axisColors(_radarData);
+    _miniChart.update('active');
+    if (boostedAxis) {
+        const toast = document.getElementById('radarAxisToast');
+        if (toast) {
+            toast.textContent = '🔬 ' + boostedAxis + ' axis updated!';
+            toast.classList.add('show');
+            clearTimeout(toast._t);
+            toast._t = setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+    }
+}
+
+initMiniRadar();
+
+/* ── Live radar: set absolute values (allows decreasing) ── */
+function setLiveRadar(radarObj) {
+    if (!radarObj) return;
+    const axes = ['Passion','Energy','Gold','Influence','Knowledge','Target'];
+    const newData = axes.map(k => Math.max(0, Math.min(100, radarObj[k] || 0)));
+    _radarData = newData;
+    if (!_miniChart) { initMiniRadar(); return; }
+    document.getElementById('miniRadarChart').style.display = '';
+    document.getElementById('miniRadarPlaceholder').style.display = 'none';
+    _miniChart.data.datasets[0].data = [..._radarData];
+    _miniChart.data.datasets[0].pointBackgroundColor = _axisColors(_radarData);
+    _miniChart.update('active');
+}
+
+/* ── Ch5 live radar: boosts Knowledge as student answers discovery fields ── */
+function computeLiveRadar() {
+    const interviews = parseInt((document.getElementById('interviewsInput') || {}).value) || 0;
+    const sources  = answers.interview_sources  || '';
+    const qtype    = answers.question_type      || '';
+    const insight  = answers.insight_applied    || '';
+    const changed  = answers.discovery_changed_plan || '';
+    let knowledgeExtra = 0;
+    if (interviews >= 1)  knowledgeExtra += 10;
+    if (interviews >= 3)  knowledgeExtra += 10;
+    if (interviews >= 5)  knowledgeExtra += 10;
+    if (sources && sources !== 'Friends and family only') knowledgeExtra += 8;
+    if (qtype === 'Open-ended questions') knowledgeExtra += 10;
+    if (qtype === 'Mix of both')          knowledgeExtra += 5;
+    if (insight === 'Yes')                knowledgeExtra += 8;
+    if (changed && changed !== 'I\'m not sure') knowledgeExtra += 6;
+    return {
+        Passion:   RADAR.Passion   || 0,
+        Energy:    RADAR.Energy    || 0,
+        Gold:      RADAR.Gold      || 0,
+        Influence: RADAR.Influence || 0,
+        Knowledge: Math.min(100, (RADAR.Knowledge || 0) + knowledgeExtra),
+        Target:    RADAR.Target    || 0,
+    };
+}
+
+let _liveRadarTimer = null;
+function scheduleLiveRadarUpdate() {
+    clearTimeout(_liveRadarTimer);
+    _liveRadarTimer = setTimeout(() => setLiveRadar(computeLiveRadar()), 300);
+}
+
+// Wire live radar to interviews number input
+(function() {
+    const iv = document.getElementById('interviewsInput');
+    if (iv) iv.addEventListener('input', scheduleLiveRadarUpdate);
+    scheduleLiveRadarUpdate();
+})();
+
+document.querySelectorAll('.pill-row').forEach(row => {
+    const field = row.dataset.field;
+    row.querySelectorAll('.pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+            row.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('f-' + field).value = btn.dataset.val;
+            answers[field] = btn.dataset.val;
+            scheduleLiveRadarUpdate();
+            SoundFX.pick();
+            // Show run analysis hint after 2 answers
+            if (Object.keys(answers).length >= 2) {
+                const h = document.getElementById('validateHint');
+                if (h) h.style.display = '';
+            }
+            _triggerAutoSave();
+        });
+    });
+});
+
+// O12-03: Interview progress bar initialisation
+(function() {
+    const floorEl = document.getElementById('interviewFloorNum');
+    if (floorEl) floorEl.textContent = INTERVIEW_FLOOR;
+})();
+
+function _updateInterviewProgressBar(n) {
+    const wrap = document.getElementById('interviewProgressWrap');
+    const bar  = document.getElementById('interviewProgressBar');
+    const lbl  = document.getElementById('interviewProgressLabel');
+    const msg  = document.getElementById('interviewProgressMsg');
+    if (!wrap || !bar) return;
+    wrap.style.display = n > 0 ? '' : 'none';
+    const pct = Math.min(100, Math.round((n / INTERVIEW_FLOOR) * 100));
+    bar.style.width = pct + '%';
+    bar.style.background = n >= INTERVIEW_FLOOR ? '#34D399' : n >= Math.ceil(INTERVIEW_FLOOR / 2) ? '#FFD93D' : '#F87171';
+    if (lbl) lbl.textContent = n + ' interview' + (n === 1 ? '' : 's');
+    if (msg) {
+        if (n >= INTERVIEW_FLOOR) msg.textContent = '✅ Hit the target! You can validate your idea.';
+        else if (n > 0) msg.textContent = `${INTERVIEW_FLOOR - n} more to reach the target for your business type`;
+        else msg.textContent = '';
+    }
+}
+
+// C18-21: Toggle insight fields based on interview count
+// C19-08: On first transition to ≥1, pre-fill insightSurprise from insightPrePlan text
+let _insightPrePlanTransitioned = false;
+function _toggleInsightFields(n) {
+    const noMsg = document.getElementById('insightNoInterviewMsg');
+    const realFields = document.getElementById('insightRealFields');
+    if (!noMsg || !realFields) return;
+    if (n >= 1) {
+        // C19-08: carry pre-plan text to first insight field on first transition
+        if (!_insightPrePlanTransitioned) {
+            const prePlanEl = document.getElementById('insightPrePlan');
+            const surpriseEl = document.getElementById('insightSurprise');
+            if (prePlanEl && surpriseEl && prePlanEl.value.trim() && !surpriseEl.value.trim()) {
+                surpriseEl.value = prePlanEl.value.trim();
+                _combineInsightFields();
+            }
+            _insightPrePlanTransitioned = true;
+        }
+        noMsg.style.display = 'none';
+        realFields.style.display = 'block';
+    } else {
+        noMsg.style.display = 'block';
+        realFields.style.display = 'none';
+    }
+}
+
+// Now that _toggleInsightFields is defined, seed saved answers from session
+_seedSavedAnswers();
+
+document.getElementById('interviewsInput').addEventListener('input', function() {
+    answers.interviews_completed = this.value;
+    // Live radar: Influence grows with interview count (capped at 55 for pre-analysis)
+    const n = parseInt(this.value) || 0;
+    _toggleInsightFields(n);
+    _updateInterviewProgressBar(n);
+    const influenceBoost = Math.min(55, n * 10);
+    if (influenceBoost > 0) updateMiniRadar({ Influence: influenceBoost });
+    // C6-12: Validation message for interview count
+    const msgEl = document.getElementById('interviewCountMsg');
+    if (msgEl) {
+        if (n >= 15) {
+            msgEl.textContent = "🌟 That's a lot of interviews — well done! Make sure these were real 1-on-1 conversations, not just a quick text.";
+            msgEl.style.cssText = 'display:block;font-size:0.75rem;margin-top:4px;padding:4px 8px;border-radius:6px;background:rgba(52,211,153,0.08);color:#34D399';
+        } else if (n >= 5) {
+            msgEl.textContent = '💪 Great effort — real conversations build real businesses!';
+            msgEl.style.cssText = 'display:block;font-size:0.75rem;margin-top:4px;padding:4px 8px;border-radius:6px;background:rgba(167,139,250,0.08);color:#A78BFA';
+        } else {
+            msgEl.style.display = 'none';
+        }
+    }
+    // C7-17: Show "why 5 matters" once student enters any number
+    const whyMsg = document.getElementById('interviewWhyMsg');
+    if (whyMsg) whyMsg.style.display = n > 0 ? '' : 'none';
+    // C7-19: Update quality indicator based on count + source
+    _updateInterviewQuality();
+    _triggerAutoSave();
+});
+
+// C6-22: Show family warning when "Friends and family only" is selected
+document.querySelectorAll('.pill-row[data-field="interview_sources"] .pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const warn = document.getElementById('familyWarnMsg');
+        if (warn) warn.style.display = btn.dataset.val === 'Friends and family only' ? '' : 'none';
+        _updateInterviewQuality(); // C7-19
+    });
+});
+
+// C7-18: Combine 3-field guided entry into hidden combined field
+function _combineInsightFields() {
+    const s = document.getElementById('insightSurprise');
+    const c = document.getElementById('insightChange');
+    const n = document.getElementById('insightNext');
+    const hidden = document.getElementById('discoveryInsightText');
+    if (!hidden) return;
+    const parts = [];
+    if (s && s.value.trim()) parts.push('Surprised by: ' + s.value.trim());
+    if (c && c.value.trim()) parts.push('Changed: ' + c.value.trim());
+    if (n && n.value.trim()) parts.push('Next time: ' + n.value.trim());
+    hidden.value = parts.join(' | ');
+    answers.discovery_insight_text = hidden.value;
+    _triggerAutoSave();
+}
+['insightSurprise','insightChange','insightNext'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', _combineInsightFields);
+});
+
+// C7-19: Interview quality score
+function _updateInterviewQuality() {
+    const n = parseInt(document.getElementById('interviewsInput').value) || 0;
+    const source = answers.interview_sources || '';
+    const isFamilyOnly = source === 'Friends and family only';
+    const qualityEl = document.getElementById('interviewQualityMsg');
+    if (!qualityEl || n === 0) { if (qualityEl) qualityEl.style.display = 'none'; return; }
+    const multiplier = isFamilyOnly ? 0.6 : source === 'Mix of known + strangers' ? 0.85 : 1.0;
+    const qualityScore = Math.round(n * multiplier);
+    qualityEl.style.display = '';
+    if (isFamilyOnly && n >= 3) {
+        qualityEl.textContent = `💡 Quality score: ${qualityScore}/${n} effective. Your interviews are a good start — mixing in strangers or an online survey will give you a more honest picture.`;
+        qualityEl.style.cssText = 'display:block;margin-top:6px;font-size:0.72rem;padding:5px 8px;border-radius:6px;font-weight:700;background:rgba(255,217,61,0.08);color:#FFD93D';
+    } else if (qualityScore >= 5) {
+        qualityEl.textContent = `✅ Quality score: ${qualityScore}/${n} — great diverse research!`;
+        qualityEl.style.cssText = 'display:block;margin-top:6px;font-size:0.72rem;padding:5px 8px;border-radius:6px;font-weight:700;background:rgba(52,211,153,0.08);color:#34D399';
+    } else {
+        qualityEl.textContent = `📊 Quality score: ${qualityScore}/${n} — keep going, aim for 5+ high-quality interviews.`;
+        qualityEl.style.cssText = 'display:block;margin-top:6px;font-size:0.72rem;padding:5px 8px;border-radius:6px;font-weight:700;background:rgba(255,255,255,0.04);color:var(--muted)';
+    }
+}
+
+// C7-20: Plan change feedback messages
+document.querySelectorAll('.pill-row[data-field="discovery_changed_plan"] .pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const feedbackEl = document.getElementById('changePlanFeedback');
+        if (!feedbackEl) return;
+        const msgs = {
+            'Major pivot': { text: '🔀 Major pivot — this is the mark of a great entrepreneur! The data told you something and you listened. That takes courage.', color: '#A78BFA' },
+            'Small adjustments': { text: '🔧 Small adjustments — perfect! Most businesses tweak, not pivot. You found the signal and acted on it.', color: '#34D399' },
+            'Confirmed my idea': { text: '✅ Confirmed — great! But be honest: did customers confirm it, or did you only ask people who already liked your idea?', color: '#FFD93D' },
+            "I'm not sure": { text: "🤷 Not sure — that's okay. Look at your interview notes again: did anything surprise you? Even small surprises are data.", color: 'var(--muted)' }
+        };
+        const m = msgs[btn.dataset.val];
+        if (m) {
+            feedbackEl.textContent = m.text;
+            feedbackEl.style.cssText = `display:block;margin-top:8px;font-size:0.72rem;padding:6px 10px;border-radius:8px;line-height:1.6;background:rgba(255,255,255,0.03);color:${m.color}`;
+        }
+    });
+});
+
+// Item 29 – Auto-save (debounced 800ms)
+let _autoSaveTimer = null;
+function _triggerAutoSave() {
+    clearTimeout(_autoSaveTimer);
+    const _ind = document.getElementById('autoSaveIndicator');
+    if (_ind) _ind.textContent = '💾 Saving…';
+    _autoSaveTimer = setTimeout(() => {
+        try { localStorage.setItem('lrnbiz_disc_draft', JSON.stringify(answers)); } catch(e) {}
+        if (_ind) { _ind.textContent = '✅ Saved'; setTimeout(() => { _ind.textContent = ''; }, 2000); }
+    }, 800);
+}
+
+// Item 17 – Grade bands
+function _scoreBand(s) {
+    if (s >= 80) return {label:'🏆 Excellent', color:'#34D399'};
+    if (s >= 60) return {label:'👍 Good', color:'#A78BFA'};
+    if (s >= 40) return {label:'📚 Developing', color:'#FFD93D'};
+    return {label:'🌱 Early Stage', color:'var(--muted)'};
+}
+
+function renderTruthBar(id, score) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (score === null || score === undefined) { el.innerHTML = ''; return; }
+    const cls = score >= 70 ? 'truth-fill--green' : score >= 40 ? 'truth-fill--yellow' : 'truth-fill--red';
+    // C6-46: ARIA progressbar
+    el.setAttribute('role', 'progressbar');
+    el.setAttribute('aria-valuenow', score);
+    el.setAttribute('aria-valuemin', '0');
+    el.setAttribute('aria-valuemax', '100');
+    el.setAttribute('aria-label', 'Plan Strength: ' + score + ' out of 100');
+    el.innerHTML = `
+        <div class="truth-bar-label">📊 Plan Strength <span class="truth-val">${score}/100</span></div>
+        <div class="truth-track"><div class="truth-fill ${cls}" style="width:${score}%"></div></div>
+        <div class="truth-desc">${score >= 70 ? '💪 Strong plan — AI and rules agree!' : score >= 40 ? '🔧 Getting there — check the Rules tab for tips' : '📈 Needs work — Rules tab has your next steps'}</div>`;
+}
+
+// Item 7 – Next chapter CTA
+function DISC_NEXT_showNextCTA() {
+    if (document.getElementById('nextChapterBar')) return;
+    const _b = document.createElement('div');
+    _b.id = 'nextChapterBar';
+    _b.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:9000;background:linear-gradient(90deg,#A78BFA,#34D399);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;font-family:Nunito,sans-serif;font-weight:900;font-size:0.9rem;color:#09090F;gap:10px';
+    _b.innerHTML = '🎉 Great research! Ready to wrap up? <a href="/final" style="background:#09090F;color:#A78BFA;padding:6px 16px;border-radius:99px;text-decoration:none;font-size:0.85rem;white-space:nowrap" onclick="document.getElementById(\'nextChapterBar\').remove()">🏁 Final Summary →</a><button onclick="document.getElementById(\'nextChapterBar\').remove()" style="background:none;border:none;color:#09090F;opacity:0.6;cursor:pointer;font-size:1rem">✕</button>';
+    document.body.appendChild(_b);
+}
+
+// Item 22 – Confetti
+function _launchConfetti() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const _cols = ['#A78BFA','#34D399','#FFD93D','#F87171','#60A5FA'];
+    for (let _i = 0; _i < 55; _i++) {
+        const _el = document.createElement('div');
+        _el.className = 'confetti-dot';
+        _el.style.left = (Math.random() * 100) + 'vw';
+        _el.style.animationDelay = (Math.random() * 0.5) + 's';
+        _el.style.animationDuration = (1.2 + Math.random() * 1.5) + 's';
+        _el.style.background = _cols[Math.floor(Math.random() * _cols.length)];
+        const _sz = (6 + Math.random() * 6) + 'px';
+        _el.style.width = _el.style.height = _sz;
+        document.body.appendChild(_el);
+        setTimeout(() => _el.remove(), 3000);
+    }
+}
+
+// Item 28 – XP float
+function _showXpFloat(xp, btn) {
+    const _el = document.createElement('div'); _el.className = 'xp-float';
+    _el.textContent = '+' + Math.round(xp) + ' XP';
+    const _r = btn ? btn.getBoundingClientRect() : {left:100,top:200,width:100};
+    _el.style.left = (_r.left + _r.width/2 - 20) + 'px';
+    _el.style.top = (_r.top + window.scrollY - 10) + 'px';
+    document.body.appendChild(_el); setTimeout(() => _el.remove(), 1500);
+}
+
+document.getElementById('validateBtn').addEventListener('click', async () => {
+    const btn = document.getElementById('validateBtn');
+    btn.textContent = '⏳ Analysing…';
+    btn.disabled = true;
+
+    // Item 25 – Score drop: capture previous score
+    const _prevScore = parseInt(localStorage.getItem('lrnbiz_disc_score') || '0');
+
+    // Item 45 – Loading state
+    const _hEl = document.getElementById('hybridLlmBox');
+    const _pEl = document.getElementById('pureLlmBox');
+    if (_hEl) _hEl.innerHTML = '<span style="color:var(--muted);font-size:0.78rem">⏳ Asking your AI mentor… (usually 5–10 seconds)</span>';
+    if (_pEl) _pEl.innerHTML = '<span style="color:var(--muted);font-size:0.78rem">⏳ Running AI Optimist check…</span>';
+    const _rtIn2 = document.querySelector('.rt-toggle input[type="checkbox"]');
+    if (_rtIn2 && !_rtIn2.checked) { _rtIn2.checked = true; const _rv2 = document.getElementById('researchView'); if (_rv2) _rv2.style.display = ''; document.getElementById('kidView').style.display = 'none'; }
+    const _hybTab2 = document.querySelectorAll('.rs-tab')[2]; if (_hybTab2) switchRsTab(_hybTab2, 'hybrid');
+    const _slowT = setTimeout(() => { const _ht = document.getElementById('hybridLlmBox'); if (_ht && _ht.textContent.includes('Asking')) _ht.innerHTML = '<span style="color:var(--muted);font-size:0.78rem">🔁 Still waiting — taking a moment more…</span>'; }, 15000);
+
+    if (typeof showAnalysisProgress === 'function') showAnalysisProgress();
+    // C8-29: Skeleton loader
+    const _labPanelD = document.getElementById('labPanel');
+    if (_labPanelD && !document.getElementById('discSkeleton')) {
+        const _rpD = document.getElementById('rsPane-hybrid');
+        if (_rpD) _rpD.insertAdjacentHTML('afterbegin', `<div id="discSkeleton" style="padding:12px;animation:skeletonPulse 1.2s ease-in-out infinite"><div style="height:12px;background:rgba(255,255,255,0.07);border-radius:6px;margin-bottom:8px;width:70%"></div><div style="height:10px;background:rgba(255,255,255,0.05);border-radius:6px;margin-bottom:6px;width:90%"></div><div style="height:10px;background:rgba(255,255,255,0.05);border-radius:6px;width:60%"></div></div>`);
+    }
+    const _ctrl = new AbortController();
+    const _timeout = setTimeout(() => _ctrl.abort(), 15000);
+    try {
+        const res  = await fetch('/api/validate_discovery', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({answers}),
+            signal: _ctrl.signal,
+        });
+        clearTimeout(_timeout);
+        if (typeof clearAnalysisProgress === 'function') clearAnalysisProgress();
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+        const _skD = document.getElementById('discSkeleton');
+        if (_skD) _skD.remove();
+        // C8-28: Scroll results into view on mobile
+        if (_labPanelD) _labPanelD.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+
+        // Item 46 – Graceful failure checks
+        if (!data.hybrid_llm || !data.hybrid_llm.trim()) { const _h = document.getElementById('hybridLlmBox'); if (_h) _h.textContent = '🤖 Your AI mentor is taking a short break — your Rules Check score is still accurate! Try again soon.'; }
+        if (!data.pure_llm || !data.pure_llm.trim()) { const _p = document.getElementById('pureLlmBox'); if (_p) _p.textContent = '🤖 AI Optimist unavailable right now. Rules score is valid!'; }
+
+        updateITSPanel(data);
+        if (data.radar_scores) {
+            const _axes = ['Passion','Energy','Gold','Influence','Knowledge','Target'];
+            _radarData = _axes.map(k => data.radar_scores[k] || 0);
+            if (!_miniChart) { initMiniRadar(); }
+            else {
+                document.getElementById('miniRadarChart').style.display = '';
+                document.getElementById('miniRadarPlaceholder').style.display = 'none';
+                pulseRadar(_miniChart, _radarData, _axisColors);
+            }
+        }
+
+        document.getElementById('submitBtn').disabled = false;
+        document.getElementById('submitBtn').textContent = '🏁 Finish & Get My Certificate →';
+        SoundFX.win();
+
+        if (data.triple) {
+            const ht = data.triple.hybrid_truth;
+            document.getElementById('mccScore').textContent = ht + '/100';
+            document.getElementById('mccHint').textContent = ht >= 70
+                ? '🌟 Amazing research depth! Real customers, real insights.'
+                : ht >= 40 ? '💪 Good effort — a few more interviews would help.'
+                : '📚 Try talking to more real people — not just friends!';
+            document.getElementById('moduleSummary').style.display = '';
+
+            // C6-25: Show before/after summary card
+            const _baCard = document.getElementById('beforeAfterCard');
+            if (_baCard) {
+                _baCard.style.display = '';
+                const _orig = document.getElementById('beforeAfterOriginal');
+                const _after = document.getElementById('beforeAfterAfter');
+                // Try to load original idea from localStorage or session
+                const _savedIdea = (typeof SAVED_IDEA !== 'undefined' && SAVED_IDEA) ? SAVED_IDEA : localStorage.getItem('lrnbiz_idea_lockin') || null;
+                if (_orig) _orig.textContent = _savedIdea || 'Your original idea from Chapter 2';
+                if (_after) {
+                    const insightText = answers.discovery_insight_text || '';
+                    const changed = answers.discovery_changed_plan === 'Yes';
+                    if (insightText) {
+                        _after.textContent = insightText.slice(0, 120) + (insightText.length > 120 ? '…' : '');
+                    } else if (changed) {
+                        _after.textContent = 'You updated your plan based on what you heard! 💪';
+                    } else {
+                        _after.textContent = 'Your discovery confirmed your original idea. Consider talking to more strangers for new perspectives!';
+                    }
+                }
+            }
+
+            // C7-21: Cross-chapter customer comparison
+            try {
+                const _stage1 = JSON.parse(localStorage.getItem('lrnbiz_ctx_answers') || 'null');
+                const _ch1Customer = _stage1 ? (_stage1.who_talked_to || '') : '';
+                const _discoveredSource = answers.interview_sources || '';
+                if (_ch1Customer && _discoveredSource && _discoveredSource !== _ch1Customer) {
+                    let _crossMsg = document.getElementById('crossChapterNote');
+                    if (!_crossMsg) {
+                        _crossMsg = document.createElement('div');
+                        _crossMsg.id = 'crossChapterNote';
+                        _crossMsg.style.cssText = 'margin-top:14px;padding:12px 14px;background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.25);border-radius:12px;font-size:0.78rem;line-height:1.6';
+                        document.getElementById('beforeAfterCard').after(_crossMsg);
+                    }
+                    _crossMsg.innerHTML = `💡 <strong style="color:var(--purple)">Cross-chapter insight:</strong> In Chapter 1 you said you talked to <em>${_ch1Customer}</em>. Your discovery interviews were with <em>${_discoveredSource}</em>. <a href="/context" style="color:var(--purple);font-weight:900">Update Chapter 1 →</a> to keep your profile accurate.`;
+                }
+            } catch(e) {}
+
+            // Item 25 – Save score and check for drop
+            localStorage.setItem('lrnbiz_disc_score', String(data.triple.hybrid_truth||0));
+            _analysisRunThisSession = true;
+            const _scoreDrop = _prevScore - (data.triple.hybrid_truth||0);
+
+            // Item 14 – Auto-expand Mentor panel
+            const _rtIn = document.querySelector('.rt-toggle input[type="checkbox"]');
+            if (_rtIn && !_rtIn.checked) {
+                _rtIn.checked = true;
+                const _rv = document.getElementById('researchView');
+                if (_rv) _rv.style.display = '';
+                document.getElementById('kidView').style.display = 'none';
+                localStorage.setItem('lrnbiz_disc_rs_open', '1');
+            }
+            const _hybTab = document.querySelectorAll('.rs-tab')[2];
+            if (_hybTab) switchRsTab(_hybTab, 'hybrid');
+
+            renderTruthBar('pureTruth',   data.triple.pure_truth   ?? null);
+            renderTruthBar('hybridTruth', data.triple.hybrid_truth ?? null);
+
+            // Item 17 – Apply grade bands — prefer server-provided (anchored score)
+            const _hb = data.triple?.mentor_band || _scoreBand(data.triple.hybrid_truth);
+            const _hbEl = document.getElementById('rsBandHybrid');
+            if (_hbEl) { _hbEl.textContent = _hb.label; _hbEl.style.color = _hb.color; _hbEl.style.display = ''; }
+            const _pb = data.triple?.pure_band || _scoreBand(data.triple.pure_truth);
+            const _pbEl = document.getElementById('rsBandPure');
+            if (_pbEl) { _pbEl.textContent = _pb.label; _pbEl.style.color = _pb.color; _pbEl.style.display = ''; }
+
+            // Item 19 – Next step CTA
+            const _ns = document.getElementById('rsNextStep');
+            if (_ns) {
+                const _s = data.triple.hybrid_truth;
+                if (_scoreDrop > 2) {
+                    _ns.style.cssText = 'display:block;background:rgba(255,107,107,0.1);color:#FF6B6B;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:0.75rem;line-height:1.6';
+                    _ns.innerHTML = `📉 <strong>Score dropped ${_scoreDrop} pts.</strong> Check the 🐍 Rules Check tab to see what changed.`;
+                } else if (_s >= 80) {
+                    _ns.style.cssText = 'display:block;background:rgba(52,211,153,0.1);color:#34D399;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:0.75rem;line-height:1.6';
+                    _ns.innerHTML = '🎉 <strong>Great Mentor score!</strong><br><a href="/final" style="display:inline-block;margin-top:6px;background:#34D399;color:#09090F;padding:4px 12px;border-radius:99px;text-decoration:none;font-weight:900;font-size:0.72rem">🏁 Next: Final Summary →</a>';
+                } else if (_s < 60) {
+                    _ns.style.cssText = 'display:block;background:rgba(255,217,61,0.08);color:#FFD93D;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:0.75rem;line-height:1.6';
+                    _ns.innerHTML = '💡 <strong>Here\'s what to improve:</strong> Check the 🐍 Rules Check tab for specific fixes, then re-validate!';
+                } else { _ns.style.display = 'none'; }
+            }
+
+            // Item 22 – Confetti for hybrid_truth >= 70
+            if (data.triple.hybrid_truth >= 90) {
+                if (typeof launchBigConfetti === 'function') launchBigConfetti(data.triple.hybrid_truth);
+            } else if (data.triple.hybrid_truth >= 70) {
+                _launchConfetti();
+            }
+
+            // O10-10: Signal progress page that scores changed
+            localStorage.setItem('lrnbiz_scores_updated', Date.now());
+            // C6-38 / C6-39: Badges and improvement celebration
+            if (typeof checkBadges === 'function') {
+                const _ac = (parseInt(localStorage.getItem('lrnbiz_disc_analyses')||'0') + 1);
+                localStorage.setItem('lrnbiz_disc_analyses', String(_ac));
+                checkBadges(data.triple.hybrid_truth, (data.triple.pure_truth - data.triple.hybrid_truth), 'discovery', _ac);
+            }
+            if (typeof checkImprovementCelebration === 'function') checkImprovementCelebration('discovery', data.triple.hybrid_truth);
+            if (typeof showShareMoment === 'function') showShareMoment('Customer Research', data.triple.hybrid_truth);
+            // Gap explainer
+            if (typeof renderGapExplainer === 'function') {
+                renderGapExplainer('discoveryGapExplainer', data.triple.pure_truth, data.triple.hybrid_truth, data.violations);
+            }
+
+            // Item 7 – Show next chapter bar if score >= 60
+            if (data.triple.hybrid_truth >= 60) DISC_NEXT_showNextCTA();
+
+            // Item 28 – XP float
+            _showXpFloat(Math.round((data.triple.hybrid_truth||0)*2.4), document.getElementById('validateBtn'));
+        }
+
+        document.getElementById('nameCard').style.display = '';
+
+        // Item 23 – Growth mindset: show after every validate
+        const _gh = document.getElementById('rsGrowthHint');
+        if (_gh) _gh.style.display = '';
+
+        // C8-20: Lean Canvas framework mapping (shown once after first analysis)
+        if (!document.getElementById('leanCanvasBox') && data.triple && data.triple.hybrid_truth >= 0) {
+            const _lcDiv = document.createElement('div');
+            _lcDiv.id = 'leanCanvasBox';
+            _lcDiv.style.cssText = 'margin-top:16px;padding:14px;background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.2);border-radius:14px';
+            _lcDiv.innerHTML = `<div style="font-size:0.78rem;font-weight:900;color:#34D399;margin-bottom:8px">🗺️ Your Lean Canvas at a Glance</div>
+<div style="font-size:0.68rem;color:rgba(240,239,244,0.6);margin-bottom:10px;line-height:1.5">The Lean Canvas maps your business plan onto a single page. Here's how your LrnBiz chapters connect:</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 10px"><div style="font-size:0.6rem;font-weight:900;color:var(--purple);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px">Problem</div><div style="font-size:0.7rem;color:var(--text)">Chapter 3 — Customer pain point</div></div>
+<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 10px"><div style="font-size:0.6rem;font-weight:900;color:var(--purple);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px">Customer Segments</div><div style="font-size:0.7rem;color:var(--text)">Chapter 3 — Age range &amp; location</div></div>
+<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 10px"><div style="font-size:0.6rem;font-weight:900;color:var(--purple);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px">Unique Value Prop</div><div style="font-size:0.7rem;color:var(--text)">Chapter 2 — Your niche idea</div></div>
+<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 10px"><div style="font-size:0.6rem;font-weight:900;color:var(--purple);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px">Revenue Streams</div><div style="font-size:0.7rem;color:var(--text)">Chapter 4 — Sell price &amp; units</div></div>
+<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 10px"><div style="font-size:0.6rem;font-weight:900;color:var(--purple);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px">Cost Structure</div><div style="font-size:0.7rem;color:var(--text)">Chapter 4 — Startup &amp; unit costs</div></div>
+<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 10px"><div style="font-size:0.6rem;font-weight:900;color:var(--purple);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px">Early Adopters</div><div style="font-size:0.7rem;color:var(--text)">Chapter 5 — Your interview contacts</div></div>
+</div>`;
+            const _discForm = document.getElementById('discoveryForm');
+            if (_discForm) _discForm.insertBefore(_lcDiv, _discForm.lastElementChild);
+        }
+
+        // C8-22: "Discovery changed my thinking" update flow
+        const _changedPlan = answers.discovery_changed_plan;
+        if (_changedPlan && (_changedPlan === 'Major pivot' || _changedPlan === 'Small adjustments')) {
+            if (!document.getElementById('discoveryUpdatePrompt')) {
+                const _upDiv = document.createElement('div');
+                _upDiv.id = 'discoveryUpdatePrompt';
+                _upDiv.style.cssText = 'margin-top:12px;padding:12px 14px;background:rgba(255,217,61,0.07);border:1px solid rgba(255,217,61,0.25);border-radius:12px';
+                const _isMinor = _changedPlan === 'Small adjustments';
+                _upDiv.innerHTML = `<div style="font-size:0.75rem;font-weight:900;color:#FFD93D;margin-bottom:6px">${_isMinor ? '🔧 Your research refined your plan' : '🔀 Big insight — your plan needs updating!'}</div>
+<div style="font-size:0.72rem;color:rgba(240,239,244,0.8);line-height:1.6;margin-bottom:8px">${_isMinor ? 'Small adjustments mean your earlier chapters might not reflect what you learned. Update them so your plan is consistent.' : 'A major pivot means your earlier answers may no longer be accurate. Go back and update any chapters that have changed.'}</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px">
+<a href="/idea" style="font-size:0.7rem;font-weight:800;background:rgba(255,217,61,0.12);border:1px solid rgba(255,217,61,0.3);color:#FFD93D;border-radius:8px;padding:4px 10px;text-decoration:none">💡 Update Ch2 (Idea) →</a>
+<a href="/customer" style="font-size:0.7rem;font-weight:800;background:rgba(255,217,61,0.12);border:1px solid rgba(255,217,61,0.3);color:#FFD93D;border-radius:8px;padding:4px 10px;text-decoration:none">🎯 Update Ch3 (Customer) →</a>
+<a href="/money" style="font-size:0.7rem;font-weight:800;background:rgba(255,217,61,0.12);border:1px solid rgba(255,217,61,0.3);color:#FFD93D;border-radius:8px;padding:4px 10px;text-decoration:none">💰 Update Ch4 (Money) →</a>
+</div>`;
+                const _discForm2 = document.getElementById('discoveryForm');
+                if (_discForm2) _discForm2.appendChild(_upDiv);
+            }
+        }
+
+        // C8-18: End-of-chapter reflection question
+        if (!document.getElementById('reflectionBox')) {
+            const _rflDiv = document.createElement('div');
+            _rflDiv.id = 'reflectionBox';
+            _rflDiv.style.cssText = 'margin-top:14px;padding:12px 14px;background:rgba(96,165,250,0.07);border:1px solid rgba(96,165,250,0.2);border-radius:12px';
+            _rflDiv.innerHTML = `<div style="font-size:0.75rem;font-weight:900;color:#60A5FA;margin-bottom:6px">🤔 Reflection: What did you learn from talking to real people?</div><textarea id="rflText" placeholder="e.g. I thought my customers wanted cheaper prices, but they actually care more about convenience…" rows="3" maxlength="200" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.04);border:1px solid rgba(96,165,250,0.2);border-radius:8px;color:var(--text);font-size:0.75rem;padding:8px;resize:none;outline:none"></textarea><div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px"><span id="rflCount" style="font-size:0.65rem;color:var(--muted)">0/200</span><button type="button" id="rflSaveBtn" style="font-size:0.72rem;font-weight:800;background:rgba(96,165,250,0.15);border:1px solid rgba(96,165,250,0.35);color:#60A5FA;border-radius:8px;padding:4px 12px;cursor:pointer">Save reflection</button></div><div id="rflMsg" style="display:none;font-size:0.7rem;margin-top:4px;color:#34D399">✅ Saved!</div>`;
+            const _discForm = document.getElementById('discoveryForm');
+            if (_discForm) _discForm.appendChild(_rflDiv);
+            document.getElementById('rflText').addEventListener('input', function(){document.getElementById('rflCount').textContent=this.value.length+'/200';});
+            document.getElementById('rflSaveBtn').addEventListener('click', async function(){
+                const txt = document.getElementById('rflText').value.trim();
+                if (!txt) return;
+                try {
+                    await fetch('/api/save_reflection',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chapter:'discovery',text:txt})});
+                    document.getElementById('rflMsg').style.display='';
+                    setTimeout(()=>{document.getElementById('rflMsg').style.display='none';},2500);
+                } catch(e){}
+            });
+        }
+
+    } catch(e) {
+        clearTimeout(_timeout);
+        const msg = e.name === 'AbortError'
+            ? '⏱ Taking longer than usual. Try again?'
+            : `❌ ${e.message}`;
+        document.getElementById('rsViolations').innerHTML = `<div style="color:#FF6B6B">${msg}</div>`;
+        // Item 46 – catch: show error in panels
+        const _hErr = document.getElementById('hybridLlmBox');
+        if (_hErr && _hErr.textContent.includes('Asking')) _hErr.innerHTML = '<span style="color:#FF6B6B;font-size:0.78rem">❌ Could not reach AI mentor. Your Rules Check score is still valid!</span>';
+        const _pErr = document.getElementById('pureLlmBox');
+        if (_pErr && _pErr.textContent.includes('Running')) _pErr.innerHTML = '<span style="color:#FF6B6B;font-size:0.78rem">❌ AI Optimist unavailable. Try again soon.</span>';
+    } finally {
+        clearTimeout(_slowT);
+    }
+    btn.textContent = '🔍 Analyse My Discovery';
+    btn.disabled = false;
+    const _lbDisc = document.getElementById('analyseLabBtn'); if (_lbDisc) { _lbDisc.textContent = '🔬 Run Analysis'; _lbDisc.disabled = false; _lbDisc.classList.remove('lab-btn-run--remind'); }
+});
+
+// Item 7 – Show next CTA on form submit too
+document.getElementById('discoveryForm').addEventListener('submit', () => {
+    _pageDirty = false;
+    DISC_NEXT_showNextCTA();
+});
+
+function setBattery(pct) {
+    const _batSec = document.getElementById('batSection');
+    if (!_batSec) return;
+    _batSec.style.display = '';
+    const fill = document.getElementById('batFill');
+    fill.style.width = pct + '%';
+    fill.style.background = pct < 40 ? '#FF6B6B' : pct < 70 ? '#FFD93D' : '#34D399';
+    document.getElementById('batStatus').textContent = pct < 40 ? '🔴 Need more research' : pct < 70 ? '🟡 Making progress' : '🟢 Great research!';
+    document.getElementById('batLabel').textContent = `Research strength: ${pct}%`;
+}
+
+function updateITSPanel(data) {
+    if (data.symbolic_score !== undefined) setBattery(data.symbolic_score);
+    const violations = data.violations || [];
+    const totalRules = data.total_rules || violations.length;
+    const passCount  = Math.max(0, totalRules - violations.length);
+    const reds   = violations.map(v => `<span class="its-icon" title="${v.id}: ${v.message}">${v.severity==='error'?'📌':'🟡'}</span>`).join('');
+    const greens = '✅'.repeat(Math.min(passCount, 12));
+    if (totalRules > 0) document.getElementById('rulesIcons').innerHTML = reds + (greens ? `<span class="its-icon">${greens}</span>` : '');
+
+    if (data.triple) {
+        const ht = data.triple.hybrid_truth;
+        document.getElementById('hybridScoreIcon').innerHTML =
+            `<span class="its-icon" style="font-size:1.4rem">${ht >= 70 ? '🏆' : ht >= 40 ? '🎯' : '📈'}</span>
+             <span style="font-size:0.72rem;color:var(--muted);margin-left:4px">${ht}/100</span>`;
+    }
+    if (data.hybrid_llm) document.getElementById('hybridText').textContent = data.hybrid_llm;
+    renderWhyScore(data.top_issues);
+    if (data.triple) {
+        document.getElementById('rsSymScore').textContent    = data.triple.symbolic_score + '/100';
+        document.getElementById('rsPureTruth').textContent   = data.triple.pure_truth + '/100';
+        document.getElementById('rsHybridTruth').textContent = data.triple.hybrid_truth + '/100';
+
+        // C8-08: Score delta + C8-10: Sycophancy gap interpretation
+        const _g = (data.triple.pure_truth||0) - (data.triple.hybrid_truth||0);
+        const _gEl = document.getElementById('rsGap');
+        if (_gEl) {
+            if (_g > 10) {
+                _gEl.innerHTML = `ℹ️ AI was ${_g} pts more generous than your Mentor. This is the gap between what AI wants you to hear and what your plan actually needs.`;
+                _gEl.className = 'rs-gap rs-gap--warn';
+            } else if (_g < -10) {
+                _gEl.innerHTML = `Your plan is stronger than the AI thought — Mentor is ${Math.abs(_g)} pts higher!`;
+                _gEl.className = 'rs-gap rs-gap--ok';
+            } else {
+                _gEl.innerHTML = '✅ AI and Mentor agree — scores are well-calibrated.';
+                _gEl.className = 'rs-gap rs-gap--ok';
+            }
+            _gEl.style.display = '';
+        }
+        const _prevDiscScore = window._lastDiscScore;
+        const _curHTD = data.triple.hybrid_truth;
+        if (_prevDiscScore !== undefined && _prevDiscScore !== _curHTD) {
+            const _dltD = _curHTD - _prevDiscScore;
+            const _deltaElD = document.getElementById('rsScoreDelta');
+            if (_deltaElD) { _deltaElD.textContent = `${_prevDiscScore} → ${_curHTD} (${_dltD>0?'+':''}${_dltD} pts)`; _deltaElD.style.color = _dltD>0?'#34D399':'#F87171'; _deltaElD.style.display=''; }
+        }
+        window._lastDiscScore = _curHTD;
+        // O16-01: Score history strip
+        _renderScoreHistory(data.triple && data.triple.score_history);
+    }
+    if (data.pure_llm)   document.getElementById('pureLlmBox').innerHTML   = `<p>${data.pure_llm}</p>`;
+    if (data.hybrid_llm) document.getElementById('hybridLlmBox').innerHTML = `<p>${data.hybrid_llm}</p>`;
+    updateKidView(data);
+    // C8-02: CC-aware violations + Reality Check section
+    (function() {
+        const nrV = violations.filter(v => !v.id || !v.id.startsWith('CC'));
+        const ccV = violations.filter(v => v.id && v.id.startsWith('CC'));
+        let h = '';
+        if (violations.length === 0) { h = '<span style="color:#34D399;font-size:0.78rem">✅ All rules passed!</span>'; }
+        if (nrV.length) { h += '<div style="font-size:0.68rem;font-weight:900;text-transform:uppercase;color:var(--purple);letter-spacing:0.06em;margin-bottom:6px;margin-top:4px">📋 Structure Check</div>'; h += nrV.map(v => `<div style="margin-bottom:8px;padding:6px 8px;background:rgba(${v.severity==='error'?'248,113,113':'251,191,36'},0.07);border-left:3px solid ${v.severity==='error'?'#F87171':'#FBBF24'};border-radius:0 6px 6px 0;font-size:0.72rem;line-height:1.6;white-space:pre-wrap">${v.message}</div>`).join(''); }
+        if (ccV.length) { h += '<div style="font-size:0.68rem;font-weight:900;text-transform:uppercase;color:#34D399;letter-spacing:0.06em;margin-bottom:6px;margin-top:10px">⚡ Reality Check</div>'; h += ccV.map(v => `<div style="margin-bottom:8px;padding:6px 8px;background:rgba(52,211,153,0.06);border-left:3px solid #34D399;border-radius:0 6px 6px 0;font-size:0.72rem;line-height:1.6;white-space:pre-wrap">${v.message}</div>`).join(''); }
+        document.getElementById('rsViolations').innerHTML = h || '<span style="color:var(--muted);font-size:0.78rem">Run analysis to see results.</span>';
+    })();
+}
+
+document.getElementById('analyseLabBtn').addEventListener('click', () => {
+    document.getElementById('validateBtn').click();
+});
+
+function updateKidView(data) {
+    const violations = data.violations || [];
+    const totalRules = data.total_rules || violations.length || 5;
+    const passCount  = Math.max(0, totalRules - violations.length);
+    const reds   = violations.map(v => `<span class="its-icon" title="${v.id}: ${v.message}">${v.severity==='error'?'📌':'🟡'}</span>`).join('');
+    const greens = violations.length === 0
+        ? `<span class="its-icon" style="color:#34D399;font-size:0.8rem">✅ No conflicts found!</span>`
+        : '✅'.repeat(Math.min(passCount, 8));
+    document.getElementById('rulesIcons').innerHTML = reds + (greens ? `<span class="its-icon">${greens}</span>` : '');
+    if (data.triple) {
+        const ht = data.triple.hybrid_truth;
+        document.getElementById('hybridScoreIcon').innerHTML =
+            `<span class="its-icon" style="font-size:1.4rem">${ht >= 70 ? '🏆' : ht >= 40 ? '🎯' : '📈'}</span>
+             <span style="font-size:0.72rem;color:var(--muted);margin-left:4px">${ht}/100</span>`;
+    }
+    if (data.hybrid_llm) {
+        document.getElementById('hybridText').textContent = data.hybrid_llm;
+    }
+}
+
+document.getElementById('researchToggle').addEventListener('change', function() {
+    document.getElementById('kidView').style.display      = this.checked ? 'none' : '';
+    document.getElementById('researchView').style.display = this.checked ? '' : 'none';
+    localStorage.setItem('lrnbiz_disc_rs_open', this.checked ? '1' : '0');
+    if (this.checked) {
+        const _hybBtn = document.querySelector('.rs-tab[onclick*="hybrid"]');
+        if (_hybBtn) switchRsTab(_hybBtn, 'hybrid');
+    }
+});
+
+function switchRsTab(btn, tabName) {
+    const rv = document.getElementById('researchView');
+    rv.querySelectorAll('.rs-tab').forEach(b => b.classList.remove('rs-tab--active'));
+    rv.querySelectorAll('.rs-pane').forEach(p => p.classList.add('rs-pane--hidden'));
+    btn.classList.add('rs-tab--active');
+    document.getElementById('rsPane-' + tabName).classList.remove('rs-pane--hidden');
+}
+
+// Item 31 – Character counters for textareas
+document.querySelectorAll('form textarea').forEach(ta => {
+    const _cc = document.createElement('div');
+    _cc.style.cssText = 'font-size:0.68rem;color:var(--muted);text-align:right;margin-top:2px';
+    _cc.textContent = ta.value.length + (ta.maxLength > 0 ? ' / ' + ta.maxLength : '') + ' chars';
+    ta.parentNode.insertBefore(_cc, ta.nextSibling);
+    ta.addEventListener('input', () => {
+        _cc.textContent = ta.value.length + (ta.maxLength > 0 ? ' / ' + ta.maxLength : '') + ' chars';
+    });
+});
+
+let _pageDirty = false;
+let _analysisRunThisSession = parseInt(localStorage.getItem('lrnbiz_disc_score') || '0') > 0;
+
+/* ── Analysis Reminder Modal ── */
+let _reminderPendingUrl = null;
+function _showAnalysisReminder(continueUrl) {
+    _reminderPendingUrl = continueUrl;
+    document.getElementById('analysisReminderOverlay').style.display = 'flex';
+}
+document.getElementById('reminderRunBtn').addEventListener('click', () => {
+    document.getElementById('analysisReminderOverlay').style.display = 'none';
+    _reminderPendingUrl = null;
+    document.getElementById('validateBtn').click();
+    document.getElementById('validateBtn').scrollIntoView({behavior:'smooth', block:'center'});
+});
+document.getElementById('reminderContinueBtn').addEventListener('click', () => {
+    document.getElementById('analysisReminderOverlay').style.display = 'none';
+    if (_reminderPendingUrl) { window.location.href = _reminderPendingUrl; _reminderPendingUrl = null; }
+});
+document.addEventListener('click', function(e) {
+    const link = e.target.closest('a[href]');
+    if (!link) return;
+    const href = link.getAttribute('href');
+    if (!href || href.startsWith('javascript') || href.startsWith('#')) return;
+    if (_pageDirty && !_analysisRunThisSession) {
+        e.preventDefault();
+        _showAnalysisReminder(href);
+    }
+});
+document.querySelectorAll('input, select, textarea').forEach(el => {
+    el.addEventListener('change', () => {
+        _pageDirty = true;
+        const _lb = document.getElementById('analyseLabBtn');
+        if (_lb && !_lb.disabled) { _lb.classList.remove('lab-btn-run--remind'); void _lb.offsetWidth; _lb.classList.add('lab-btn-run--remind'); }
+    });
+});
+document.querySelector('form[method="POST"]') && document.querySelector('form[method="POST"]').addEventListener('submit', function(e) {
+    if (!_analysisRunThisSession && typeof _showRunAnalysisNudge === 'function') {
+        e.preventDefault();
+        _showRunAnalysisNudge(function() { document.querySelector('form[method="POST"]').submit(); });
+        return;
+    }
+    _pageDirty = false;
+});
+window.addEventListener('beforeunload', e => {
+    if (_pageDirty) { e.preventDefault(); e.returnValue = ''; }
+});
+
+// O16-01: Render score history pills
+function _renderScoreHistory(history) {
+    const el = document.getElementById('rsScoreHistory');
+    if (!el || !history || history.length < 2) return;
+    const recent = history.slice(-5);
+    el.innerHTML = '<span style="font-weight:700;color:rgba(240,239,244,0.4)">History: </span>' +
+        recent.map((h, i) => {
+            const isLast = i === recent.length - 1;
+            const color = h.score >= 70 ? '#34D399' : h.score >= 40 ? '#FFD93D' : '#F87171';
+            const bg = isLast ? 'rgba(167,139,250,0.18)' : 'rgba(255,255,255,0.06)';
+            const fg = isLast ? '#A78BFA' : color;
+            return `<span title="${h.at || ('Attempt ' + (i+1))}" style="display:inline-block;padding:1px 7px;border-radius:99px;background:${bg};color:${fg};font-weight:800;margin:0 2px">${h.score}</span>`;
+        }).join('<span style="opacity:0.35;margin:0 1px">›</span>');
+    el.style.display = '';
+}
+(function() {
+    const saved = {{ session.get('audit_scores', {}).get('discovery', {}) | tojson | safe }};
+    if (saved && saved.score_history) _renderScoreHistory(saved.score_history);
+})();
+
+// C18-21: Init insight fields visibility on page load
+(function() {
+    const iv = document.getElementById('interviewsInput');
+    const n = iv ? (parseInt(iv.value) || 0) : 0;
+    _toggleInsightFields(n);
+})();
+
+// Bfcache fix: reset button and overlay state when page is restored from cache.
+window.addEventListener('pageshow', function(_psEv) {
+    if (_psEv.persisted) {
+        const _btn = document.getElementById('validateBtn');
+        if (_btn) { _btn.textContent = '🔍 Run Analysis'; _btn.disabled = false; }
+    }
+});
+
+// O15-02: Auto re-run on fresh page load if prior analysis exists.
+// Skip on bfcache restores — session was updated by api_validate_discovery,
+// so the form will be seeded with the latest answers and the user can re-run manually.
+{% if audit_scores.get('discovery') %}
+(function() {
+    const _isBfcache = window.performance && window.performance.getEntriesByType &&
+        window.performance.getEntriesByType('navigation').some(function(n){ return n.type === 'back_forward'; });
+    if (_isBfcache) return;
+    const _o15T = setTimeout(function() {
+        const btn = document.getElementById('validateBtn');
+        if (btn && !btn.disabled) btn.click();
+    }, 800);
+    window.addEventListener('pagehide', function() { clearTimeout(_o15T); }, { once: true });
+})();
+{% endif %}
+</script>
+{% endblock %}

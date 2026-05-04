@@ -1,0 +1,182 @@
+[
+  {
+    "name": "🍕 The Broke Food Dreamer",
+    "triggers_rule": "BR001",
+    "description": "Passionate about cooking but has almost no startup money — triggers the Food budget conflict.",
+    "answers": {
+      "grade_level": "Grade 9-10",
+      "location": "Suburb",
+      "delivery_model": "School",
+      "budget": 20,
+      "hours_per_week": 6,
+      "prior_experience": "Never sold",
+      "why_this_idea": "I love this topic",
+      "business_type": "food-beverage",
+      "who_talked_to": "Friends",
+      "biggest_challenge": "Affording costs",
+      "interest_level": "I love it"
+    }
+  },
+  {
+    "name": "🛍️ The Gadget Maker",
+    "triggers_rule": "BR002",
+    "description": "Wants to make and sell physical products with almost no starting capital.",
+    "answers": {
+      "grade_level": "Grade 11-12",
+      "location": "Suburb",
+      "delivery_model": "Online",
+      "budget": 15,
+      "hours_per_week": 5,
+      "prior_experience": "Once or twice",
+      "why_this_idea": "Spotted a problem",
+      "business_type": "physical-product",
+      "who_talked_to": "Friends",
+      "biggest_challenge": "Affording costs",
+      "interest_level": "I love it"
+    }
+  },
+  {
+    "name": "😞 The Burnt-Out Grinder",
+    "triggers_rule": "BR003",
+    "description": "Plans to work 12+ hours a week on an idea they're not actually excited about.",
+    "answers": {
+      "grade_level": "Grade 9-10",
+      "location": "City",
+      "delivery_model": "Online",
+      "budget": 120,
+      "hours_per_week": 12,
+      "prior_experience": "Once or twice",
+      "why_this_idea": "Want to make money",
+      "business_type": "service",
+      "who_talked_to": "Friends",
+      "biggest_challenge": "Not enough time",
+      "interest_level": "Not really"
+    }
+  },
+  {
+    "name": "😐 The Reluctant Worker",
+    "triggers_rule": "BR004",
+    "description": "Commits 8 hours a week but rates their excitement as 'Not really' — enthusiasm gap warning.",
+    "answers": {
+      "grade_level": "Grade 11-12",
+      "location": "Suburb",
+      "delivery_model": "Neighbourhood",
+      "budget": 80,
+      "hours_per_week": 8,
+      "prior_experience": "Never sold",
+      "why_this_idea": "Want to make money",
+      "business_type": "service",
+      "who_talked_to": "Friends",
+      "biggest_challenge": "Finding customers",
+      "interest_level": "Not really"
+    }
+  },
+  {
+    "name": "💡 The Secret Dreamer",
+    "triggers_rule": "BR005",
+    "description": "Loves their idea passionately but has spoken to zero potential customers.",
+    "answers": {
+      "grade_level": "Grade 11-12",
+      "location": "City",
+      "delivery_model": "Online",
+      "budget": 60,
+      "hours_per_week": 5,
+      "prior_experience": "Never sold",
+      "why_this_idea": "I love this topic",
+      "business_type": "digital-product",
+      "who_talked_to": "Nobody yet",
+      "biggest_challenge": "Finding customers",
+      "interest_level": "I love it"
+    }
+  },
+  {
+    "name": "🍕 The Untested Chef",
+    "triggers_rule": "BR006",
+    "description": "Has a food business idea but hasn't let a single person taste or give feedback.",
+    "answers": {
+      "grade_level": "Grade 9-10",
+      "location": "Suburb",
+      "delivery_model": "School",
+      "budget": 80,
+      "hours_per_week": 5,
+      "prior_experience": "Never sold",
+      "why_this_idea": "I love this topic",
+      "business_type": "food-beverage",
+      "who_talked_to": "Nobody yet",
+      "biggest_challenge": "Finding customers",
+      "interest_level": "It's okay"
+    }
+  },
+  {
+    "name": "🚗 The Young Traveller",
+    "triggers_rule": "BR007",
+    "description": "A Grade 6-8 student in a rural area who chose travel-based delivery — needs an adult for every sale.",
+    "answers": {
+      "grade_level": "Grade 6-8",
+      "location": "Rural",
+      "delivery_model": "Requires Travel",
+      "budget": 100,
+      "hours_per_week": 4,
+      "prior_experience": "Never sold",
+      "why_this_idea": "Want to make money",
+      "business_type": "service",
+      "who_talked_to": "Friends",
+      "biggest_challenge": "Finding customers",
+      "interest_level": "It's okay"
+    }
+  },
+  {
+    "name": "🤷 The Confused Workaholic",
+    "triggers_rule": "BR008",
+    "description": "Invests 10 hours a week but genuinely cannot explain why they chose this idea.",
+    "answers": {
+      "grade_level": "Grade 11-12",
+      "location": "City",
+      "delivery_model": "Online",
+      "budget": 100,
+      "hours_per_week": 10,
+      "prior_experience": "Once or twice",
+      "why_this_idea": "Not sure",
+      "business_type": "digital-product",
+      "who_talked_to": "Friends",
+      "biggest_challenge": "Not sure",
+      "interest_level": "It's okay"
+    }
+  },
+  {
+    "name": "😶 The Joyless Founder",
+    "triggers_rule": "BR009",
+    "description": "Neither excited about the idea nor sure why they're pursuing it — the double red flag.",
+    "answers": {
+      "grade_level": "Grade 11-12",
+      "location": "Suburb",
+      "delivery_model": "School",
+      "budget": 100,
+      "hours_per_week": 4,
+      "prior_experience": "Once or twice",
+      "why_this_idea": "Not sure",
+      "business_type": "service",
+      "who_talked_to": "Friends",
+      "biggest_challenge": "Not sure",
+      "interest_level": "Not really"
+    }
+  },
+  {
+    "name": "🌳 The Experienced Guesser",
+    "triggers_rule": "BR010",
+    "description": "Sells regularly and has real experience, but hasn't tested this specific new idea with anyone.",
+    "answers": {
+      "grade_level": "Grade 11-12",
+      "location": "City",
+      "delivery_model": "Online",
+      "budget": 150,
+      "hours_per_week": 6,
+      "prior_experience": "Sell regularly",
+      "why_this_idea": "I love this topic",
+      "business_type": "digital-product",
+      "who_talked_to": "Nobody yet",
+      "biggest_challenge": "Finding customers",
+      "interest_level": "I love it"
+    }
+  }
+]

@@ -1,0 +1,84 @@
+{
+  "version": "1.0",
+  "module": "discovery_validator",
+  "description": "Deterministic customer discovery rules — ITS Stage 5: Customer Discovery. Validates the quality and depth of the student's market research and customer interviews.",
+  "rules": [
+    {
+      "id": "DR001",
+      "name": "Zero interviews conducted",
+      "type": "min_value_field",
+      "field": "interviews_completed",
+      "threshold": 1,
+      "severity": "error",
+      "flag": "no_interviews",
+      "message": "Customer discovery with zero interviews is just guessing — you need at least one real conversation before treating any assumption as fact.",
+      "socratic_hint": "The student has done zero interviews. Ask: who is one specific person who fits your customer profile that you could speak to this week? What is one question you would ask them about the problem?"
+    },
+    {
+      "id": "DR002",
+      "name": "Only talked to friends and family",
+      "type": "field_equals",
+      "field": "interview_sources",
+      "blocked_values": ["Friends and family only"],
+      "severity": "error",
+      "flag": "biased_sources",
+      "message": "Friends and family want you to succeed and say yes even when they mean maybe — biased feedback can send you in the wrong direction.\n\nWhat to do: Find at least one person who doesn't know you well. This could be a classmate you don't talk to much, someone at a community event, a neighbour, or someone in an online community. Even one outside perspective changes everything.",
+      "socratic_hint": "The student only interviewed friends and family. Suggest accessible options: a classmate they don't know well, someone at a sports club or community event, or a person in an online group. Ask: what is one honest question you could ask a near-stranger — and what different answer might you get compared to family?"
+    },
+    {
+      "id": "DR003",
+      "name": "Used leading questions",
+      "type": "field_equals",
+      "field": "question_type",
+      "blocked_values": ["Leading questions"],
+      "severity": "error",
+      "flag": "leading_questions",
+      "message": "Leading questions get you the answer you want, not the truth — 'Tell me about the last time...' reveals far more than 'You'd buy this, right?'",
+      "socratic_hint": "The student used leading questions in interviews. Role-play with them: reframe one of their leading questions as an open-ended question. Ask: what different answer might you get from that new version?"
+    },
+    {
+      "id": "DR004",
+      "name": "Discovery still uncertain — plan direction unclear",
+      "type": "field_equals",
+      "field": "discovery_changed_plan",
+      "blocked_values": ["I'm not sure"],
+      "severity": "warning",
+      "flag": "direction_unclear",
+      "message": "⚠️ 'Not sure' means your interviews haven't yet given you a clear direction — that's OK, but you need more conversations before you can call your discovery complete.\n\nWhat to do: Go back to at least one more customer and ask: 'What would make you actually pay for this?' Their answer will point you in a direction.",
+      "socratic_hint": "The student is still unsure what their discovery means. Ask: of all the things you heard, what was the single most useful piece of information? Even one clear insight is enough to take a next step."
+    },
+    {
+      "id": "DR005",
+      "name": "Insight not applied",
+      "type": "field_equals",
+      "field": "insight_applied",
+      "blocked_values": ["No"],
+      "severity": "warning",
+      "flag": "unapplied_insight",
+      "message": "🔄 If your research didn't change anything about your idea or pricing, you might not have been listening for surprises. The whole point of talking to customers is to update your earlier guesses!",
+      "socratic_hint": "The student hasn't applied their discovery insights to earlier chapters. Ask: based on what you learned, what is one thing you would change about your target customer description or your pricing?"
+    },
+    {
+      "id": "DR006",
+      "name": "Too few interviews for a pattern",
+      "type": "min_value_field",
+      "field": "interviews_completed",
+      "threshold": 3,
+      "severity": "warning",
+      "flag": "too_few_interviews",
+      "message": "🗣️ 1–2 interviews is a start — but you need at least 3 to see any pattern. Two people might both be wrong in the same way, or both be outliers who don't represent your real customer.",
+      "socratic_hint": "The student has done only 1–2 interviews. Ask: who is a third person — completely different from the first two — that you could speak to? What one question would you ask them? Even a 5-minute conversation changes the quality of your conclusions."
+    },
+    {
+      "id": "DR007",
+      "name": "Suspiciously perfect validation",
+      "type": "field_equals",
+      "field": "discovery_changed_plan",
+      "blocked_values": ["Confirmed my idea"],
+      "severity": "warning",
+      "flag": "perfect_validation",
+      "message": "🤔 Real customer research almost always reveals at least one surprise. If every interview perfectly confirmed your idea, you may have been asking leading questions or only talking to supportive people.",
+      "socratic_hint": "The student reports that all interviews confirmed their idea with zero surprises. Probe: what is the one thing a customer said that you wish they hadn't? If nothing surprised you at all, what does that suggest about who you interviewed or how you asked?"
+    }
+  ]
+}

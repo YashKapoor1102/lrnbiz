@@ -1,0 +1,1882 @@
+{% extends "base.html" %}
+{% block title %}LrnBiz — Business Idea{% endblock %}
+
+{% block story_banner %}
+<div class="story-banner" id="storyBanner">
+    <div class="story-banner-icon">💡</div>
+    <div class="story-banner-body">
+        <div class="story-banner-quest">Quest 2 of 5 · Find Your Mission</div>
+        <div class="story-banner-text">
+            Every hero needs a mission! Describe your business idea and let the AI help you make it clearer. Answer the hint questions to unlock your full Business Idea Certificate. 🏆
+        </div>
+    </div>
+    <button class="story-banner-close" onclick="this.closest('.story-banner').style.display='none'" title="Close">✕</button>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="chapter-back-row">
+    <a href="javascript:void(0)" class="chapter-back-link"
+       onclick="if(!window._ideaDirty || confirm('⚠️ Leave this page? Unsaved changes may be lost.')) window.history.back()">
+        ← Back
+    </a>
+</div>
+<details class="why-matters-box" id="whyMatters">
+    <summary>💭 Why does this chapter matter?</summary>
+    <div class="why-matters-body">
+        A clear, specific business idea is the foundation of everything. Without knowing exactly <em>who</em> you're selling to, <em>what problem</em> you solve, and <em>where</em> you'll sell — your mentor can't give useful feedback, and customers won't understand what you do. This chapter turns a vague dream into a focused pitch! 🎯
+        <div style="margin-top:10px;border-top:1px solid rgba(255,255,255,0.07);padding-top:10px">
+            <div style="font-size:0.65rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;color:var(--purple);margin-bottom:6px">📚 What you'll learn in this chapter:</div>
+            <ul style="font-size:0.75rem;color:rgba(240,239,244,0.8);padding-left:16px;line-height:1.8;margin:0">
+                <li>How to write a clear, specific business idea sentence</li>
+                <li>The WHO, PROBLEM, WHERE framework for pitching</li>
+                <li>Why a specific niche beats "selling to everyone"</li>
+                <li>How to score your idea's maturity level</li>
+            </ul>
+        </div>
+        <!-- C8-21: Real-world failure example -->
+        <div style="margin-top:10px;border-top:1px solid rgba(255,255,255,0.07);padding-top:10px;background:rgba(248,113,113,0.05);border-radius:8px;padding:8px 10px;margin-top:10px">
+            <div style="font-size:0.65rem;font-weight:900;color:#F87171;margin-bottom:4px">⚠️ When businesses skip this chapter:</div>
+            <div style="font-size:0.72rem;color:rgba(240,239,244,0.75);line-height:1.6">Google+ launched in 2011 as a social network for "everyone." With no specific niche or customer problem to solve, it failed to stand out against Facebook — despite billions in backing. This chapter exists so you build for <em>someone</em>, not everyone.</div>
+        </div>
+    </div>
+</details>
+<div class="idea-page idea-page--lab">
+
+    <header class="idea-header">
+        <a href="/context" class="back-link">← Back</a>
+        <div class="module-chip module-chip--yellow" style="margin:0">💡 Chapter 2 — Business Idea</div>
+    </header>
+
+    {% if cc020_mismatch %}
+    <div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.4);border-radius:10px;padding:10px 14px;margin:0 0 12px 0;font-size:0.75rem;line-height:1.6">
+        <strong style="color:#f87171">⚠️ Cross-chapter conflict:</strong> You selected <strong>{{ cc020_mismatch.business_type }}</strong> as your business type in Chapter 1, but your idea was classified as <strong>{{ cc020_mismatch.archetype }}</strong>. These chapters are telling different stories.
+        <div style="margin-top:4px">👉 <a href="/context" style="color:#60a5fa;text-decoration:underline">Update Chapter 1</a> or revise your idea below to make them consistent.</div>
+    </div>
+    {% endif %}
+
+    <div class="idea-body idea-body--liveradar">
+
+        <!-- ══ FAR-LEFT: Live Radar (matches Ch1 position) ══ -->
+        <aside class="live-radar-col" id="liveRadarCol">
+            <div class="live-radar-title">🧬 Business DNA — Live</div>
+            <div class="mini-radar-wrap" id="miniRadarWrap">
+                <svg viewBox="0 0 180 28" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" style="width:100%;height:24px;display:block;margin-bottom:4px;opacity:0.85">
+                    <line x1="15" y1="5" x2="15" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="45" y1="5" x2="45" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="75" y1="5" x2="75" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="105" y1="5" x2="105" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="135" y1="5" x2="135" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="165" y1="5" x2="165" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <path d="M 0,14 C 4,23 11,23 15,23 C 19,23 26,14 30,14 C 34,5 41,5 45,5 C 49,5 56,14 60,14 C 64,23 71,23 75,23 C 79,23 86,14 90,14 C 94,5 101,5 105,5 C 109,5 116,14 120,14 C 124,23 131,23 135,23 C 139,23 146,14 150,14 C 154,5 161,5 165,5 C 169,5 176,14 180,14" fill="none" stroke="#A78BFA" stroke-width="1.8" stroke-linecap="round"/>
+                    <path d="M 0,14 C 4,5 11,5 15,5 C 19,5 26,14 30,14 C 34,23 41,23 45,23 C 49,23 56,14 60,14 C 64,5 71,5 75,5 C 79,5 86,14 90,14 C 94,23 101,23 105,23 C 109,23 116,14 120,14 C 124,5 131,5 135,5 C 139,5 146,14 150,14 C 154,23 161,23 165,23 C 169,23 176,14 180,14" fill="none" stroke="#34D399" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+                <canvas id="miniRadarChart" class="mini-radar-canvas" height="200"></canvas>
+                <div id="miniRadarPlaceholder" style="display:none;text-align:center;padding:18px 10px 10px;color:var(--muted);font-size:0.72rem;line-height:1.5">🌱 Complete Chapter 1 first<br>to unlock your Business DNA!</div>
+                <!-- C19-02: shown when Ch1 not yet analyzed — explains partial radar -->
+                <div id="miniRadarCh1Note" style="display:none;text-align:center;padding:4px 6px 2px;font-size:0.63rem;color:rgba(240,239,244,0.4);line-height:1.5">📊 Run Analysis on Ch1 to<br>see your full radar shape</div>
+                <div class="radar-axis-toast" id="radarAxisToast"></div>
+            </div>
+            <div style="font-size:0.62rem;color:var(--muted);text-align:center;line-height:1.6">
+                🔥 70+ Strong &nbsp;·&nbsp; 📚 40+ Learning &nbsp;·&nbsp; 🌱 &lt;40 Starting
+            </div>
+            <details style="margin-top:2px">
+                <summary style="font-size:0.66rem;font-weight:900;color:var(--purple);cursor:pointer;list-style:none;padding:2px 0">🧬 Axes explained ▾</summary>
+                <div style="margin-top:6px;display:grid;gap:4px">
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#FFD93D">🔥 Passion</strong> — Excitement &amp; motivation</div>
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#34D399">⚡ Energy</strong> — Hours &amp; commitment</div>
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#FFD93D">💰 Gold</strong> — Financial readiness</div>
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#A78BFA">🗣️ Influence</strong> — Customer knowledge</div>
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#60A5FA">📚 Knowledge</strong> — Industry insight</div>
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#F472B6">🎯 Target</strong> — Idea specificity ← fills here</div>
+                </div>
+            </details>
+        </aside>
+
+        <!-- ══ CENTER: Main content ══ -->
+        <main class="idea-main">
+
+            {% if show_stale_warning %}
+            <div style="background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.4);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:0.82rem;color:#FCD34D;line-height:1.5">
+                ⚠️ <strong>You updated Chapter 1.</strong> Your earlier chapter scores may no longer reflect your current context (budget, hours, location). Re-run analysis on any chapter to get fresh results.
+            </div>
+            {% endif %}
+
+            <div class="idea-mascot-row">
+                <div class="idea-mascot">🧑‍🏫</div>
+                <div class="idea-bubble">
+                    <p id="mentorText">What's your business idea? 🚀 Just write it in one or two sentences — don't worry about being perfect yet!</p>
+                </div>
+            </div>
+
+            <!-- PHASE 1: Free-text idea entry -->
+            <div id="phase1">
+                <div class="idea-card">
+                    <div class="idea-card-label">✏️ My business idea
+                        <button type="button" id="nicheInfoBtn" title="What's a niche?" onclick="const p=document.getElementById('nichePopover');p.style.display=p.style.display==='none'?'block':'none'" style="background:none;border:none;cursor:pointer;color:var(--purple);font-size:0.82rem;vertical-align:middle;padding:0 4px;line-height:1;opacity:0.8">🔍</button>
+                    </div>
+                    <!-- C8-36: Niche definition shown at first use, auto-hides after textarea is touched -->
+                    <div id="nicheDefinition" style="background:rgba(167,139,250,0.08);border-left:3px solid var(--purple);border-radius:0 8px 8px 0;padding:8px 12px;font-size:0.72rem;color:rgba(240,239,244,0.85);margin-bottom:8px;line-height:1.6"><strong style="color:var(--purple)">💡 What's a niche?</strong> It's the <em>specific group of people</em> you serve and the <em>specific problem</em> you solve — not "everyone." The more focused you are, the better your plan will score. Example: <em>"healthy snacks for Year 7–9 students at my school"</em> beats <em>"food for people."</em></div>
+                    <div id="nichePopover" style="display:none;background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.25);border-radius:10px;padding:10px 14px;font-size:0.78rem;color:var(--text);margin-bottom:10px;line-height:1.6;position:relative">
+                        <strong>What's a niche?</strong> It's the specific type of customer you serve and problem you solve — <em>not</em> "everyone"! The more specific you are, the better your mentor's feedback will be.
+                        <button onclick="document.getElementById('nichePopover').style.display='none'" style="position:absolute;top:8px;right:10px;background:none;border:none;color:var(--purple);cursor:pointer;font-weight:900;font-size:0.78rem">✕</button>
+                    </div>
+                    <div class="text-wrap">
+                        <textarea id="ideaInput" maxlength="400" rows="4" class="niche-textarea"
+                            placeholder="e.g. I want to sell healthy snack boxes to students at my school who miss breakfast every morning...">{{ saved_idea | e }}</textarea>
+                        <div class="char-ctr"><span id="ideaCount">{{ saved_idea | length }}</span>/400</div>
+                        <div id="autoSaveIndicator" style="display:none;font-size:0.65rem;color:#34D399;text-align:right;margin-top:2px;transition:opacity 0.5s">💾 Draft saved</div>
+                        <div class="char-counter-wrap" style="font-size:0.65rem;color:var(--muted);text-align:right;margin-top:2px"><span id="nicheCharCount">0</span> / <span id="nicheCharMax">300</span> chars</div>
+                        <!-- C6-10: Phase roadmap -->
+                        <div style="margin-top:8px;font-size:0.68rem;color:var(--muted);line-height:1.8">
+                            📝 Write your idea → <strong style="color:#FFD93D">🔬 Run Analysis</strong> to unlock cards → 🔒 Tap cards to add detail → 🔒 Lock in your idea
+                        </div>
+                        <div id="phaseRoadmap" style="display:none;margin-top:4px;font-size:0.68rem;color:var(--muted);line-height:1.8">
+                            <span id="prPhase1">Phase 1: Your core idea 🔒</span> →
+                            <span id="prPhase2">Phase 2: Add detail 🔒</span> →
+                            <span id="prPhase3">Phase 3: Lock it in 🔒</span>
+                        </div>
+                        <div id="ideaMaturityBar" style="display:none;margin-top:6px;font-size:0.7rem;color:var(--muted)">
+                            <span id="imWho" style="margin-right:6px">👤 Who?</span>
+                            <span id="imProb" style="margin-right:6px">❓ Problem?</span>
+                            <span id="imWhere">📍 Where?</span>
+                        </div>
+                        <!-- C6-07: Dynamic maturity hint -->
+                        <div id="maturityHint" style="display:none;margin-top:4px;font-size:0.68rem;color:var(--purple);font-style:italic"></div>
+                        <!-- C7-06: Element unlock mentor message -->
+                        <div id="elemUnlockMsg" style="display:none;margin-top:6px;font-size:0.75rem;font-weight:700;color:var(--yellow);padding:6px 10px;background:rgba(255,217,61,0.07);border-radius:8px"></div>
+                    </div>
+                    <button type="button" id="analyseBtn" class="btn-validate" style="display:none;margin-top:12px">🔬 Run Analysis</button>
+                    <!-- CTA subtitle hidden — Run Analysis is now in the side panel -->
+                    <p class="validate-sub-hint" style="display:none">⏳ Checks your idea for gaps and gives you honest AI feedback — about 5–10 seconds</p>
+                    <p class="validate-hint" id="analyseHint" style="display:none">🔍 Click 'Run Analysis' to get AI feedback on your idea — it takes about 10 seconds!</p>
+                    <!-- ITEM 25: Analysis countdown timer -->
+                    <span id="analysisCountdown" style="display:none;margin-left:10px;font-size:0.78rem;font-weight:900;color:var(--yellow);"></span>
+                </div>
+            </div>
+
+            <!-- C7-09: Idea history / journey card -->
+            <div id="ideaJourneyCard" style="display:none;margin-bottom:12px;background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.2);border-radius:12px;padding:10px 14px">
+                <div style="font-size:0.72rem;font-weight:900;color:var(--purple);margin-bottom:6px">📖 Your Idea Journey</div>
+                <div id="ideaJourneyList" style="font-size:0.7rem;color:var(--muted);line-height:1.8"></div>
+            </div>
+
+            <!-- Certificate teaser (shows once all 3 elements detected) -->
+            <!-- C7-10: Updated cert teaser text — only shows at Phase 3 complete -->
+            <div class="cert-teaser" id="certTeaser" style="display:none">
+                🏆 <strong>Almost there!</strong> Finish Phase 4 (lock in your idea) to unlock your real certificate →
+            </div>
+
+            <!-- PHASE 2: Element cards (shown after analysis) -->
+            <!-- ITEM 35: Greyed certificate teaser -->
+            <div id="certTeaserPhase2" style="display:none;margin-bottom:14px;opacity:0.4;pointer-events:none;background:linear-gradient(135deg,rgba(167,139,250,0.1),rgba(255,217,61,0.05));border:2px dashed rgba(167,139,250,0.3);border-radius:16px;padding:16px 20px;text-align:center;position:relative;">
+                <div style="font-size:1.4rem;margin-bottom:6px;">🏆</div>
+                <div style="font-size:0.85rem;font-weight:900;color:var(--purple);">Your certificate preview — fill in the blanks to unlock!</div>
+                <div style="font-size:0.75rem;color:var(--muted);margin-top:4px;">Complete all 3 elements to unlock your real certificate</div>
+                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(9,9,15,0.4);border-radius:14px;font-size:0.82rem;font-weight:900;color:rgba(240,239,244,0.7)">🔒 Complete your idea to unlock</div>
+            </div>
+            <div id="phase2">
+                <div class="sc-phase-title">💡 Build Your Idea — 3 Key Parts</div>
+                <p class="niche-hint">Every great business idea needs these 3 parts. Tap any card to add more detail and make your idea stronger! 🚀</p>
+                <!-- Skeleton placeholder cards shown before analysis -->
+                <div class="elem-steps" id="elemGrid">
+                    <div class="elem-step elem-step--skeleton"><div class="es-left"><div class="es-num">1</div></div><div class="es-body"><div class="es-title">🧑 Who is your customer?</div><div class="es-why">Run analysis to unlock this card</div></div></div>
+                    <div class="elem-step elem-step--skeleton"><div class="es-left"><div class="es-num">2</div></div><div class="es-body"><div class="es-title">😤 What frustration do you fix?</div><div class="es-why">Run analysis to unlock this card</div></div></div>
+                    <div class="elem-step elem-step--skeleton"><div class="es-left"><div class="es-num">3</div></div><div class="es-body"><div class="es-title">📍 Where will customers find you?</div><div class="es-why">Run analysis to unlock this card</div></div></div>
+                </div>
+
+                <div id="partialProgressWarn" class="partial-progress-warn" style="display:none">
+                    ⚠️ You've covered 2/3 key parts — you can lock in your idea now or add the last part for a stronger pitch!
+                </div>
+
+                <button type="button" id="lockIdeaBtn" class="btn-analyse" style="display:none;margin-top:16px">🔒 Lock In My Idea →</button>
+                <!-- C19-11: tip shown alongside lock button -->
+                <div id="lockIdeaTip" style="display:none;font-size:0.68rem;color:rgba(240,239,244,0.5);margin-top:6px;line-height:1.5">🔬 Tip: Run Analysis first to get your Mentor score before locking!</div>
+            </div>
+
+            <!-- PHASE 4: Lock it in -->
+            <form id="ideaFinalForm" method="POST" action="/idea" novalidate style="display:none">
+                <div class="sc-phase-title">✅ Lock In Your Idea</div>
+
+                <div class="idea-card sc-fill-card">
+                    <div class="idea-card-label">✍️ Complete this sentence:</div>
+                    <!-- C7-07: Inline field guides -->
+                    <div style="display:grid;gap:6px;margin-bottom:8px;font-size:0.7rem;color:var(--muted)">
+                        <div>📦 <strong style="color:rgba(240,239,244,0.7)">WHAT</strong> = your product/service in 5 words or less <em>(e.g. "handmade phone cases")</em></div>
+                        <div>👤 <strong style="color:rgba(240,239,244,0.7)">WHO</strong> = describe your customer in a few words <em>(e.g. "Grade 9 students")</em></div>
+                        <div>📍 <strong style="color:rgba(240,239,244,0.7)">WHERE</strong> = where/how they find you <em>(e.g. "at the school canteen", "on Instagram", "at local markets")</em></div>
+                    </div>
+                    <div class="sentence">
+                        <span class="sw">I sell</span>
+                        <input type="text" name="sell_what" id="sellWhat" class="blank" placeholder="what?" maxlength="60" autocomplete="off" value="{{ saved_sell_what | e }}">
+                        <span class="sw">to</span>
+                        <input type="text" name="sell_to" id="sellTo" class="blank" placeholder="who?" maxlength="60" autocomplete="off" value="{{ saved_sell_to | e }}">
+                        <span class="sw">—</span>
+                        <input type="text" name="sell_where" id="sellWhere" class="blank" placeholder="where/how they find me?" maxlength="60" autocomplete="off" value="{{ saved_sell_where | e }}">
+                        <span class="sw">.</span>
+                    </div>
+                    <!-- ITEM 33: Live lock-in sentence preview -->
+                    <div id="lockPreview" style="margin-top:12px;padding:10px 14px;background:rgba(255,217,61,0.06);border:1px solid rgba(255,217,61,0.2);border-radius:10px;font-size:0.85rem;font-weight:700;color:var(--text);min-height:36px;">
+                        I sell <span id="lpWhat" style="color:var(--muted);font-style:italic">[what]</span> to <span id="lpWho" style="color:var(--muted);font-style:italic">[who]</span> at <span id="lpWhere" style="color:var(--muted);font-style:italic">[where]</span>
+                    </div>
+                    <!-- ITEM 34: Chapter 4 pricing reminder -->
+                    <p class="field-sub" style="margin-top:6px">💰 You'll set your price in Chapter 4 — Financial Math!</p>
+                </div>
+
+                <input type="hidden" name="problem_solved" id="problemHidden">
+                <input type="hidden" name="niche_description" id="nicheHidden">
+
+                <!-- Certificate mini-preview (shown immediately above submit) -->
+                <div class="cert-mini" id="certMini">
+                    <div class="cert-mini-label">🏆 Your Certificate Preview</div>
+                    <div class="cert-mini-name" id="certMiniName">Young Entrepreneur</div>
+                    <div class="cert-mini-stmt">
+                        is launching <strong id="certMiniWhat">…</strong>
+                        to help <strong id="certMiniTo">…</strong>
+                        <span id="certMiniWhereWrap"> at <strong id="certMiniWhere">…</strong></span>
+                    </div>
+                    <p style="font-size:0.7rem;color:rgba(167,139,250,0.6);margin-top:8px">
+                        Fill in the blanks above to update this preview live ✨
+                    </p>
+                </div>
+
+                <button type="submit" class="btn-analyse" id="submitBtn" onclick="return ideaFormGate(event)">
+                    🎯 Continue to Target Customer →
+                </button>
+            </form>
+
+        </main>
+
+        <!-- ══ RIGHT: ITS Panel ══ -->
+        <aside class="research-panel" id="labPanel">
+
+            <div class="rp-header" style="display:flex;align-items:center;justify-content:space-between;">
+                <span>🔬 ITS Lab</span>
+                <a href="/progress" style="font-size:0.68rem;font-weight:900;color:var(--muted);text-decoration:none;padding:3px 8px;border:1px solid rgba(255,255,255,0.1);border-radius:99px;" title="View full journey audit">📊 Audit</a>
+            </div>
+
+            <!-- Run Analysis — always visible -->
+            <div class="lab-run-row" style="margin:8px 0">
+                <button id="analyseLabBtn" class="lab-btn-run" title="Check your idea — takes about 10 seconds">🔬 Run Analysis</button>
+                <p class="validate-sub-hint" style="font-size:0.72rem;color:rgba(240,239,244,0.5);text-align:center;margin-top:4px">⏳ Rules + AI + Mentor — ~10 secs</p>
+            </div>
+
+            <!-- Research toggle -->
+            <div class="rt-wrap">
+                <span class="rt-label">Kid View</span>
+                <label class="rt-toggle">
+                    <input type="checkbox" id="researchToggle" class="rt-input">
+                    <span class="rt-slider"></span>
+                </label>
+                <span class="rt-label rt-label--research">Mentor Feedback</span>
+                <span class="rt-info" data-tip="Shows the 3-way AI scoring: Rules Check (logic), AI Optimist (cheerful AI), and Mentor Feedback (honest mentor). Great for understanding how AI feedback works!">i</span>
+            </div>
+
+            <!-- Kid View (default) -->
+            <div id="kidView">
+                <div class="its-pillar">
+                    <div class="its-p-head">🐍 Rules Check</div>
+                    <div class="its-p-icons" id="rulesIcons">
+                        <span class="its-icon--placeholder">Run Analysis to see your check results! ✅</span>
+                    </div>
+                </div>
+                <div class="its-pillar">
+                    <div class="its-p-head">📊 Mentor Score</div>
+                    <div class="its-p-icons" id="hybridScoreIcon">
+                        <span class="its-icon--placeholder">—</span>
+                    </div>
+                    <div id="mentorScoreNote" style="display:none;margin-top:5px;font-size:0.72rem;color:#FB923C;line-height:1.5;padding:4px 6px;background:rgba(251,146,60,0.08);border-radius:6px;"></div>
+                </div>
+                <div class="its-pillar" id="archetypePillar" style="display:none">
+                    <div class="its-p-head">🏷️ Business Type</div>
+                    <div id="archetypeBadge" style="font-size:0.78rem;font-weight:800;padding:4px 10px;border-radius:99px;background:rgba(167,139,250,0.15);color:#A78BFA;display:inline-block;margin-top:4px"></div>
+                    <div id="archetypeChangedNotice" style="display:none;margin-top:6px;font-size:0.72rem;color:#FCD34D;line-height:1.5;padding:5px 7px;background:rgba(251,191,36,0.08);border-radius:6px;"></div>
+                </div>
+                <div class="its-pillar its-pillar--hybrid">
+                    <div class="its-p-head">🧑‍🏫 Mentor Says</div>
+                    <div id="whyScoreBox" style="display:none;background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 10px;margin-bottom:8px;border-left:2px solid rgba(167,139,250,0.4)"></div>
+                    <div class="its-p-text" id="hybridText">
+                        <span class="np-placeholder">Fill in your answers, then tap <strong>Run Analysis</strong> to get tips from your AI mentor! 🤖</span>
+                    </div>
+                </div>
+                <!-- Chat -->
+                <div class="np-chat" id="npChat">
+                    <div class="np-chat-msg np-chat-msg--mentor">
+                        <div class="npcm-avatar">🧑‍🏫</div>
+                        <div class="npcm-bubble">Write your business idea on the left and I'll help you build it! 🚀</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Research View (toggle ON) -->
+            <div id="researchView" style="display:none">
+                <div class="rs-tabs">
+                    <button class="rs-tab rs-tab--active" onclick="switchRsTab(this,'rules')">
+                        🐍 Rules<span class="rs-tab-score" id="rsSymScore">—</span>
+                    </button>
+                    <button class="rs-tab" onclick="switchRsTab(this,'pure')">
+                        🤖 AI Optimist<span class="rs-tab-score" id="rsPureTruth">—</span>
+                    </button>
+                    <button class="rs-tab" onclick="switchRsTab(this,'hybrid')">
+                        🧠 Mentor Feedback<span class="rs-tab-score" id="rsHybridTruth">—</span>
+                    </button>
+                </div>
+                <div class="rs-pane" id="rsPane-rules">
+                    <div class="rs-violations" id="rsViolations"><span style="color:var(--muted);font-size:0.78rem">Run analysis to see rule results.</span></div>
+                </div>
+                <div class="rs-pane rs-pane--hidden" id="rsPane-pure">
+                    <div class="rs-text" id="pureLlmBox" style="color:var(--muted);font-size:0.78rem">🤖 <em>AI Optimist:</em> Waiting for analysis…</div>
+                    <div class="truth-bar-wrap" id="pureTruth"></div>
+                    <div id="rsBandPure" style="display:none;font-size:0.72rem;font-weight:800;margin-top:4px;padding:3px 0"></div>
+                </div>
+                <div class="rs-pane rs-pane--hidden" id="rsPane-hybrid">
+                    <div class="rs-text" id="hybridLlmBox" style="color:var(--muted);font-size:0.78rem">🧠 <em>Mentor Feedback:</em> Waiting for analysis…</div>
+                    <div class="truth-bar-wrap" id="hybridTruth"></div>
+                    <div id="rsBandHybrid" style="display:none;font-size:0.72rem;font-weight:800;margin-top:6px;padding:3px 0"></div>
+                    <div id="rsNextStep" style="display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:0.75rem;line-height:1.6"></div>
+                    <div id="rsGrowthHint" style="display:none;margin-top:6px;font-size:0.7rem;color:var(--muted);padding:6px 8px;border-top:1px solid rgba(255,255,255,0.07)">
+                        📝 Update your answers and re-run the analysis — your best score is always saved! 💪
+                    </div>
+                </div>
+                <div class="rs-gap rs-gap--ok" id="rsGap" style="display:none"></div>
+                <div id="ideaGapExplainer" style="display:none"></div>
+                <!-- C8-08: Score delta display -->
+                <div id="rsScoreDelta" style="display:none;font-size:0.7rem;font-weight:800;text-align:center;padding:4px 8px;margin-top:4px;background:rgba(52,211,153,0.08);border-radius:6px">Last score → New score</div>
+                <!-- O16-01: Score history strip -->
+                <div id="rsScoreHistory" style="display:none;margin-top:4px;font-size:0.68rem;color:var(--muted);text-align:center;line-height:2"></div>
+            </div>
+
+        </aside>
+    </div>
+
+    <!-- Hint popup modal -->
+    <div class="hint-modal-overlay" id="hintModalOverlay" style="display:none">
+        <div class="hint-modal">
+            <button class="hint-modal-close" id="hintModalClose">✕</button>
+            <div class="hint-modal-q" id="hintModalQ"></div>
+            <div id="hintExamples" style="display:none;margin-top:10px;padding:8px 12px;background:rgba(255,217,61,0.07);border:1px solid rgba(255,217,61,0.2);border-radius:8px;font-size:0.72rem;line-height:1.8;color:rgba(240,239,244,0.8)"></div>
+            <div class="text-wrap" style="margin-top:10px">
+                <textarea id="hintAnswer" class="niche-textarea" rows="3" maxlength="200"
+                    placeholder="Type your answer here…"></textarea>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:3px">
+                    <div id="hintQualityFeedback" style="font-size:0.67rem;line-height:1.4;flex:1"></div>
+                    <div id="hintCharCount" style="font-size:0.63rem;color:rgba(240,239,244,0.35);margin-left:8px;white-space:nowrap">0/200</div>
+                </div>
+            </div>
+            <button type="button" id="hintAddBtn" class="btn-cat-go" style="margin-top:12px">✅ Add to my idea →</button>
+        </div>
+    </div>
+
+    <!-- Run Analysis reminder modal -->
+    <div id="analysisReminderOverlay" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(9,9,15,0.75);align-items:center;justify-content:center;padding:20px">
+        <div style="background:#16161E;border:1px solid rgba(167,139,250,0.35);border-radius:16px;padding:24px 28px;max-width:420px;width:100%;font-family:Nunito,sans-serif;box-shadow:0 8px 40px rgba(0,0,0,0.6)">
+            <div style="font-size:1.6rem;text-align:center;margin-bottom:10px">🔬</div>
+            <div style="font-size:1rem;font-weight:900;color:var(--text);text-align:center;margin-bottom:8px">Don't forget to Run Analysis!</div>
+            <div style="font-size:0.82rem;color:rgba(240,239,244,0.75);line-height:1.6;text-align:center;margin-bottom:20px">
+                You've written your idea but haven't checked it yet.<br>
+                <strong style="color:#A78BFA">Running Analysis</strong> gives you AI feedback and a score — it only takes 10 seconds! 🚀
+            </div>
+            <div style="display:flex;gap:10px;flex-direction:column">
+                <button id="reminderRunBtn" style="background:linear-gradient(135deg,#A78BFA,#60A5FA);color:#09090F;font-weight:900;font-size:0.9rem;border:none;border-radius:99px;padding:12px 20px;cursor:pointer;font-family:Nunito,sans-serif">🔬 Run Analysis Now</button>
+                <button id="reminderContinueBtn" style="background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(240,239,244,0.6);font-size:0.8rem;font-weight:700;border-radius:99px;padding:9px 20px;cursor:pointer;font-family:Nunito,sans-serif">Continue without analysing →</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="celeb-toast" id="celebToast"></div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+/* C6-06: card pulse for unclicked element cards */
+@keyframes cardPulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(167,139,250,0); }
+    50%      { box-shadow: 0 0 0 6px rgba(167,139,250,0.25); }
+}
+.card-pulse { animation: cardPulse 2s ease-in-out infinite; cursor: pointer; }
+</style>
+<script>
+const SAVED_IDEA_AUDIT = {{ session.get('audit_scores', {}).get('idea', {}) | tojson | safe }};
+</script>
+<script>
+const STAGE1 = {{ stage1_json | safe }};
+const RADAR  = {{ radar_scores_json | safe }};
+const SAVED_ANALYSIS = {{ saved_analysis_json | safe }};
+let ideaText    = document.getElementById('ideaInput').value;
+
+function switchRsTab(btn, tabName) {
+    const rv = document.getElementById('researchView');
+    rv.querySelectorAll('.rs-tab').forEach(b => b.classList.remove('rs-tab--active'));
+    rv.querySelectorAll('.rs-pane').forEach(p => p.classList.add('rs-pane--hidden'));
+    btn.classList.add('rs-tab--active');
+    document.getElementById('rsPane-' + tabName).classList.remove('rs-pane--hidden');
+}
+let elements    = [];
+let activeElem  = null;
+let _lastAnalyzedText = '';
+
+/* ── Mini radar chart (mutable, updates on analysis) ── */
+const _RADAR_AXES = ['Passion','Energy','Gold','Influence','Knowledge','Target'];
+let _radarData = _RADAR_AXES.map(k => RADAR[k] || 0);
+let _miniChart  = null;
+
+function _axisColors(data) {
+    return data.map(v => v >= 70 ? '#34D399' : v >= 40 ? '#FFD93D' : v > 0 ? '#FF6B6B' : 'rgba(255,255,255,0.15)');
+}
+
+function initMiniRadar() {
+    const hasData = _radarData.some(v => v > 0);
+    const ch1Analyzed = Object.values(RADAR).some(v => v > 0);
+    document.getElementById('miniRadarChart').style.display       = hasData ? '' : 'none';
+    document.getElementById('miniRadarPlaceholder').style.display = hasData ? 'none' : '';
+    const ch1Note = document.getElementById('miniRadarCh1Note');
+    if (ch1Note) ch1Note.style.display = (hasData && !ch1Analyzed) ? '' : 'none';  // C19-02
+    if (!hasData) return;
+    // Start at zero so the radar visibly animates in on page load
+    _miniChart = new Chart(document.getElementById('miniRadarChart'), {
+        type: 'radar',
+        data: {
+            labels: _RADAR_AXES,
+            datasets: [{
+                data: _RADAR_AXES.map(() => 0),
+                backgroundColor: 'rgba(255,217,61,0.08)',
+                borderColor: '#FFD93D',
+                borderWidth: 2,
+                pointRadius: 4,
+                pointBackgroundColor: _axisColors(_radarData),
+                pointBorderColor: 'rgba(9,9,15,0.6)',
+                pointBorderWidth: 1,
+            }]
+        },
+        options: {
+            responsive: true, animation: {duration: 400},
+            scales: { r: {
+                min: 0, max: 100,
+                ticks: { display: false },
+                grid:        { color: 'rgba(255,255,255,0.07)' },
+                angleLines:  { color: 'rgba(255,255,255,0.1)' },
+                pointLabels: { color: 'rgba(240,239,244,0.7)', font: { size: 9, weight: '900', family: "'Nunito',sans-serif" } }
+            }},
+            plugins: { legend: { display: false } }
+        }
+    });
+    // Animate in to the real saved values
+    setTimeout(() => pulseRadar(_miniChart, _radarData, _axisColors), 120);
+}
+
+let _radarEverShown = Object.values(RADAR).some(v => v > 0);  // C19-12: track first radar appearance
+function updateMiniRadar(radarObj) {
+    if (!radarObj) return;
+    const axIdx = {Passion:0, Energy:1, Gold:2, Influence:3, Knowledge:4, Target:5};
+    let changed = false; let boostedAxis = null;
+    Object.entries(radarObj).forEach(([k, v]) => {
+        const i = axIdx[k];
+        if (i !== undefined && v > _radarData[i]) { _radarData[i] = v; changed = true; boostedAxis = k; }
+    });
+    if (!changed) return;
+    const _isFirstRadar = !_radarEverShown;  // C19-12
+    if (!_miniChart) { initMiniRadar(); return; }
+    document.getElementById('miniRadarChart').style.display       = '';
+    document.getElementById('miniRadarPlaceholder').style.display = 'none';
+    _miniChart.data.datasets[0].data = [..._radarData];
+    _miniChart.data.datasets[0].pointBackgroundColor = _axisColors(_radarData);
+    _miniChart.update('active');
+    _radarEverShown = true;  // C19-12
+    if (_isFirstRadar) {
+        // C19-12: First time the Business DNA radar goes live — celebrate it
+        const toast = document.getElementById('radarAxisToast');
+        if (toast) {
+            toast.textContent = '🧬 Your Business DNA is live!';
+            toast.classList.add('show');
+            clearTimeout(toast._t);
+            toast._t = setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+    } else if (boostedAxis) {
+        const toast = document.getElementById('radarAxisToast');
+        if (toast) {
+            toast.textContent = '💡 ' + boostedAxis + ' axis updated!';
+            toast.classList.add('show');
+            clearTimeout(toast._t);
+            toast._t = setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+    }
+}
+
+initMiniRadar();
+
+/* ── Live radar: set absolute values (allows decreasing) ── */
+function setLiveRadar(radarObj) {
+    if (!radarObj) return;
+    const axes = ['Passion','Energy','Gold','Influence','Knowledge','Target'];
+    const newData = axes.map(k => Math.max(0, Math.min(100, radarObj[k] || 0)));
+    _radarData = newData;
+    if (!_miniChart) { initMiniRadar(); return; }
+    document.getElementById('miniRadarChart').style.display = '';
+    document.getElementById('miniRadarPlaceholder').style.display = 'none';
+    const ch1Analyzed = Object.values(RADAR).some(v => v > 0);
+    const ch1Note = document.getElementById('miniRadarCh1Note');
+    if (ch1Note) ch1Note.style.display = ch1Analyzed ? 'none' : '';  // C19-02
+    _miniChart.data.datasets[0].data = [..._radarData];
+    _miniChart.data.datasets[0].pointBackgroundColor = _axisColors(_radarData);
+    _miniChart.update('active');
+}
+
+/* ── Ch2 live radar computation: boosts Target as student writes ── */
+function computeLiveRadar() {
+    const text  = (document.getElementById('ideaInput')  || {}).value || '';
+    const what  = (document.getElementById('sellWhat')   || {}).value || '';
+    const to    = (document.getElementById('sellTo')     || {}).value || '';
+    const where = (document.getElementById('sellWhere')  || {}).value || '';
+    let targetExtra = 0;
+    if (text.length >= 30)  targetExtra = 12;
+    if (text.length >= 80)  targetExtra = 20;
+    if (text.length >= 150) targetExtra = 28;
+    if (what.length > 3)  targetExtra += 6;
+    if (to.length > 3)    targetExtra += 6;
+    if (where.length > 3) targetExtra += 6;
+    return {
+        Passion:   RADAR.Passion   || 0,
+        Energy:    RADAR.Energy    || 0,
+        Gold:      RADAR.Gold      || 0,
+        Influence: RADAR.Influence || 0,
+        Knowledge: RADAR.Knowledge || 0,
+        Target:    Math.min(100, (RADAR.Target || 0) + targetExtra),
+    };
+}
+
+let _liveRadarTimer = null;
+function scheduleLiveRadarUpdate() {
+    clearTimeout(_liveRadarTimer);
+    _liveRadarTimer = setTimeout(() => setLiveRadar(computeLiveRadar()), 300);
+}
+
+// Wire live radar to idea text input
+(function() {
+    const ta = document.getElementById('ideaInput');
+    if (ta) ta.addEventListener('input', scheduleLiveRadarUpdate);
+    ['sellWhat','sellTo','sellWhere'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', scheduleLiveRadarUpdate);
+    });
+    // Initial render from any saved content
+    scheduleLiveRadarUpdate();
+})();
+
+// C8-36: Hide niche definition if returning visitor or textarea already has content
+(function() {
+    const _nd = document.getElementById('nicheDefinition');
+    if (!_nd) return;
+    const _seen = localStorage.getItem('lrnbiz_niche_def_seen');
+    const _ta = document.getElementById('ideaInput');
+    if (_seen || (_ta && _ta.value && _ta.value.length > 0)) _nd.style.display = 'none';
+})();
+
+/* ── helpers ── */
+function addChat(type, html) {
+    const chat = document.getElementById('npChat');
+    // Replace existing message of same type instead of stacking
+    const existing = chat.querySelector(`.np-chat-msg--${type}`);
+    if (existing) {
+        existing.querySelector('.npcm-bubble').innerHTML = html;
+        return;
+    }
+    const d = document.createElement('div');
+    d.className = `np-chat-msg np-chat-msg--${type}`;
+    d.innerHTML = `<div class="npcm-avatar">${type==='mentor'?'🧑‍🏫':'🎓'}</div><div class="npcm-bubble">${html}</div>`;
+    chat.appendChild(d);
+}
+
+let _ct;
+function toast(msg) {
+    const t = document.getElementById('celebToast');
+    t.textContent = msg; t.classList.remove('show'); void t.offsetWidth; t.classList.add('show');
+    clearTimeout(_ct); _ct = setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+function setBattery(rawPct) {
+    // Start at 40% to avoid discouraging students who already wrote something
+    const pct = Math.max(40, rawPct);
+    const _batSec = document.getElementById('batSection');
+    if (!_batSec) return;
+    _batSec.style.display = '';
+    const fill = document.getElementById('batFill');
+    fill.style.width = pct + '%';
+    fill.style.background = pct < 55 ? '#FFD93D' : pct < 80 ? '#FB923C' : '#34D399';
+    const msgs = pct < 55 ? '🟡 Add more detail to sharpen this!' : pct < 80 ? '🔥 Getting really clear!' : '🟢 Crystal-clear idea!';
+    document.getElementById('batStatus').textContent = msgs;
+    document.getElementById('batLabel').textContent = `Idea clarity: ${pct}%`;
+}
+
+function renderChecklist(violations) {
+    // Handled by updateRulesIcons in the new ITS panel — no-op here
+}
+
+// ITEM 29: Colour coding per element type
+const ELEM_COLORS = { who: '#60A5FA', problem: '#F87171', where: '#34D399' };
+// ITEM 31: Strengthen action prefixes
+const STRENGTHEN_PREFIXES = {
+    who:     'My customer is ',
+    problem: 'The frustration they face is ',
+    where:   'They can find me at ',
+};
+
+function renderElements(elems) {
+    const grid = document.getElementById('elemGrid');
+    const labels = {
+        who:     {why: 'Knowing exactly who you help makes your idea 3× easier to sell!'},
+        problem: {why: 'A clear frustration = customers who desperately want your solution.'},
+        where:   {why: 'Location and timing help you find your very first customers fast.'},
+    };
+    // Rename "problem" element display to "frustration" for kids
+    elems = elems.map(e => e.type === 'problem' ? {...e, title: 'What frustration do you fix?', emoji: '😤'} : e);
+    grid.innerHTML = elems.map((e, i) => {
+        const done  = e.found;
+        const lbl   = labels[e.type] || {why: ''};
+        // ITEM 29: Left border colour per element type
+        const color = ELEM_COLORS[e.type] || 'var(--purple)';
+        // ITEM 30: Minimum 20% only if idea input has substance
+        const ideaHasContent = document.getElementById('ideaInput').value.trim().length > 10;
+        const strength = e.strength !== undefined ? (ideaHasContent ? Math.max(20, e.strength) : e.strength) : (done ? 70 : 20);
+        return `
+        <div class="elem-step ${done ? 'elem-step--done' : 'elem-step--todo card-pulse'}" data-idx="${i}" data-type="${e.type}" style="border-left:4px solid ${color}">
+            <div class="es-left">
+                <div class="es-num">${done ? '✅' : (i+1)}</div>
+            </div>
+            <div class="es-body">
+                <div class="es-title">${e.emoji} ${e.title}</div>
+                <div class="es-why">${lbl.why}</div>
+                ${!done ? '<div class="es-tap-hint" style="font-size:0.65rem;color:var(--purple);font-weight:700;margin-bottom:2px">💡 Tap me for a hint</div>' : ''}
+                <div class="es-hint">${done ? '✔ Added to your idea!' : '👉 ' + e.hint}</div>
+                <div style="margin-top:6px;font-size:0.7rem;color:${color};font-weight:900;">${strength}% strength</div>
+            </div>
+            <div class="es-right" style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+                ${done
+                    ? '<span class="es-badge es-badge--done">Done ✓</span>'
+                    : '<span class="es-badge es-badge--add">+ Add →</span>'}
+                ${!done ? `<button type="button" class="strengthen-btn" data-type="${e.type}" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:99px;color:var(--muted);font-size:0.65rem;padding:2px 8px;cursor:pointer;white-space:nowrap;" onclick="strengthenCard('${e.type}',event)">Strengthen this →</button>` : ''}
+            </div>
+        </div>`;
+    }).join('');
+
+    grid.querySelectorAll('.elem-step').forEach(card => {
+        if (!card.classList.contains('elem-step--done')) {
+            card.addEventListener('click', (ev) => {
+                // Don't trigger if clicking the strengthen button
+                if (ev.target.classList.contains('strengthen-btn') || ev.target.closest('.strengthen-btn')) return;
+                // C6-06: remove pulse on first tap
+                card.classList.remove('card-pulse');
+                const tapHint = card.querySelector('.es-tap-hint');
+                if (tapHint) tapHint.remove();
+                onElemClick(parseInt(card.dataset.idx));
+            });
+        }
+    });
+}
+
+// ITEM 26/31: Strengthen card action with keyword prefix check
+function strengthenCard(type, event) {
+    if (event) event.stopPropagation();
+    const textarea = document.getElementById('ideaInput');
+    const prefix = STRENGTHEN_PREFIXES[type] || '';
+    let shouldPrepend = false;
+    const val = textarea.value.toLowerCase();
+    if (type === 'who') {
+        shouldPrepend = !(val.includes('customer') || val.includes('who'));
+    } else if (type === 'problem') {
+        shouldPrepend = !(val.includes('problem') || val.includes('frustration') || val.includes('fix'));
+    } else if (type === 'where') {
+        shouldPrepend = !(val.includes('at ') || val.includes('where') || val.includes('school') || val.includes('online'));
+    } else if (prefix) {
+        shouldPrepend = !val.includes(prefix.toLowerCase().slice(0,10));
+    }
+    if (prefix && shouldPrepend) {
+        textarea.value = textarea.value.trimEnd() + (textarea.value ? ' ' : '') + prefix;
+        ideaText = textarea.value;
+        document.getElementById('ideaCount').textContent = textarea.value.length;
+    }
+    textarea.focus();
+    textarea.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function onElemClick(idx) {
+    const elem = elements[idx];
+    showHintModal(elem);
+    addChat('mentor', elem.hint);
+}
+
+document.getElementById('hintAddBtn').addEventListener('click', () => {
+    const answer = document.getElementById('hintAnswer').value.trim();
+    if (!answer) return;
+    if (!activeElem) return;
+
+    // Append answer to ideaText
+    ideaText = ideaText.trimEnd() + ' ' + answer;
+    document.getElementById('ideaInput').value = ideaText;
+
+    // Find elem by type and mark found
+    const idx = elements.findIndex(e => e.type === activeElem.type);
+    if (idx >= 0) elements[idx].found = true;
+    renderElements(elements);
+
+    // Close modal
+    document.getElementById('hintModalOverlay').style.display = 'none';
+    activeElem = null;
+
+    // Re-run battery calculation client-side
+    const foundMain = elements.filter(e=>e.found).length;
+    setBattery(Math.min(100, 40 + foundMain * 20));
+
+    toast('✅ Great! Idea updated!');
+    SoundFX.tick();
+    addChat('mentor', `Nice! "${answer.slice(0,50)}${answer.length>50?'…':''}" added to your idea. Keep building! 💪`);
+
+    // Show lock button at 2/3 (with partial warning) or 3/3
+    if (foundMain >= 2) {
+        document.getElementById('lockIdeaBtn').style.display = '';
+        document.getElementById('partialProgressWarn').style.display = foundMain < 3 ? '' : 'none';
+    }
+});
+
+/* ── ANALYSE button ── */
+function updateIdeaMaturity() {
+    const t = document.getElementById('ideaInput').value.toLowerCase();
+    const who_inds = ['student','kid','teen','adult','parent','teacher','people','person','kids','children','customer'];
+    const prob_inds = ['because','problem','struggle',"can't",'need','hard','difficult','expensive','wish','hate',
+      'frustration','frustrating','frustrated','issue','issues','solve','solution','solving',
+      'annoy','complaint','complain','suffer','because they','so they can',"so they don't",
+      'helps them','help them','improve','instead of','without having to',
+      "can't get","don't get",'unable to'];
+    const where_inds = ['school','home','online','market','store','local','morning','after school','weekend','at the','in the'];
+    const whoFound = who_inds.some(w => t.includes(w));
+    const probFound = prob_inds.some(w => t.includes(w));
+    const whereFound = where_inds.some(w => t.includes(w));
+    const bar = document.getElementById('ideaMaturityBar');
+    if (t.length > 5) {
+        bar.style.display = '';
+        document.getElementById('imWho').style.color = whoFound ? '#34D399' : 'var(--muted)';
+        document.getElementById('imWho').textContent = whoFound ? '✅ Who' : '👤 Who?';
+        document.getElementById('imProb').style.color = probFound ? '#34D399' : 'var(--muted)';
+        document.getElementById('imProb').textContent = probFound ? '✅ Problem' : '❓ Problem?';
+        document.getElementById('imWhere').style.color = whereFound ? '#34D399' : 'var(--muted)';
+        document.getElementById('imWhere').textContent = whereFound ? '✅ Where' : '📍 Where?';
+        // C6-07: dynamic hint for the first missing element
+        const hint = document.getElementById('maturityHint');
+        if (hint) {
+            if (!whoFound) hint.textContent = '💡 Add a specific WHO — who is your customer? (e.g. "Grade 8 students")';
+            else if (!probFound) hint.textContent = '💡 Add a specific PROBLEM your customer faces to grow your idea';
+            else if (!whereFound) hint.textContent = '💡 Add a specific WHERE or WHEN to unlock Phase 2 →';
+            else hint.textContent = '';
+            hint.style.display = hint.textContent ? '' : 'none';
+        }
+        // C7-10: Show cert teaser only when all 3 elements found
+        const _certT = document.getElementById('certTeaser');
+        const _allFound = whoFound && probFound && whereFound;
+        if (_certT) _certT.style.display = _allFound ? '' : 'none';
+        // C7-06: Mentor unlock message for next missing element
+        const _elemMsg = document.getElementById('elemUnlockMsg');
+        if (_elemMsg) {
+            if (!whoFound) { _elemMsg.textContent = '💬 Great start! Tell me: WHO is your customer?'; _elemMsg.style.display = ''; }
+            else if (!probFound) { _elemMsg.textContent = '💬 Nice! Now tell me — what PROBLEM or frustration does your customer have?'; _elemMsg.style.display = ''; }
+            else if (!whereFound) { _elemMsg.textContent = '💬 Almost there! Where or WHEN do they find you?'; _elemMsg.style.display = ''; }
+            else { _elemMsg.style.display = 'none'; }
+        }
+        // C7-10: update phase roadmap
+        const pr = document.getElementById('phaseRoadmap');
+        if (pr) {
+            pr.style.display = '';
+            const p1 = document.getElementById('prPhase1');
+            const p2 = document.getElementById('prPhase2');
+            const p3 = document.getElementById('prPhase3');
+            const count = [whoFound,probFound,whereFound].filter(Boolean).length;
+            // C8-27: ✅ done · ▶️ current · 🔒 future
+            if (p1) { p1.style.color = count >= 1 ? '#34D399' : count === 0 ? '#A78BFA' : 'var(--muted)'; p1.textContent = 'Phase 1: Your core idea ' + (count >= 1 ? '✅' : count === 0 ? '▶️' : '🔒'); }
+            if (p2) { p2.style.color = count >= 2 ? '#34D399' : count === 1 ? '#A78BFA' : 'var(--muted)'; p2.textContent = 'Phase 2: Add detail ' + (count >= 2 ? '✅' : count === 1 ? '▶️' : '🔒'); }
+            if (p3) { p3.style.color = count >= 3 ? '#34D399' : count === 2 ? '#A78BFA' : 'var(--muted)'; p3.textContent = 'Phase 3: Lock it in ' + (count >= 3 ? '✅' : count === 2 ? '▶️' : '🔒'); }
+        }
+    } else {
+        bar.style.display = 'none';
+        const pr2 = document.getElementById('phaseRoadmap'); if (pr2) pr2.style.display = 'none';
+        const mh = document.getElementById('maturityHint'); if (mh) mh.style.display = 'none';
+    }
+}
+
+// C7-09: Idea History helpers
+function _saveIdeaSnapshot(text) {
+    if (!text || text.trim().length < 20) return;
+    try {
+        const history = JSON.parse(localStorage.getItem('lrnbiz_idea_history') || '[]');
+        const last = history[0];
+        if (last && last.text === text.trim()) return; // no change
+        history.unshift({ text: text.trim().substring(0, 100), ts: Date.now() });
+        if (history.length > 3) history.length = 3;
+        localStorage.setItem('lrnbiz_idea_history', JSON.stringify(history));
+        _renderIdeaJourney();
+    } catch(e) {}
+}
+function _renderIdeaJourney() {
+    const history = JSON.parse(localStorage.getItem('lrnbiz_idea_history') || '[]');
+    const card = document.getElementById('ideaJourneyCard');
+    const list = document.getElementById('ideaJourneyList');
+    if (!card || !list || history.length < 2) { if (card) card.style.display = 'none'; return; }
+    card.style.display = '';
+    list.innerHTML = history.map((h, i) => {
+        const ago = Math.round((Date.now() - h.ts) / 60000);
+        const timeStr = ago < 2 ? 'just now' : ago < 60 ? `${ago}m ago` : `${Math.round(ago/60)}h ago`;
+        return `<div style="padding:3px 0;border-left:2px solid ${i===0?'var(--purple)':'rgba(255,255,255,0.1)'};padding-left:8px;margin-bottom:2px"><strong style="color:${i===0?'var(--purple)':'var(--muted)'}">${i===0?'Latest':'Earlier'}</strong> <span style="color:rgba(240,239,244,0.5);font-size:0.65rem">${timeStr}</span><br>"${h.text}${h.text.length>=100?'…':''}"</div>`;
+    }).join('');
+}
+_renderIdeaJourney(); // Restore on load
+
+document.getElementById('ideaInput').addEventListener('input', function() {
+    // C8-36: Hide niche definition once user starts typing
+    const _nd = document.getElementById('nicheDefinition');
+    if (_nd && this.value.length > 0) { _nd.style.display = 'none'; localStorage.setItem('lrnbiz_niche_def_seen', '1'); }
+    document.getElementById('ideaCount').textContent = this.value.length;
+    ideaText = this.value;
+    // If user edits the idea after a previous analysis, reset element cards so they don't show stale "Done"
+    if (_lastAnalyzedText && this.value.trim() !== _lastAnalyzedText && elements.some(e => e.found)) {
+        elements = elements.map(e => ({...e, found: false, strength: 20}));
+        renderElements(elements);
+        _lastAnalyzedText = '';
+    }
+    // C7-10: Only show cert teaser at Phase 3 (all elements done) — handled in updateIdeaMaturity
+    // ITEM 28: Smart hint trigger — needs 4 words AND one action word
+    const actionWords = ['sell','make','build','teach','fix','create','design','help','provide','offer'];
+    const words = this.value.trim().split(/\s+/).filter(w => w.length > 0);
+    const hasActionWord = words.some(w => actionWords.includes(w.toLowerCase()));
+    if (this.value.length >= 20 && words.length >= 4 && hasActionWord) {
+        document.getElementById('analyseHint').style.display = '';
+    }
+    updateIdeaMaturity();
+});
+// C7-09: Save idea snapshot when user pauses typing (blur or after 2s)
+let _ideaSnapshotTimer = null;
+document.getElementById('ideaInput').addEventListener('input', function() {
+    clearTimeout(_ideaSnapshotTimer);
+    _ideaSnapshotTimer = setTimeout(() => _saveIdeaSnapshot(this.value), 2000);
+});
+
+// ITEM 26: Restore persisted analysis from sessionStorage on page load
+(function restoreAnalysis() {
+    try {
+        const cached = sessionStorage.getItem('idea_analysis_result');
+        const data = cached ? JSON.parse(cached) : (SAVED_ANALYSIS || null);
+        if (!data || !data.elements) return;
+        elements = data.elements;
+        _lastAnalyzedText = document.getElementById('ideaInput').value.trim();
+        if (data.battery !== undefined) setBattery(data.battery);
+        renderElements(elements);
+        updateRulesIcons(data.violations, data.total_rules);
+        if (data.tip) { document.getElementById('hybridText').textContent = data.tip; }
+        // Show cert teaser and phase 2 elements
+        document.getElementById('certTeaserPhase2').style.display = '';
+        const foundCount = elements.filter(e=>e.found).length;
+        if (foundCount >= 2) {
+            document.getElementById('lockIdeaBtn').style.display = '';
+            document.getElementById('partialProgressWarn').style.display = foundCount < 3 ? '' : 'none';
+        }
+        // Restore research view scores from server
+        if (SAVED_ANALYSIS && !cached) {
+            const sym = document.getElementById('rsSymScore');
+            const pure = document.getElementById('rsPureTruth');
+            const hyb = document.getElementById('rsHybridTruth');
+            if (sym && SAVED_ANALYSIS.symbolic_score !== undefined) sym.textContent = SAVED_ANALYSIS.symbolic_score + '/100';
+            if (pure && SAVED_ANALYSIS.pure_truth !== undefined) pure.textContent = SAVED_ANALYSIS.pure_truth + '/100';
+            if (hyb && SAVED_ANALYSIS.hybrid_truth !== undefined) hyb.textContent = SAVED_ANALYSIS.hybrid_truth + '/100';
+        }
+    } catch(e) {}
+})();
+
+// Item 11: Restore pure_llm/hybrid_llm text from saved audit scores
+if (SAVED_IDEA_AUDIT && SAVED_IDEA_AUDIT.pure_llm_text) {
+    document.getElementById('pureLlmBox').textContent = SAVED_IDEA_AUDIT.pure_llm_text;
+}
+if (SAVED_IDEA_AUDIT && SAVED_IDEA_AUDIT.hybrid_llm_text) {
+    document.getElementById('hybridLlmBox').textContent = SAVED_IDEA_AUDIT.hybrid_llm_text;
+    document.getElementById('hybridText').textContent = SAVED_IDEA_AUDIT.hybrid_llm_text;
+}
+if (SAVED_IDEA_AUDIT && SAVED_IDEA_AUDIT.pure_truth) {
+    document.getElementById('rsPureTruth').textContent = SAVED_IDEA_AUDIT.pure_truth + '/100';
+}
+if (SAVED_IDEA_AUDIT && SAVED_IDEA_AUDIT.hybrid_truth) {
+    document.getElementById('rsHybridTruth').textContent = SAVED_IDEA_AUDIT.hybrid_truth + '/100';
+    document.getElementById('rsSymScore').textContent = (SAVED_IDEA_AUDIT.symbolic_score || '—') + (SAVED_IDEA_AUDIT.symbolic_score ? '/100' : '');
+}
+
+// Item 17: Grade bands helper
+function _scoreBand(s) {
+    if (s >= 80) return {label:'🏆 Excellent', color:'#34D399'};
+    if (s >= 60) return {label:'👍 Good', color:'#A78BFA'};
+    if (s >= 40) return {label:'📚 Developing', color:'#FFD93D'};
+    return {label:'🌱 Early Stage', color:'var(--muted)'};
+}
+
+function renderTruthBar(id, score) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (score === null || score === undefined) { el.innerHTML = ''; return; }
+    const cls = score >= 70 ? 'truth-fill--green' : score >= 40 ? 'truth-fill--yellow' : 'truth-fill--red';
+    el.innerHTML = `
+        <div class="truth-bar-label">📊 Plan Strength <span class="truth-val">${score}/100</span></div>
+        <div class="truth-track"><div class="truth-fill ${cls}" style="width:${score}%"></div></div>
+        <div class="truth-desc">${score >= 70 ? '💪 Strong plan — AI and rules agree!' : score >= 40 ? '🔧 Getting there — check the Rules tab for tips' : '📈 Needs work — Rules tab has your next steps'}</div>`;
+}
+
+// Item 22: Confetti burst
+function _launchConfetti() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const _cols = ['#A78BFA','#34D399','#FFD93D','#F87171','#60A5FA'];
+    for (let _i = 0; _i < 55; _i++) {
+        const _el = document.createElement('div');
+        _el.className = 'confetti-dot';
+        _el.style.left = (Math.random() * 100) + 'vw';
+        _el.style.animationDelay = (Math.random() * 0.5) + 's';
+        _el.style.animationDuration = (1.2 + Math.random() * 1.5) + 's';
+        _el.style.background = _cols[Math.floor(Math.random() * _cols.length)];
+        const _sz = (6 + Math.random() * 6) + 'px';
+        _el.style.width = _el.style.height = _sz;
+        document.body.appendChild(_el);
+        setTimeout(() => _el.remove(), 3000);
+    }
+}
+
+// Item 28: XP float animation
+function _showXpFloat(xp, anchorEl) {
+    const _el = document.createElement('div');
+    _el.className = 'xp-float';
+    _el.textContent = '+' + Math.round(xp) + ' XP';
+    const _r = anchorEl ? anchorEl.getBoundingClientRect() : {left: window.innerWidth/2 - 20, top: 200, width: 40};
+    _el.style.left = (_r.left + _r.width/2 - 20) + 'px';
+    _el.style.top = (_r.top + window.scrollY - 10) + 'px';
+    document.body.appendChild(_el);
+    setTimeout(() => _el.remove(), 1500);
+}
+
+// Item 7: Next chapter CTA
+function showNextChapterCTA() {
+    if (document.getElementById('nextChapterBar')) return;
+    const bar = document.createElement('div');
+    bar.id = 'nextChapterBar';
+    bar.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:9000;background:linear-gradient(90deg,#A78BFA,#34D399);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;font-family:Nunito,sans-serif;font-weight:900;font-size:0.9rem;color:#09090F;gap:10px';
+    bar.innerHTML = '🎉 Idea locked in! Ready for the next chapter? <a href="/customer" style="background:#09090F;color:#A78BFA;padding:6px 16px;border-radius:99px;text-decoration:none;font-size:0.85rem;white-space:nowrap" onclick="document.getElementById(\'nextChapterBar\').remove()">🎯 Customer →</a><button onclick="document.getElementById(\'nextChapterBar\').remove()" style="background:none;border:none;color:#09090F;opacity:0.6;cursor:pointer;font-size:1rem;margin-left:8px">✕</button>';
+    document.body.appendChild(bar);
+}
+
+document.getElementById('analyseBtn').addEventListener('click', async () => {
+    const text = document.getElementById('ideaInput').value.trim();
+    if (!text) { addChat('mentor', 'Write your idea first! 😊'); return; }
+    ideaText = text;
+
+    const btn = document.getElementById('analyseBtn');
+    btn.textContent = '⏳ Analysing…'; btn.disabled = true;
+    const _lbIdeaStart = document.getElementById('analyseLabBtn');
+    if (_lbIdeaStart) { _lbIdeaStart.textContent = '⏳ Analysing…'; _lbIdeaStart.disabled = true; _lbIdeaStart.classList.remove('lab-btn-run--remind'); }
+
+    // ITEM 25: Countdown timer
+    const cdEl = document.getElementById('analysisCountdown');
+    let cdSec = 10;
+    cdEl.style.display = 'inline';
+    cdEl.textContent = `⏱ ${cdSec}s…`;
+    const cdInt = setInterval(() => {
+        cdSec--;
+        if (cdSec > 0) cdEl.textContent = `⏱ ${cdSec}s…`;
+        else { cdEl.textContent = 'Almost done…'; clearInterval(cdInt); }
+    }, 1000);
+
+    // ITEM 27: remember previous score for diff badge
+    let prevHybrid = null;
+    try {
+        const prev = sessionStorage.getItem('idea_analysis_result');
+        if (prev) { const pd = JSON.parse(prev); prevHybrid = pd.hybrid_score || null; }
+    } catch(e) {}
+
+    // Item 25: Store previous score for drop detection
+    const _prevIdeaScore = parseInt(localStorage.getItem('lrnbiz_idea_score') || '0');
+
+    // Item 45: Loading state in Mentor panel
+    const _hybTextEl = document.getElementById('hybridLlmBox');
+    const _pureTextEl = document.getElementById('pureLlmBox');
+    if (_hybTextEl) _hybTextEl.innerHTML = '<span style="color:var(--muted);font-size:0.78rem">⏳ Asking your AI mentor… (usually 5–10 seconds)</span>';
+    if (_pureTextEl) _pureTextEl.innerHTML = '<span style="color:var(--muted);font-size:0.78rem">⏳ Running AI Optimist check…</span>';
+    // C6-09: only auto-switch to Research View if student has previously opened it
+    const _rtIn2 = document.querySelector('.rt-toggle input[type="checkbox"]');
+    if (_rtIn2 && !_rtIn2.checked && localStorage.getItem('lrnbiz_idea_rs_open') === '1') { _rtIn2.checked = true; const _rv = document.getElementById('researchView'); if (_rv) _rv.style.display = ''; document.getElementById('kidView').style.display = 'none'; }
+    const _hybTab2 = document.querySelectorAll('.rs-tab')[2];
+    if (_hybTab2) switchRsTab(_hybTab2, 'hybrid');
+    const _slowTimer = setTimeout(() => {
+        const _ht = document.getElementById('hybridLlmBox');
+        if (_ht && _ht.textContent.includes('Asking')) {
+            _ht.innerHTML = '<span style="color:var(--muted);font-size:0.78rem">🔁 Still waiting — taking longer than usual… please wait a moment more.</span>';
+        }
+    }, 15000);
+
+    if (typeof showAnalysisProgress === 'function') showAnalysisProgress();
+    // C8-29: Loading skeleton in sidebar
+    const _labPanel = document.getElementById('labPanel');
+    const _skeletonHtml = `<div id="analysisSkeleton" style="padding:12px;animation:skeletonPulse 1.2s ease-in-out infinite">
+        <div style="height:14px;background:rgba(255,255,255,0.07);border-radius:6px;margin-bottom:10px;width:70%"></div>
+        <div style="height:10px;background:rgba(255,255,255,0.05);border-radius:6px;margin-bottom:8px;width:90%"></div>
+        <div style="height:10px;background:rgba(255,255,255,0.05);border-radius:6px;margin-bottom:8px;width:60%"></div>
+        <div style="height:10px;background:rgba(255,255,255,0.05);border-radius:6px;width:80%"></div>
+    </div>`;
+    const _resViewArea = document.getElementById('rsPane-hybrid');
+    if (_resViewArea && !document.getElementById('analysisSkeleton')) {
+        _resViewArea.insertAdjacentHTML('afterbegin', _skeletonHtml);
+    }
+    try {
+        const res  = await fetch('/api/analyse_idea', {
+            method:'POST', headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({idea_text: text, stage1_answers: STAGE1}),
+        });
+        if (typeof clearAnalysisProgress === 'function') clearAnalysisProgress();
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+        // Remove skeleton
+        const _sk = document.getElementById('analysisSkeleton');
+        if (_sk) _sk.remove();
+        // C8-28: Scroll results into view on mobile
+        if (_labPanel) _labPanel.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+
+        clearInterval(cdInt); cdEl.style.display = 'none';
+
+        // Item 46: Graceful Groq failure
+        if (!data.hybrid_llm || !data.hybrid_llm.trim()) {
+            const _he = document.getElementById('hybridLlmBox');
+            if (_he) _he.textContent = '🤖 Your AI mentor is taking a short break — but your Rules Check score is still accurate! Try again in a few minutes.';
+        }
+        if (!data.pure_llm || !data.pure_llm.trim()) {
+            const _pe = document.getElementById('pureLlmBox');
+            if (_pe) _pe.textContent = '🤖 AI Optimist check unavailable right now. Your Rules score is still valid!';
+        }
+
+        elements = data.elements;
+        _lastAnalyzedText = document.getElementById('ideaInput').value.trim();
+        setBattery(data.battery);
+        renderChecklist(data.violations);
+        renderElements(elements);
+
+        // ITEM 35: Show greyed cert teaser at Phase 2
+        document.getElementById('certTeaserPhase2').style.display = '';
+
+        // Update rules icons
+        updateRulesIcons(data.violations, data.total_rules);
+        // C7-NR007: Check for unrealistic concept flag first — show special callout
+        const _unrealistic = (data.violations||[]).find(v => v.flag === 'unrealistic_concept');
+        if (_unrealistic) {
+            const _existingCallout = document.getElementById('unrealisticCallout');
+            if (!_existingCallout) {
+                const _callout = document.createElement('div');
+                _callout.id = 'unrealisticCallout';
+                _callout.style.cssText = 'background:rgba(251,146,60,0.1);border:1px solid rgba(251,146,60,0.35);border-radius:12px;padding:12px 14px;margin-bottom:12px;font-size:0.82rem';
+                _callout.innerHTML = `<div style="font-weight:900;color:#FB923C;margin-bottom:6px">🚀 Creative — but not viable as a student business!</div>
+                    <div style="color:rgba(240,239,244,0.85);line-height:1.6">This idea can't work in the real world yet. But the creativity is there — what's the <strong>grounded version</strong> of it?<br><span style="font-size:0.72rem;color:var(--muted)">e.g. "food store on Mars" → space-themed snack stand at a school science event · "underwater city" → scuba/ocean-themed gifts online</span></div>
+                    <button onclick="document.getElementById('unrealisticCallout').remove()" style="background:none;border:none;color:var(--muted);float:right;cursor:pointer;font-size:0.85rem;margin-top:-30px">✕</button>`;
+                const _ideaTextarea = document.querySelector('textarea[name="idea_text"], textarea[name="niche_desc"], #nicheDesc');
+                if (_ideaTextarea) _ideaTextarea.before(_callout);
+                else document.getElementById('rsViolations').before(_callout);
+            }
+        } else {
+            const _old = document.getElementById('unrealisticCallout');
+            if (_old) _old.remove();
+        }
+
+        // C8-02: rsViolations now rendered inside updateRulesIcons above (with CC Reality Check section)
+        document.getElementById('rsSymScore').textContent = (data.symbolic_score||0) + '/100';
+
+        // Populate Pure LLM and Hybrid panels in Research Mode
+        if (data.pure_llm) {
+            document.getElementById('pureLlmBox').innerHTML = `<p>${data.pure_llm}</p>`;
+        }
+        if (data.hybrid_llm) {
+            document.getElementById('hybridLlmBox').innerHTML = `<p>${data.hybrid_llm}</p>`;
+        }
+        // Archetype badge (C9-09)
+        if (data.archetype && data.archetype !== 'other') {
+            const _ab = document.getElementById('archetypeBadge');
+            const _ap = document.getElementById('archetypePillar');
+            if (_ab && _ap) {
+                _ab.textContent = data.archetype.replace(/-/g, ' ');
+                _ap.style.display = '';
+            }
+        }
+        // O17-02: Notify student if their business type changed between analyses
+        if (data.archetype_changed && data.prev_archetype && data.archetype) {
+            const _archetypeNotice = document.getElementById('archetypeChangedNotice');
+            if (_archetypeNotice) {
+                _archetypeNotice.innerHTML = '⚠️ Your business type changed from <strong>' +
+                    data.prev_archetype.replace(/-/g, ' ') + '</strong> to <strong>' +
+                    data.archetype.replace(/-/g, ' ') + '</strong>. ' +
+                    'Re-run analysis in <a href="/customer" style="color:#A78BFA">Chapter 3</a> and ' +
+                    '<a href="/money" style="color:#A78BFA">Chapter 4</a> to get updated guidance.';
+                _archetypeNotice.style.display = '';
+            }
+        }
+        updateKidView(data);
+        if (data.triple) {
+            // O10-10: Signal progress page that scores changed
+            localStorage.setItem('lrnbiz_scores_updated', Date.now());
+            document.getElementById('rsPureTruth').textContent   = data.triple.pure_truth + '/100';
+            document.getElementById('rsHybridTruth').textContent = data.triple.hybrid_truth + '/100';
+            renderTruthBar('pureTruth',   data.triple.pure_truth   ?? null);
+            renderTruthBar('hybridTruth', data.triple.hybrid_truth ?? null);
+
+            // C8-10: Sycophancy gap interpretation sentence
+            const _gap = (data.triple.pure_truth || 0) - (data.triple.hybrid_truth || 0);
+            const _gapEl = document.getElementById('rsGap');
+            if (_gapEl) {
+                if (_gap > 10) {
+                    _gapEl.innerHTML = `ℹ️ AI was ${_gap} pts more generous than your Mentor. This is the gap between what AI wants you to hear and what your plan actually needs.`;
+                    _gapEl.className = 'rs-gap rs-gap--warn';
+                } else if (_gap < -10) {
+                    _gapEl.innerHTML = `Your plan is stronger than the AI thought — Mentor is ${Math.abs(_gap)} pts higher!`;
+                    _gapEl.className = 'rs-gap rs-gap--ok';
+                } else {
+                    _gapEl.innerHTML = `✅ AI and Mentor agree — scores are well-calibrated.`;
+                    _gapEl.className = 'rs-gap rs-gap--ok';
+                }
+                _gapEl.style.display = '';
+            }
+            // C8-18: End-of-chapter reflection question (shown once per run)
+            if (!document.getElementById('reflectionBox')) {
+                const _rflDiv = document.createElement('div');
+                _rflDiv.id = 'reflectionBox';
+                _rflDiv.style.cssText = 'margin-top:12px;padding:10px 12px;background:rgba(167,139,250,0.07);border:1px solid rgba(167,139,250,0.2);border-radius:10px;font-size:0.75rem';
+                _rflDiv.innerHTML = `<div style="font-weight:900;color:var(--purple);margin-bottom:6px">✍️ Reflection — in one sentence:</div>
+                    <div style="color:rgba(240,239,244,0.75);margin-bottom:6px">What is the most important thing this feedback told you about your plan?</div>
+                    <textarea id="reflectionText" placeholder="e.g. I need to be more specific about who my customer is…" maxlength="200" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(167,139,250,0.2);border-radius:6px;color:var(--text);font-size:0.72rem;padding:6px 8px;resize:vertical;min-height:48px;box-sizing:border-box;font-family:Nunito,sans-serif"></textarea>
+                    <div style="text-align:right;margin-top:4px"><button onclick="const t=document.getElementById('reflectionText').value.trim();if(t){this.textContent='✅ Saved!';this.disabled=true;fetch('/api/save_reflection',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chapter:'idea',text:t})}).catch(()=>{})}else{this.textContent='Write something first!'}" style="background:rgba(167,139,250,0.2);border:1px solid rgba(167,139,250,0.35);color:var(--purple);font-size:0.72rem;font-weight:800;padding:4px 12px;border-radius:99px;cursor:pointer">Save reflection →</button></div>`;
+                const _rGH = document.getElementById('rsGrowthHint');
+                if (_rGH) _rGH.before(_rflDiv); else document.getElementById('rsPane-hybrid').appendChild(_rflDiv);
+            }
+
+            // Update kid-view hybrid score pill
+            const ht = data.triple.hybrid_truth;
+            document.getElementById('hybridScoreIcon').innerHTML =
+                `<span class="its-score-pill ${ht>=70?'its-score--high':ht>=40?'its-score--mid':'its-score--low'}">${ht}/100</span>`;
+
+            // Item 17: Grade bands — prefer server-provided band (anchored score)
+            const _hb = data.triple?.mentor_band || _scoreBand(data.triple.hybrid_truth);
+            const _hbEl = document.getElementById('rsBandHybrid');
+            if (_hbEl) { _hbEl.textContent = _hb.label; _hbEl.style.color = _hb.color; _hbEl.style.display = ''; }
+            const _pb = data.triple?.pure_band || _scoreBand(data.triple.pure_truth);
+            const _pbEl = document.getElementById('rsBandPure');
+            if (_pbEl) { _pbEl.textContent = _pb.label; _pbEl.style.color = _pb.color; _pbEl.style.display = ''; }
+
+            // Mentor score note — explain low scores rather than hiding them
+            const _noteEl = document.getElementById('mentorScoreNote');
+            if (_noteEl) {
+                const _note = data.triple.mentor_score_note;
+                if (_note) {
+                    _noteEl.textContent = _note;
+                    _noteEl.style.display = 'block';
+                } else {
+                    _noteEl.style.display = 'none';
+                }
+            }
+
+            // Item 25: Save score and check for drop
+            localStorage.setItem('lrnbiz_idea_score', String(data.triple.hybrid_truth || 0));
+            if ((data.triple.hybrid_truth || 0) < _prevIdeaScore - 2 && _prevIdeaScore > 0) {
+                const _nsElDrop = document.getElementById('rsNextStep');
+                if (_nsElDrop) {
+                    _nsElDrop.style.cssText = 'display:block;background:rgba(251,146,60,0.08);color:#FB923C;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:0.75rem;line-height:1.6';
+                    _nsElDrop.innerHTML = '📉 Score dropped a little — but that\'s OK! Your mentor noticed something new. Check the 🐍 Rules Check tab below to fix it. 💪';
+                }
+            } else {
+                // Item 19: What to do next CTA
+                const _nsEl = document.getElementById('rsNextStep');
+                if (_nsEl) {
+                    const _s = data.triple.hybrid_truth;
+                    if (_s >= 80) {
+                        _nsEl.style.cssText = 'display:block;background:rgba(52,211,153,0.1);color:#34D399;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:0.75rem;line-height:1.6';
+                        _nsEl.innerHTML = '🎉 <strong>Great Mentor score!</strong> Ready to define your customer?<br><a href="/customer" style="display:inline-block;margin-top:6px;background:#34D399;color:#09090F;padding:4px 12px;border-radius:99px;text-decoration:none;font-weight:900;font-size:0.72rem">🎯 Next: Customer →</a>';
+                    } else if (_s < 60) {
+                        _nsEl.style.cssText = 'display:block;background:rgba(255,217,61,0.08);color:#FFD93D;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:0.75rem;line-height:1.6';
+                        _nsEl.innerHTML = '💡 <strong>Here\'s what to improve:</strong> Check the 🐍 Rules Check tab above to see specific things to fix, then re-run the analysis!';
+                    } else {
+                        _nsEl.style.display = 'none';
+                    }
+                }
+            }
+
+            // Item 22: Confetti + sound on high score
+            if (data.triple.hybrid_truth >= 90) {
+                if (typeof launchBigConfetti === 'function') launchBigConfetti(data.triple.hybrid_truth);
+            } else if (data.triple.hybrid_truth >= 70) {
+                _launchConfetti();
+                SoundFX.win();
+            }
+
+            // Item 28: XP float
+            _showXpFloat(Math.round((data.triple.hybrid_truth || 0) * 2.4), document.getElementById('analyseBtn'));
+            // C7-33: Share moment
+            if (typeof showShareMoment === 'function') showShareMoment('Business Idea', data.triple.hybrid_truth);
+            // Badges
+            if (typeof checkBadges === 'function') {
+                const _ac = (parseInt(localStorage.getItem('lrnbiz_idea_analyses')||'0') + 1);
+                localStorage.setItem('lrnbiz_idea_analyses', String(_ac));
+                checkBadges(data.triple.hybrid_truth, (data.triple.pure_truth - data.triple.hybrid_truth), 'idea', _ac);
+            }
+            // Gap explainer
+            if (typeof renderGapExplainer === 'function') {
+                renderGapExplainer('ideaGapExplainer', data.triple.pure_truth, data.triple.hybrid_truth, data.violations);
+            }
+        }
+
+        // C6-09: only auto-switch if student has previously opened Research View
+        const _rtIn = document.querySelector('.rt-toggle input[type="checkbox"]');
+        if (_rtIn && !_rtIn.checked && localStorage.getItem('lrnbiz_idea_rs_open') === '1') {
+            _rtIn.checked = true;
+            const rv = document.getElementById('researchView');
+            if (rv) { rv.style.display = ''; }
+            document.getElementById('kidView').style.display = 'none';
+        }
+        // C6-08: pre-fill lock-in fields from analysis data
+        if (data.elements) {
+            const whoEl   = data.elements.find(e => e.type === 'who'   || e.label === 'Who');
+            const probEl  = data.elements.find(e => e.type === 'problem' || e.label === 'Problem');
+            const whereEl = data.elements.find(e => e.type === 'where' || e.label === 'Where');
+            const sellWhat = document.getElementById('sellWhat');
+            const sellTo   = document.getElementById('sellTo');
+            const sellAt   = document.getElementById('sellAt');
+            if (sellWhat && !sellWhat.value && probEl && probEl.text) { sellWhat.value = probEl.text.substring(0,60); sellWhat.title = 'AI filled this in — feel free to edit! ✏️'; }
+            if (sellTo   && !sellTo.value   && whoEl   && whoEl.text)  { sellTo.value   = whoEl.text.substring(0,60);   sellTo.title   = 'AI filled this in — feel free to edit! ✏️'; }
+            if (sellAt   && !sellAt.value   && whereEl && whereEl.text) { sellAt.value   = whereEl.text.substring(0,60); sellAt.title   = 'AI filled this in — feel free to edit! ✏️'; }
+        }
+        const _hybTab = document.querySelectorAll('.rs-tab')[2];
+        if (_hybTab) switchRsTab(_hybTab, 'hybrid');
+
+        // Item 23: Growth mindset hint
+        const _gh = document.getElementById('rsGrowthHint');
+        if (_gh) _gh.style.display = '';
+
+        // ITEM 27: diff badge
+        const newHybrid = (data.triple && data.triple.hybrid_truth) ? data.triple.hybrid_truth : null;
+        if (prevHybrid !== null && newHybrid !== null && newHybrid > prevHybrid) {
+            toast(`You improved by +${newHybrid - prevHybrid} pts! 🎉`);
+        }
+
+        // O16-01: Score history strip
+        _renderScoreHistory(data.triple && data.triple.score_history);
+
+        // ITEM 26: Persist to sessionStorage
+        try {
+            sessionStorage.setItem('idea_analysis_result', JSON.stringify({
+                elements: data.elements,
+                battery: data.battery,
+                violations: data.violations,
+                total_rules: data.total_rules,
+                tip: data.tip,
+                hybrid_score: newHybrid,
+            }));
+        } catch(e) {}
+
+        const foundCount = elements.filter(e=>e.found).length;
+        const mentorMsg = data.hybrid_llm || data.tip
+            || (foundCount === 3 ? '🎉 All 3 parts found! Click "Lock In My Idea" to continue!'
+                : foundCount >= 2 ? `Almost there! ${foundCount}/3 key parts found — you can lock in now or strengthen your last part!`
+                : `Good start! Click the cards below to make your idea clearer. ${foundCount}/3 key parts found.`);
+        document.getElementById('hybridText').textContent = mentorMsg;
+        addChat('mentor', mentorMsg);
+        document.getElementById('elemGrid').scrollIntoView({behavior:'smooth', block:'start'});
+
+        // Allow lock-in at 2/3 (with warning) or 3/3
+        if (foundCount >= 2) {
+            document.getElementById('lockIdeaBtn').style.display = '';
+            document.getElementById('partialProgressWarn').style.display = foundCount < 3 ? '' : 'none';
+            const _lockTip = document.getElementById('lockIdeaTip');  // C19-11 / C20-12
+            if (_lockTip) _lockTip.style.display = _lastAnalyzedText ? 'none' : '';  // C20-12: hide if analysis already run
+            // Item 13: hint missing element on lock-in input placeholder
+            const missing = elements.filter(e => !e.found);
+            if (missing.length > 0) {
+                const fieldMap = {who: 'sellTo', problem: 'sellWhat', where: 'sellWhere'};
+                const fid = fieldMap[missing[0].type];
+                const inp = fid && document.getElementById(fid);
+                if (inp && !inp.value) inp.placeholder = `💡 You haven't described ${missing[0].title.toLowerCase()} yet — add it here!`;
+            }
+        }
+    } catch(e) {
+        clearInterval(cdInt); cdEl.style.display = 'none';
+        addChat('mentor', `⚠️ ${e.message}`);
+        // Item 46: Graceful failure messages
+        const _he = document.getElementById('hybridLlmBox');
+        const _pe = document.getElementById('pureLlmBox');
+        if (_he) _he.textContent = '❌ Could not reach AI mentor. Check your connection and try again.';
+        if (_pe) _pe.textContent = '❌ AI check failed. Please try again.';
+    } finally {
+        clearInterval(cdInt); cdEl.style.display = 'none';
+        clearTimeout(_slowTimer); // Item 45
+    }
+    _ideaAnalysisRun = true;
+    btn.textContent = '🔍 Re-analyse'; btn.disabled = false;
+    const _lbIdea = document.getElementById('analyseLabBtn'); if (_lbIdea) { _lbIdea.textContent = '🔬 Run Analysis'; _lbIdea.disabled = false; _lbIdea.classList.remove('lab-btn-run--remind'); }
+});
+
+/* ── Lock Idea button ── */
+let _ideaNudgeDismissed = false;
+document.getElementById('lockIdeaBtn').addEventListener('click', async (e) => {
+    if (!_ideaAnalysisRun && !_ideaNudgeDismissed && typeof _showRunAnalysisNudge === 'function') {
+        _showRunAnalysisNudge(function() { _ideaNudgeDismissed = true; document.getElementById('lockIdeaBtn').click(); });
+        return;
+    }
+    _ideaNudgeDismissed = false;
+    const btn = document.getElementById('lockIdeaBtn');
+    // Item 16: Skip re-LLM if already scored from Run Analysis
+    if (SAVED_IDEA_AUDIT && SAVED_IDEA_AUDIT.hybrid_truth && SAVED_IDEA_AUDIT.hybrid_truth > 0) {
+        document.getElementById('ideaFinalForm').style.display = '';
+        document.getElementById('phase2').style.display = 'none';
+        btn.style.display = 'none';
+        return;
+    }
+    btn.textContent = '⏳ Locking…'; btn.disabled = true;
+    const _ctrl = new AbortController();
+    const _timeout = setTimeout(() => _ctrl.abort(), 15000);
+    try {
+        const vRes = await fetch('/api/validate_niche', {
+            method:'POST', headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({niche_text: ideaText, stage1_answers: STAGE1}),
+            signal: _ctrl.signal,
+        });
+        clearTimeout(_timeout);
+        const vData = await vRes.json();
+        if (!vData.error) {
+            updateITSPanel(vData);
+            if (vData.radar_scores) {
+                const _axes = ['Passion','Energy','Gold','Influence','Knowledge','Target'];
+                _radarData = _axes.map(k => vData.radar_scores[k] || 0);
+                if (!_miniChart) { initMiniRadar(); }
+                else {
+                    document.getElementById('miniRadarChart').style.display = '';
+                    document.getElementById('miniRadarPlaceholder').style.display = 'none';
+                    pulseRadar(_miniChart, _radarData, _axisColors);
+                }
+            }
+        }
+    } catch(e) {
+        clearTimeout(_timeout);
+        if (e.name === 'AbortError') {
+            document.getElementById('rsViolations').innerHTML =
+                '<div style="color:#FF6B6B">⏱ Taking longer than usual. Try again?</div>';
+        }
+    }
+    document.getElementById('problemHidden').value = ideaText;
+    document.getElementById('nicheHidden').value   = ideaText;
+    showPhase4(ideaText);
+    btn.textContent = '🎯 Lock In My Idea →'; btn.disabled = false;
+    const _lt = document.getElementById('lockIdeaTip'); if (_lt) _lt.style.display = 'none';  // C19-11
+});
+
+// ITEM 32: Named hint modal titles per element type
+const HINT_MODAL_TITLES = {
+    who:     '🧑 Who is your customer?',
+    problem: '😤 What frustration do you fix?',
+    where:   '📍 Where will customers find you?',
+};
+// ITEM 31: Hint modal body prefixes
+const HINT_MODAL_PREFIXES = {
+    who:     "Describe the <strong>specific type of person</strong> you are selling to:",
+    problem: "Describe the <strong>real frustration or problem</strong> your customer has:",
+    where:   "Describe <strong>where you will sell</strong> or when your customers need you:"
+};
+// Example answers shown in the modal to help students know what to write
+const HINT_MODAL_EXAMPLES = {
+    who: [
+        '📝 <strong>Examples you could write:</strong>',
+        '• "Grade 8 and 9 students at my school"',
+        '• "Parents of young children aged 3–7"',
+        '• "Teenagers who play football on weekends"',
+        '• "Teachers who need quick healthy snacks"',
+    ].join('<br>'),
+    problem: [
+        '📝 <strong>Examples you could write:</strong>',
+        '• "They get hungry at school but the canteen food is unhealthy and expensive"',
+        '• "They forget things they need for sports practice"',
+        '• "They can\'t find affordable birthday gifts for friends"',
+        '• "They struggle to organise their homework and deadlines"',
+    ].join('<br>'),
+    where: [
+        '📝 <strong>Examples you could write:</strong>',
+        '• "At school, during lunch and break times"',
+        '• "Online — through Instagram or a simple website"',
+        '• "At local sports events and weekend markets"',
+        '• "At home, delivered to their door after school"',
+    ].join('<br>'),
+};
+const HINT_MODAL_PLACEHOLDERS = {
+    who:     'e.g. Grade 8 students at my school who…',
+    problem: 'e.g. They always struggle with… because…',
+    where:   'e.g. At school during lunch, or online via…',
+};
+
+/* ── Hint popup modal ── */
+function showHintModal(elem) {
+    // ITEM 32: Element-specific title
+    const titleEl = document.getElementById('hintModalQ');
+    const titleText = HINT_MODAL_TITLES[elem.type] || '💡 Strengthen your idea';
+    const prefix = HINT_MODAL_PREFIXES[elem.type] ? `<p style="font-size:0.78rem;color:var(--muted);margin-bottom:8px;">${HINT_MODAL_PREFIXES[elem.type]}</p>` : '';
+    titleEl.innerHTML = `<strong style="display:block;margin-bottom:6px;font-size:0.9rem;">${titleText}</strong>${prefix}💬 ${elem.hint}`;
+    // Show examples for this element type
+    const examplesEl = document.getElementById('hintExamples');
+    if (examplesEl && HINT_MODAL_EXAMPLES[elem.type]) {
+        examplesEl.innerHTML = HINT_MODAL_EXAMPLES[elem.type];
+        examplesEl.style.display = '';
+    } else if (examplesEl) {
+        examplesEl.style.display = 'none';
+    }
+    // Set placeholder with a concrete example
+    const answerEl = document.getElementById('hintAnswer');
+    answerEl.placeholder = HINT_MODAL_PLACEHOLDERS[elem.type] || 'Type your answer here…';
+    answerEl.value = '';
+    const _qfb = document.getElementById('hintQualityFeedback');
+    if (_qfb) _qfb.innerHTML = '';
+    const _cc = document.getElementById('hintCharCount');
+    if (_cc) _cc.textContent = '0/200';
+    const _ab = document.getElementById('hintAddBtn');
+    if (_ab) _ab.textContent = '✅ Add to my idea →';
+    document.getElementById('hintModalOverlay').style.display = 'flex';
+    setTimeout(() => answerEl.focus(), 100);
+    activeElem = Object.assign({}, elem, {idx: elements.indexOf(elem)});
+}
+
+/* ── Hint modal quality check ── */
+const _HINT_VAGUE = {
+    who:     ['people', 'everyone', 'anyone', 'somebody', 'humans', 'person', 'kids', 'children', 'all'],
+    problem: ['stuff', 'things', 'problem', 'issues', 'bad', 'good', 'something'],
+    where:   ['place', 'somewhere', 'anywhere', 'everywhere', 'here'],
+};
+const _HINT_SPECIFIC = {
+    who:     ['grade', 'year', 'student', 'parent', 'teacher', 'teen', 'adult', 'owner', 'player', 'who', 'age'],
+    problem: ['because', 'when', 'can\'t', 'hard', 'difficult', 'expensive', 'slow', 'forget', 'miss', 'need', 'want', 'struggle', 'frustrated'],
+    where:   ['school', 'online', 'market', 'shop', 'instagram', 'website', 'event', 'local', 'home', 'delivery', 'at ', 'in '],
+};
+function _checkHintQuality(text, elemType) {
+    const t = text.trim().toLowerCase();
+    const fb = document.getElementById('hintQualityFeedback');
+    const addBtn = document.getElementById('hintAddBtn');
+    if (!fb) return;
+    if (t.length === 0) { fb.innerHTML = ''; addBtn.textContent = '✅ Add to my idea →'; return; }
+    if (t.length < 8) {
+        fb.innerHTML = '<span style="color:#F87171">✏️ A bit short — try to write at least one complete sentence.</span>';
+        addBtn.textContent = '⚠️ Add anyway →';
+        return;
+    }
+    const vague = (_HINT_VAGUE[elemType] || []).some(w => t.split(/\s+/).includes(w));
+    const specific = (_HINT_SPECIFIC[elemType] || []).some(w => t.includes(w));
+    if (vague && !specific) {
+        const tips = { who: 'Add a grade, age, or role (e.g. "Grade 9 students…")', problem: 'Add why it\'s a problem or when it happens', where: 'Name a real place or platform (e.g. "at school" or "on Instagram")' };
+        fb.innerHTML = `<span style="color:#FFD93D">💡 Vague — ${tips[elemType] || 'be more specific!'}.</span>`;
+        addBtn.textContent = '⚠️ Add anyway →';
+    } else if (t.length >= 15 && specific) {
+        fb.innerHTML = '<span style="color:#34D399">✅ Good detail — looks specific!</span>';
+        addBtn.textContent = '✅ Add to my idea →';
+    } else {
+        fb.innerHTML = '';
+        addBtn.textContent = '✅ Add to my idea →';
+    }
+}
+document.getElementById('hintAnswer').addEventListener('input', function() {
+    const activeType = activeElem ? activeElem.type : null;
+    document.getElementById('hintCharCount').textContent = this.value.length + '/200';
+    _checkHintQuality(this.value, activeType);
+});
+
+/* ── Analysis Reminder Modal ── */
+let _reminderPendingUrl = null;
+function _showAnalysisReminder(continueUrl) {
+    _reminderPendingUrl = continueUrl;
+    const overlay = document.getElementById('analysisReminderOverlay');
+    overlay.style.display = 'flex';
+}
+document.getElementById('reminderRunBtn').addEventListener('click', () => {
+    document.getElementById('analysisReminderOverlay').style.display = 'none';
+    _reminderPendingUrl = null;
+    document.getElementById('analyseBtn').click();
+    document.getElementById('analyseBtn').scrollIntoView({behavior:'smooth', block:'center'});
+});
+document.getElementById('reminderContinueBtn').addEventListener('click', () => {
+    document.getElementById('analysisReminderOverlay').style.display = 'none';
+    if (_reminderPendingUrl) { window.location.href = _reminderPendingUrl; _reminderPendingUrl = null; }
+});
+// Intercept any navigation link on this page if analysis hasn't been run
+document.addEventListener('click', function(e) {
+    const link = e.target.closest('a[href]');
+    if (!link) return;
+    const href = link.getAttribute('href');
+    // Only intercept real page navigations (not JS links, anchors, or analysis/submit)
+    if (!href || href.startsWith('javascript') || href.startsWith('#') || href === '/api') return;
+    // Only show reminder if student typed something but never ran analysis
+    const hasIdea = (document.getElementById('ideaInput') || {}).value && document.getElementById('ideaInput').value.trim().length > 20;
+    const analysisRun = elements.length > 0 || (SAVED_IDEA_AUDIT && SAVED_IDEA_AUDIT.hybrid_truth);
+    if (hasIdea && !analysisRun) {
+        e.preventDefault();
+        _showAnalysisReminder(href);
+    }
+});
+
+document.getElementById('hintModalClose').addEventListener('click', () => {
+    document.getElementById('hintModalOverlay').style.display = 'none';
+});
+
+document.getElementById('hintModalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) this.style.display = 'none';
+});
+
+async function showPhase4(edge) {
+    setBattery(100);
+    SoundFX.win();
+    document.getElementById('ideaFinalForm').style.display = '';
+    document.getElementById('ideaFinalForm').scrollIntoView({behavior:'smooth', block:'start'});
+    addChat('mentor', '🚀 Almost there! Fill in the blanks to lock in your idea — your certificate preview is ready! 🏆');
+
+    // Client-side quick extraction (instant, no API needed)
+    const t = ideaText.toLowerCase();
+    const WHO  = ['students','students at','teens','teenagers','parents','kids','children','people','customers','athletes','teachers','adults'];
+    const WHERE= ['school','at school','online','at home','local market','the market','local events','at my school','at the school'];
+    const quickWho   = WHO.find(w => t.includes(w)) || '';
+    const quickWhere = WHERE.find(w => t.includes(w)) || '';
+
+    if (quickWho)   document.getElementById('sellTo').value    = quickWho;
+    if (quickWhere) document.getElementById('sellWhere').value = quickWhere;
+    updateCertMini();   // show cert with whatever we have right now
+    // ITEM 33: Update lock preview too
+    const lpWhat = document.getElementById('lpWhat');
+    const lpWho  = document.getElementById('lpWho');
+    const lpWhere = document.getElementById('lpWhere');
+    if (lpWhat) lpWhat.textContent  = quickWho    || '___';
+    if (lpWho)  lpWho.textContent   = quickWhere  || '___';
+    if (lpWhere) lpWhere.textContent = quickWhere  || '___';
+
+    // Improve with LLM parse (may fill in better values)
+    try {
+        const res = await fetch('/api/parse_idea_sentence', {
+            method:'POST', headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({idea_text: ideaText, element_answers: {}}),
+        });
+        const parsed = await res.json();
+        let updated = false;
+        if (parsed.sell_what)  { document.getElementById('sellWhat').value  = parsed.sell_what;  updated = true; }
+        if (parsed.sell_to)    { document.getElementById('sellTo').value    = parsed.sell_to;    updated = true; }
+        if (parsed.sell_where) { document.getElementById('sellWhere').value = parsed.sell_where; updated = true; }
+        // Item 15: Visual feedback on AI pre-filled fields
+        if (updated) {
+            ['sellWhat','sellTo','sellWhere'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el && el.value) {
+                    el.style.borderColor = 'rgba(167,139,250,0.6)';
+                    el.title = '✨ AI filled this in — feel free to edit!';
+                    setTimeout(() => { el.style.borderColor = ''; }, 3000);
+                }
+            });
+        }
+        if (parsed.sell_price) { document.getElementById('sellPrice').value = parsed.sell_price; updated = true; }
+        if (updated) updateCertMini();
+    } catch {}
+}
+
+/* ── Cert mini-preview live update ── */
+function updateCertMini() {
+    const what  = document.getElementById('sellWhat').value.trim()  || '…';
+    const to    = document.getElementById('sellTo').value.trim()    || '…';
+    const where = document.getElementById('sellWhere').value.trim();
+    document.getElementById('certMiniWhat').textContent  = what;
+    document.getElementById('certMiniTo').textContent    = to;
+    if (where) {
+        document.getElementById('certMiniWhere').textContent = where;
+        document.getElementById('certMiniWhereWrap').style.display = '';
+    } else {
+        document.getElementById('certMiniWhereWrap').style.display = 'none';
+    }
+}
+
+['sellWhat','sellTo','sellWhere'].forEach(id => {
+    document.getElementById(id).addEventListener('input', () => {
+        updateCertMini();
+        // ITEM 33: Live lock-in sentence preview
+        const what  = document.getElementById('sellWhat').value.trim();
+        const who   = document.getElementById('sellTo').value.trim();
+        const where = document.getElementById('sellWhere').value.trim();
+        const lp = document.getElementById('lockPreview');
+        if (lp) {
+            const lpWhat = document.getElementById('lpWhat');
+            const lpWho  = document.getElementById('lpWho');
+            const lpWhere = document.getElementById('lpWhere');
+            lpWhat.textContent  = what  || '[what]';
+            lpWho.textContent   = who   || '[who]';
+            lpWhere.textContent = where || '[where]';
+            // Remove muted/italic once text is entered
+            lpWhat.style.color  = what  ? 'var(--yellow)' : 'var(--muted)';
+            lpWhat.style.fontStyle = what  ? 'normal' : 'italic';
+            lpWho.style.color   = who   ? 'var(--yellow)' : 'var(--muted)';
+            lpWho.style.fontStyle  = who   ? 'normal' : 'italic';
+            lpWhere.style.color = where ? 'var(--yellow)' : 'var(--muted)';
+            lpWhere.style.fontStyle = where ? 'normal' : 'italic';
+        }
+    });
+});
+
+/* ── ITS Panel helpers ── */
+function updateRulesIcons(violations, totalRules) {
+    violations = violations || [];
+    totalRules = totalRules || violations.length;
+    const passCount = Math.max(0, totalRules - violations.length);
+    const nrViols = violations.filter(v => !v.id || !v.id.startsWith('CC'));
+    const ccViols = violations.filter(v => v.id && v.id.startsWith('CC'));
+    const reds   = nrViols.map(v => `<span class="its-icon" title="${v.id}: ${v.message}">${v.severity==='error'?'📌':'🟡'}</span>`).join('');
+    const greens = '✅'.repeat(Math.min(passCount, 12));
+    if (totalRules > 0) document.getElementById('rulesIcons').innerHTML = reds + (greens ? `<span class="its-icon">${greens}</span>` : '');
+    // C8-02: Reality Check section for CC violations + structure violations
+    const vEl = document.getElementById('rsViolations');
+    let html = '';
+    if (nrViols.length === 0 && ccViols.length === 0) {
+        html = '<span style="color:#34D399;font-size:0.78rem">✅ All rules passed!</span>';
+    }
+    if (nrViols.length > 0) {
+        html += '<div style="font-size:0.68rem;font-weight:900;text-transform:uppercase;color:var(--purple);letter-spacing:0.06em;margin-bottom:6px;margin-top:4px">📋 Structure Check</div>';
+        html += nrViols.map(v => `<div style="margin-bottom:8px;padding:6px 8px;background:rgba(${v.severity==='error'?'248,113,113':'251,191,36'},0.07);border-left:3px solid ${v.severity==='error'?'#F87171':'#FBBF24'};border-radius:0 6px 6px 0;font-size:0.72rem;line-height:1.6;white-space:pre-wrap">${v.message}</div>`).join('');
+    }
+    if (ccViols.length > 0) {
+        html += '<div style="font-size:0.68rem;font-weight:900;text-transform:uppercase;color:#34D399;letter-spacing:0.06em;margin-bottom:6px;margin-top:10px">⚡ Reality Check</div>';
+        html += ccViols.map(v => `<div style="margin-bottom:8px;padding:6px 8px;background:rgba(52,211,153,0.06);border-left:3px solid #34D399;border-radius:0 6px 6px 0;font-size:0.72rem;line-height:1.6;white-space:pre-wrap">${v.message}</div>`).join('');
+    }
+    if (vEl) vEl.innerHTML = html || '<span style="color:var(--muted);font-size:0.78rem">Run analysis to see rule results.</span>';
+}
+
+function updateITSPanel(data) {
+    if (data.symbolic_score !== undefined) setBattery(data.symbolic_score);
+    updateRulesIcons(data.violations, data.total_rules);
+
+    if (data.triple) {
+        const ht = data.triple.hybrid_truth;
+        document.getElementById('hybridScoreIcon').innerHTML =
+            `<span class="its-icon" style="font-size:1.4rem">${ht >= 70 ? '🏆' : ht >= 40 ? '🎯' : '📈'}</span>
+             <span style="font-size:0.72rem;color:var(--muted);margin-left:4px">${ht}/100</span>`;
+        document.getElementById('rsSymScore').textContent    = data.triple.symbolic_score + '/100';
+        document.getElementById('rsPureTruth').textContent   = data.triple.pure_truth + '/100';
+        document.getElementById('rsHybridTruth').textContent = data.triple.hybrid_truth + '/100';
+        // C8-08: Score delta display
+        const prevScore = window._lastHybridScore;
+        if (prevScore !== undefined && prevScore !== ht) {
+            const delta = ht - prevScore;
+            const deltaEl = document.getElementById('rsScoreDelta');
+            if (deltaEl) {
+                deltaEl.textContent = `${prevScore} → ${ht} (${delta > 0 ? '+' : ''}${delta} pts)`;
+                deltaEl.style.color = delta > 0 ? '#34D399' : '#F87171';
+                deltaEl.style.display = '';
+            }
+        }
+        window._lastHybridScore = ht;
+        // C8-10: Sycophancy gap interpretation sentence
+        const gap = data.triple.sycophancy_gap;
+        const gapEl = document.getElementById('rsGap');
+        gapEl.style.display = '';
+        gapEl.className = 'rs-gap ' + (gap < -30 ? 'rs-gap--bad' : gap < -10 ? 'rs-gap--warn' : 'rs-gap--ok');
+        const absGap = Math.abs(gap);
+        if (gap > 10) {
+            gapEl.innerHTML = `ℹ️ AI was ${absGap} pts more generous than your Mentor. This is the gap between what AI wants you to hear and what your plan actually needs.`;
+        } else if (gap < -10) {
+            gapEl.innerHTML = `⚠️ Mentor is ${absGap} pts higher than AI Optimist — your plan is stronger than the AI thought!`;
+        } else {
+            gapEl.textContent = '✅ AI and Mentor agree — your scores are well-calibrated.';
+        }
+    }
+    if (data.hybrid_llm) {
+        document.getElementById('hybridText').textContent  = data.hybrid_llm;
+        document.getElementById('hybridLlmBox').textContent = data.hybrid_llm;
+    }
+    renderWhyScore(data.top_issues);
+    if (data.pure_llm) document.getElementById('pureLlmBox').textContent = data.pure_llm;
+    if (data.violations) updateRulesIcons(data.violations, data.total_rules);
+}
+
+// ITEM 29: Submit gate for blank lock-in fields
+var _ideaAnalysisRun = !!(SAVED_IDEA_AUDIT && SAVED_IDEA_AUDIT.hybrid_truth);
+
+function ideaFormGate(event) {
+    const sellWhatEl  = document.getElementById('sellWhat');
+    const sellWhoEl   = document.getElementById('sellTo');
+    const sellWhereEl = document.getElementById('sellWhere');
+    if (!sellWhatEl || !sellWhoEl || !sellWhereEl) return true;
+    if (sellWhatEl.value.trim() === '' || sellWhoEl.value.trim() === '' || sellWhereEl.value.trim() === '') {
+        toast('Fill in all three blanks first! 📝');
+        event.preventDefault();
+        return false;
+    }
+    if (!_ideaAnalysisRun && typeof _showRunAnalysisNudge === 'function') {
+        event.preventDefault();
+        _showRunAnalysisNudge(function() { document.getElementById('ideaFinalForm').submit(); });
+        return false;
+    }
+    return true;
+}
+
+document.getElementById('analyseLabBtn').addEventListener('click', () => {
+    document.getElementById('analyseBtn').click();
+});
+
+function updateKidView(data) {
+    const violations = data.violations || [];
+    const totalRules = data.total_rules || violations.length || 5;
+    const passCount  = Math.max(0, totalRules - violations.length);
+    const reds   = violations.map(v => `<span class="its-icon" title="${v.id}: ${v.message}">${v.severity==='error'?'📌':'🟡'}</span>`).join('');
+    const greens = violations.length === 0
+        ? `<span class="its-icon" style="color:#34D399;font-size:0.8rem">✅ No conflicts found!</span>`
+        : '✅'.repeat(Math.min(passCount, 8));
+    document.getElementById('rulesIcons').innerHTML = reds + (greens ? `<span class="its-icon">${greens}</span>` : '');
+    if (data.triple) {
+        const ht = data.triple.hybrid_truth;
+        document.getElementById('hybridScoreIcon').innerHTML =
+            `<span class="its-icon" style="font-size:1.4rem">${ht >= 70 ? '🏆' : ht >= 40 ? '🎯' : '📈'}</span>
+             <span style="font-size:0.72rem;color:var(--muted);margin-left:4px">${ht}/100</span>`;
+    }
+    if (data.hybrid_llm) {
+        document.getElementById('hybridText').textContent = data.hybrid_llm;
+    }
+    // NR010 / NR007 / NR009: impossible or inappropriate concept callout in Kid View
+    const _kvExisting = document.getElementById('kvUnrealisticCallout');
+    if (_kvExisting) _kvExisting.remove();
+    const _kvInappropriate = (data.violations || []).find(v => v.flag === 'inappropriate_content');
+    const _kvUnrealistic   = (data.violations || []).find(v => v.flag === 'unrealistic_concept');
+    const _kvAnimal        = (data.violations || []).find(v => v.flag === 'non_human_customer');
+    const _kvImpossible    = _kvInappropriate || _kvUnrealistic || _kvAnimal;
+    if (_kvImpossible) {
+        const _kvc = document.createElement('div');
+        _kvc.id = 'kvUnrealisticCallout';
+        if (_kvInappropriate) {
+            _kvc.style.cssText = 'margin-top:12px;padding:12px 14px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.35);border-radius:10px;font-size:0.78rem;line-height:1.5';
+            _kvc.innerHTML = `<div style="font-weight:800;color:#EF4444;margin-bottom:4px">🚫 Not appropriate for this platform</div>
+                <div style="color:var(--muted)">LrnBiz is a school-safe environment. Please describe a real, legal business idea you could run as a student.</div>
+                <div style="margin-top:6px;color:var(--text);font-size:0.73rem">💡 <strong>Think:</strong> something you could sell at school, online, or in your area that you'd be proud to show your teacher.</div>`;
+        } else if (_kvAnimal) {
+            _kvc.style.cssText = 'margin-top:12px;padding:12px 14px;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.35);border-radius:10px;font-size:0.78rem;line-height:1.5';
+            _kvc.innerHTML = `<div style="font-weight:800;color:#FBBF24;margin-bottom:4px">🐾 Animals can't be your customers!</div>
+                <div style="color:var(--muted)">Only humans make purchasing decisions. If your product is <em>for</em> pets, the paying customer is the pet owner — not the pet.</div>
+                <div style="margin-top:6px;color:var(--text);font-size:0.73rem">💡 <strong>Try:</strong> "dog owners who..." · "parents of young pets who..." · "cat lovers who..."</div>`;
+        } else {
+            _kvc.style.cssText = 'margin-top:12px;padding:12px 14px;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.35);border-radius:10px;font-size:0.78rem;line-height:1.5';
+            _kvc.innerHTML = `<div style="font-weight:800;color:#FBBF24;margin-bottom:4px">🚀 Creative — but not viable as a student business!</div>
+                <div style="color:var(--muted)">Real businesses need customers who can actually reach you today. What's the grounded version of this idea?</div>
+                <div style="margin-top:6px;color:var(--text);font-size:0.73rem">💡 <strong>Try:</strong> a space-themed café at school · sci-fi merchandise stall · astronomy club kit box</div>`;
+        }
+        document.getElementById('hybridText').parentElement.appendChild(_kvc);
+    }
+}
+
+// Item 7: Next chapter CTA on lock-in
+document.getElementById('submitBtn')?.addEventListener('click', () => { showNextChapterCTA(); });
+
+document.getElementById('researchToggle').addEventListener('change', function() {
+    document.getElementById('kidView').style.display      = this.checked ? 'none' : '';
+    document.getElementById('researchView').style.display = this.checked ? '' : 'none';
+    localStorage.setItem('lrnbiz_idea_rs_open', this.checked ? '1' : '0');
+    if (this.checked) {
+        const _hybBtn = document.querySelector('.rs-tab[onclick*="hybrid"]');
+        if (_hybBtn) switchRsTab(_hybBtn, 'hybrid');
+    }
+});
+
+// Item 43: Unsaved changes warning
+let _ideaDirty = false;
+function _pulseAnalyseBtn() { const _lb = document.getElementById('analyseLabBtn'); if (_lb && !_lb.disabled) { _lb.classList.remove('lab-btn-run--remind'); void _lb.offsetWidth; _lb.classList.add('lab-btn-run--remind'); } }
+document.getElementById('ideaInput') && document.getElementById('ideaInput').addEventListener('input', () => { _ideaDirty = true; _pulseAnalyseBtn(); });
+['sellWhat','sellTo','sellWhere'].forEach(id => { const el = document.getElementById(id); if (el) el.addEventListener('input', () => { _ideaDirty = true; _pulseAnalyseBtn(); }); });
+document.getElementById('ideaFinalForm') && document.getElementById('ideaFinalForm').addEventListener('submit', () => { _ideaDirty = false; });
+window.addEventListener('beforeunload', e => { if (_ideaDirty) { e.preventDefault(); e.returnValue = ''; } });
+
+// Item 14: Restore Mentor panel open state on page load
+if (localStorage.getItem('lrnbiz_idea_rs_open') === '1') {
+    document.querySelector('.rt-toggle input[type="checkbox"]').checked = true;
+    document.getElementById('researchView').style.display = '';
+    document.getElementById('kidView').style.display = 'none';
+    const _hybBtnRestore = document.querySelector('.rs-tab[onclick*="hybrid"]');
+    if (_hybBtnRestore) switchRsTab(_hybBtnRestore, 'hybrid');
+}
+
+// Item 29: Auto-save draft
+const _textarea = document.getElementById('nicheInput') || document.querySelector('.niche-textarea');
+if (_textarea) {
+    const _saved = localStorage.getItem('lrnbiz_draft_idea_text');
+    if (_saved && !_textarea.value) _textarea.value = _saved;
+    let _saveTimer;
+    _textarea.addEventListener('input', () => {
+        clearTimeout(_saveTimer);
+        _saveTimer = setTimeout(() => {
+            localStorage.setItem('lrnbiz_draft_idea_text', _textarea.value);
+            const _ind = document.getElementById('autoSaveIndicator');
+            if (_ind) { _ind.style.display = ''; _ind.style.opacity = '1'; setTimeout(() => { _ind.style.opacity = '0'; }, 2000); }
+        }, 800);
+    });
+}
+
+// Item 31: Character counter
+(function() {
+    const _ta = document.getElementById('nicheInput') || document.querySelector('.niche-textarea');
+    if (!_ta) return;
+    const _max = parseInt(_ta.maxLength) || 300;
+    const _maxEl = document.getElementById('nicheCharMax');
+    if (_maxEl) _maxEl.textContent = _max;
+    const _updateCounter = () => {
+        const _c = _ta.value.length;
+        const _ccEl = document.getElementById('nicheCharCount');
+        if (_ccEl) {
+            _ccEl.textContent = _c;
+            _ccEl.style.color = _c / _max > 0.95 ? '#F87171' : _c / _max > 0.8 ? '#FFD93D' : 'var(--muted)';
+        }
+    };
+    _ta.addEventListener('input', _updateCounter);
+    _updateCounter();
+})();
+
+
+// Item 41: Why matters box state
+const _wm = document.getElementById('whyMatters');
+if (_wm) {
+    if (localStorage.getItem('lrnbiz_why_idea') === '1') _wm.open = true;
+    _wm.addEventListener('toggle', () => localStorage.setItem('lrnbiz_why_idea', _wm.open ? '1' : '0'));
+}
+
+// O16-01: Render score history pills in the research panel
+function _renderScoreHistory(history) {
+    const el = document.getElementById('rsScoreHistory');
+    if (!el || !history || history.length < 2) return;
+    const recent = history.slice(-5);
+    el.innerHTML = '<span style="font-weight:700;color:rgba(240,239,244,0.4)">History: </span>' +
+        recent.map((h, i) => {
+            const isLast = i === recent.length - 1;
+            const color = h.score >= 70 ? '#34D399' : h.score >= 40 ? '#FFD93D' : '#F87171';
+            const bg = isLast ? 'rgba(167,139,250,0.18)' : 'rgba(255,255,255,0.06)';
+            const fg = isLast ? '#A78BFA' : color;
+            return `<span title="${h.at || ('Attempt ' + (i+1))}" style="display:inline-block;padding:1px 7px;border-radius:99px;background:${bg};color:${fg};font-weight:800;margin:0 2px">${h.score}</span>`;
+        }).join('<span style="opacity:0.35;margin:0 1px">›</span>');
+    el.style.display = '';
+}
+// Restore history from saved session data on page load
+(function() {
+    const saved = {{ session.get('audit_scores', {}).get('idea', {}) | tojson | safe }};
+    if (saved && saved.score_history) _renderScoreHistory(saved.score_history);
+})();
+
+// O15-02: Auto re-run validation on page load if prior analysis exists (skip on bfcache restore)
+{% if audit_scores.get('idea') %}
+(function() {
+    if (performance.getEntriesByType('navigation')[0]?.type === 'back_forward') return;
+    setTimeout(function() {
+        const btn = document.getElementById('analyseBtn');
+        if (btn && !btn.disabled) btn.click();
+    }, 600);
+})();
+{% endif %}
+
+// Bfcache fix: reset overlay and button state when page is restored from cache.
+window.addEventListener('pageshow', function(_psEv) {
+    if (_psEv.persisted) {
+        const _ov = document.getElementById('analysisReminderOverlay');
+        if (_ov) _ov.style.display = 'none';
+        const _btn = document.getElementById('analyseBtn');
+        if (_btn) { _btn.textContent = '🔬 Run Analysis'; _btn.disabled = false; }
+        const _lbR = document.getElementById('analyseLabBtn');
+        if (_lbR) { _lbR.textContent = '🔬 Run Analysis'; _lbR.disabled = false; }
+        _ideaNudgeDismissed = false;
+    }
+});
+</script>
+{% endblock %}

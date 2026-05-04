@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+{% block title %}LrnBiz — Your Journey Complete!{% endblock %}
+
+{% block content %}
+<div class="idea-page" style="max-width:800px;margin:0 auto;padding:20px">
+
+    <!-- Header -->
+    <div style="text-align:center;padding:32px 20px 0">
+        <div style="font-size:3rem;margin-bottom:8px">🏆</div>
+        <h1 style="font-family:'Fredoka One',sans-serif;font-size:2rem;color:#FFD93D;margin:0">
+            Journey Complete!
+        </h1>
+        <p style="color:rgba(240,239,244,0.6);margin-top:8px;font-size:0.95rem">
+            Here's everything you achieved on your entrepreneurship journey, {{ student_name }}!
+        </p>
+    </div>
+
+    {% if modules_done == 0 %}
+    <div style="text-align:center;padding:60px 20px;color:var(--muted)">
+        <div style="font-size:3rem">📚</div>
+        <p style="margin-top:12px">You haven't completed any chapters yet!</p>
+        <a href="/context" class="btn-validate" style="display:inline-block;margin-top:16px;text-decoration:none">Start Your Journey →</a>
+    </div>
+    {% else %}
+
+    <!-- Big stats row -->
+    <div class="sb-stats-row" style="margin-top:24px">
+        <div class="sb-stat {% if avg_hybrid >= 70 %}sb-stat--good{% elif avg_hybrid >= 40 %}sb-stat--warn{% else %}sb-stat--bad{% endif %}">
+            <div class="sb-stat-val">{{ avg_hybrid }}<span style="font-size:0.6em">/100</span></div>
+            <div class="sb-stat-lbl">🏆 Mentor Score</div>
+            <div class="sb-stat-sub" style="font-size:0.7rem;margin-top:2px;color:var(--muted)">your business readiness</div>
+        </div>
+        <div class="sb-stat sb-stat--purple">
+            <div class="sb-stat-val">{{ avg_gap }}</div>
+            <div class="sb-stat-lbl">🛡️ AI Overconfidence</div>
+            <div class="sb-stat-sub" style="font-size:0.7rem;margin-top:2px;color:var(--muted)">avg points caught</div>
+        </div>
+        <div class="sb-stat {% if total_delta > 0 %}sb-stat--good{% else %}sb-stat--blue{% endif %}">
+            <div class="sb-stat-val">{% if total_delta > 0 %}+{{ total_delta }}{% else %}—{% endif %}</div>
+            <div class="sb-stat-lbl">📈 Hint Improvement</div>
+            <div class="sb-stat-sub" style="font-size:0.7rem;margin-top:2px;color:var(--muted)">points gained from hints</div>
+        </div>
+        <div class="sb-stat sb-stat--teal">
+            <div class="sb-stat-val">{{ modules_done }}<span style="font-size:0.6em">/5</span></div>
+            <div class="sb-stat-lbl">✅ Chapters Done</div>
+        </div>
+        <div class="sb-stat sb-stat--blue">
+            <div class="sb-stat-val">{{ total_iterations }}</div>
+            <div class="sb-stat-lbl">🔁 Total Attempts</div>
+            <div class="sb-stat-sub" style="font-size:0.7rem;margin-top:2px;color:var(--muted)">times you ran analysis</div>
+        </div>
+    </div>
+
+    <!-- Business idea summary -->
+    {% if sell_what %}
+    <div class="module-cert-card" style="margin-top:20px;text-align:center">
+        <div class="mcc-badge">💡</div>
+        <div class="mcc-title">Your Business Idea</div>
+        <div class="mcc-body" style="font-size:1.05rem">
+            I sell <strong style="color:#FFD93D">{{ sell_what }}</strong>
+            to <strong style="color:#A78BFA">{{ sell_to }}</strong>
+            {% if sell_where %}at <strong style="color:#34D399">{{ sell_where }}</strong>{% endif %}.
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Per-module journey -->
+    <div style="margin-top:24px">
+        <div style="font-size:0.78rem;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:12px">
+            📖 Your Chapter Journey
+        </div>
+        {% for m in modules %}
+        <div class="module-cert-card" style="margin-bottom:12px">
+            <div style="display:flex;align-items:center;gap:12px">
+                <div style="font-size:2rem">{{ m.emoji }}</div>
+                <div style="flex:1">
+                    <div style="font-weight:900;font-size:0.95rem">{{ m.label }}</div>
+                    <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
+                        <span class="sb-hybrid-badge {% if m.hybrid_truth >= 70 %}sb-hybrid-badge--good{% elif m.hybrid_truth >= 40 %}sb-hybrid-badge--warn{% else %}sb-hybrid-badge--bad{% endif %}">
+                            🏆 Score: {{ m.hybrid_truth }}/100
+                        </span>
+                        {% if m.hint_delta > 0 %}
+                        <span style="font-size:0.72rem;color:#34D399;padding:2px 8px;border:1px solid rgba(52,211,153,0.25);border-radius:99px;font-weight:900">
+                            📈 +{{ m.hint_delta }} from hints!
+                        </span>
+                        {% endif %}
+                        {% if m.sycophancy_gap < -10 %}
+                        <span style="font-size:0.72rem;color:#FF6B6B;padding:2px 8px;border:1px solid rgba(255,107,107,0.2);border-radius:99px">
+                            ⚠️ AI was {{ (m.sycophancy_gap)|abs }} pts too happy
+                        </span>
+                        {% elif m.sycophancy_gap <= 0 %}
+                        <span style="font-size:0.72rem;color:#34D399;padding:2px 8px;border:1px solid rgba(52,211,153,0.2);border-radius:99px">
+                            ✅ AI was honest here
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div style="font-size:1.8rem">
+                    {% if m.hybrid_truth >= 70 %}🌟{% elif m.hybrid_truth >= 40 %}💪{% else %}📚{% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- C6-34: Regeneratable AI business narrative -->
+    <div style="margin-top:20px;padding:16px 18px;background:rgba(52,211,153,0.05);border:1px solid rgba(52,211,153,0.2);border-radius:14px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+            <div style="font-weight:900;font-size:0.85rem;color:#34D399">📖 Your Business Story</div>
+            <button id="regenStoryBtn" onclick="regenStory()" style="font-size:0.72rem;font-weight:700;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);color:#34D399;border-radius:8px;padding:4px 12px;cursor:pointer">🔄 Regenerate</button>
+        </div>
+        <div id="businessNarrative" style="font-size:0.88rem;color:rgba(240,239,244,0.85);line-height:1.65;white-space:pre-wrap">
+            {% if story %}{{ story }}{% elif sell_what %}
+            <em style="color:var(--muted)" id="storyPlaceholder">⏳ Writing your business story…</em>
+            {% else %}
+            <em style="color:var(--muted)">Complete Chapter 2 to generate your personalised business story!</em>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Hybrid score story -->
+    <div class="sb-readiness-card" style="margin-top:20px">
+        <div style="font-weight:900;font-size:0.85rem;color:#FFD93D;margin-bottom:12px">📈 What Does Your Score Mean?</div>
+        {% if avg_hybrid >= 70 %}
+        <p style="color:#34D399;font-size:0.9rem;line-height:1.6">
+            🌟 <strong>Wow, amazing!</strong> Your mentor score of {{ avg_hybrid }}/100 means you have a really solid business plan!
+            You know your customer, your money, and your idea well. The AI was {{ avg_gap }} points too cheerful — your honest mentor gave you the real picture, and you nailed it!
+        </p>
+        {% elif avg_hybrid >= 40 %}
+        <p style="color:#FFD93D;font-size:0.9rem;line-height:1.6">
+            💪 <strong>Great effort!</strong> You scored {{ avg_hybrid }}/100 — you're on the right track!
+            Your honest mentor caught the AI being {{ avg_gap }} points too optimistic, which means you got real feedback instead of just compliments.
+            Keep improving your weakest chapters to push your score higher!
+        </p>
+        {% else %}
+        <p style="color:#FF6B6B;font-size:0.9rem;line-height:1.6">
+            📚 <strong>Keep going — you're just getting started!</strong> Your score of {{ avg_hybrid }}/100 shows there's a lot of room to grow.
+            That's totally okay — every entrepreneur has to learn! Your mentor caught the AI being {{ avg_gap }} points too positive, so you got honest feedback.
+            Go back to your weakest chapters and use the hint questions to improve!
+        </p>
+        {% endif %}
+    </div>
+
+    <!-- How hints helped -->
+    <div style="margin-top:20px;padding:16px 20px;background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.2);border-radius:14px">
+        <div style="font-weight:900;font-size:0.85rem;color:#A78BFA;margin-bottom:8px">💬 How the Mentor Questions Helped You</div>
+        <p style="font-size:0.85rem;color:rgba(240,239,244,0.7);line-height:1.6">
+            Every time the mentor asked you a question — like "Who exactly is your customer?" or "Can you really afford this?" —
+            you had to <strong style="color:white">think harder and improve your answer</strong>.
+            This is called <strong style="color:#A78BFA">Socratic learning</strong>, and it's a real technique used by great teachers!
+            {% if total_delta > 0 %}
+            Thanks to the mentor hints, your scores went up by <strong style="color:#34D399">{{ total_delta }} points</strong> across your journey!
+            {% else %}
+            Try the hint questions in each chapter to see your score go up — the more you improve your answers, the higher your score!
+            {% endif %}
+            <br><br>
+            The plain AI was <strong style="color:#FF6B6B">{{ avg_gap }} points too cheerful</strong> about your plan.
+            Your honest mentor kept things real — and that helped you make a better business! 🎯
+        </p>
+    </div>
+
+    <!-- Final Certificate -->
+    <div style="margin-top:28px;text-align:center;padding:28px;background:linear-gradient(135deg,rgba(255,217,61,0.08),rgba(167,139,250,0.08));border:2px solid rgba(255,217,61,0.3);border-radius:20px">
+        <div style="font-size:2.5rem">🏆</div>
+        <div style="font-family:'Fredoka One',sans-serif;font-size:1.5rem;color:#FFD93D;margin-top:8px">
+            Certificate of Entrepreneurship
+        </div>
+        <div style="font-size:0.8rem;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:0.1em">
+            This certifies that
+        </div>
+        <div style="font-family:'Fredoka One',sans-serif;font-size:1.8rem;color:white;margin-top:8px">
+            {{ student_name }}
+        </div>
+        <div style="font-size:0.9rem;color:rgba(240,239,244,0.7);margin-top:12px;line-height:1.6">
+            has completed the <strong>LrnBiz 5-Chapter Entrepreneurship Journey</strong><br>
+            {% if sell_what %}
+            and developed the business idea:<br>
+            <em style="color:#FFD93D">"I sell {{ sell_what }} to {{ sell_to }}{% if sell_where %} at {{ sell_where }}{% endif %}"</em><br>
+            {% endif %}
+            with an overall Hybrid Mentor Score of <strong style="color:#FFD93D;font-size:1.1em">{{ avg_hybrid }}/100</strong>
+        </div>
+        <div style="margin-top:20px;font-size:0.75rem;color:var(--muted)">
+            📅 Completed {{ modules_done }} of 5 chapters · AI Sycophancy Caught: {{ avg_gap }} pts
+        </div>
+    </div>
+
+    <!-- Action buttons -->
+    <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;justify-content:center">
+        <a href="/progress" class="btn-validate" style="text-decoration:none">📊 View Full Scoreboard</a>
+        <button onclick="window.print()" class="btn-analyse" style="cursor:pointer;background:rgba(167,139,250,0.15);border-color:rgba(167,139,250,0.35);color:#A78BFA">🖨️ Print / Save PDF</button>
+        <a href="/reset" class="btn-analyse" style="text-decoration:none;background:rgba(255,255,255,0.06)">🔄 Start New Journey</a>
+    </div>
+
+    {% endif %}
+
+</div>
+{% endblock %}
+{% block head %}
+<style>
+@media print {
+    .chapter-nav-strip, .mobile-chapter-header, #offlineBanner, #comebackBanner,
+    #stuckHintBtn, #stuckHintModal, .btn-validate, .btn-analyse,
+    #flashMessages, .story-banner { display: none !important; }
+    body { background: white !important; color: #111 !important; }
+    .idea-page { max-width: 100% !important; padding: 0 !important; }
+    .module-cert-card, .sb-stats-row, .sb-stat { break-inside: avoid; }
+    h1, h2, h3 { color: #111 !important; }
+    a { color: #333 !important; text-decoration: none !important; }
+}
+</style>
+{% endblock %}
+{% block scripts %}
+<script>
+// Auto-generate story on load if not already shown
+window.addEventListener('load', () => {
+    const narr = document.getElementById('businessNarrative');
+    if (narr && document.getElementById('storyPlaceholder')) {
+        regenStory();
+    }
+});
+
+// C6-34: Regenerate business story from current session data
+async function regenStory() {
+    const btn = document.getElementById('regenStoryBtn');
+    const narr = document.getElementById('businessNarrative');
+    if (!narr) return;
+    btn.disabled = true;
+    btn.textContent = '⏳ Generating…';
+    narr.style.color = 'var(--muted)';
+    narr.textContent = '⏳ Your AI mentor is writing your business story…';
+    try {
+        const res = await fetch('/api/regenerate_story', {method:'POST', headers:{'Content-Type':'application/json'}});
+        const data = await res.json();
+        if (data.story) {
+            narr.textContent = data.story;
+            narr.style.color = 'rgba(240,239,244,0.85)';
+        } else {
+            narr.textContent = data.error || '❌ Could not generate story — try again.';
+        }
+    } catch(e) {
+        narr.textContent = '❌ Could not reach the server. Check your connection and try again.';
+    }
+    btn.disabled = false;
+    btn.textContent = '🔄 Regenerate';
+}
+</script>
+{% endblock %}

@@ -1,0 +1,1932 @@
+{% extends "base.html" %}
+{% block title %}LrnBiz — Money Math{% endblock %}
+
+{% block story_banner %}
+<div class="story-banner" id="storyBanner">
+    <div class="story-banner-icon">💰</div>
+    <div class="story-banner-body">
+        <div class="story-banner-quest">Quest 4 of 5 · Master the Numbers</div>
+        <div class="story-banner-text">
+            Money math is a superpower! 🦸 Enter your prices, costs, and sales plan. The numbers update live as you type — watch your business come to life! 📊
+        </div>
+    </div>
+    <button class="story-banner-close" onclick="this.closest('.story-banner').style.display='none'" title="Close">✕</button>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="idea-page idea-page--lab">
+
+    <!-- Item 9 – Back link -->
+    <div class="chapter-back-row">
+        <a href="javascript:void(0)" class="chapter-back-link"
+           onclick="if(!window._pageDirty || confirm('⚠️ Leave? Unsaved changes may be lost.')) window.history.back()">← Back</a>
+    </div>
+
+    {% if cc020_mismatch %}
+    <div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.4);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:0.75rem;line-height:1.6">
+        <strong style="color:#f87171">⚠️ Cross-chapter conflict:</strong> You selected <strong>{{ cc020_mismatch.business_type }}</strong> as your business type in Chapter 1, but your Chapter 2 idea was classified as <strong>{{ cc020_mismatch.archetype }}</strong>. These chapters are telling different stories.
+        <div style="margin-top:4px">👉 <a href="/context" style="color:#60a5fa;text-decoration:underline">Update Chapter 1</a> or <a href="/idea" style="color:#60a5fa;text-decoration:underline">revise your idea in Chapter 2</a> to make them consistent.</div>
+    </div>
+    {% endif %}
+
+    <!-- Item 41 – Why does this chapter matter? -->
+    <details class="why-matters-box">
+        <summary>💡 Why does this chapter matter?</summary>
+        <p>Without knowing your costs, you might be selling at a loss without realising it! This chapter helps you check if your business can actually make money — before you spend a single penny. 💰</p>
+        <div style="margin-top:10px;border-top:1px solid rgba(255,255,255,0.07);padding-top:10px">
+            <div style="font-size:0.65rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;color:var(--purple);margin-bottom:6px">📚 What you'll learn in this chapter:</div>
+            <ul style="font-size:0.75rem;color:rgba(240,239,244,0.8);padding-left:16px;line-height:1.8;margin:0">
+                <li>How to price your product using the 3-step formula</li>
+                <li>The difference between cost, price, and profit</li>
+                <li>How to calculate your break-even point</li>
+                <li>What startup costs are and how to plan for them</li>
+            </ul>
+        </div>
+        <!-- C8-21: Real-world failure example -->
+        <div style="margin-top:10px;border-top:1px solid rgba(255,255,255,0.07);padding-top:10px;background:rgba(248,113,113,0.05);border-radius:8px;padding:8px 10px;margin-top:10px">
+            <div style="font-size:0.65rem;font-weight:900;color:#F87171;margin-bottom:4px">⚠️ When businesses skip this chapter:</div>
+            <div style="font-size:0.72rem;color:rgba(240,239,244,0.75);line-height:1.6">Quibi raised $1.75 billion and launched a video app in 2020 — then shut down in 6 months. Their unit economics were broken from the start: high content costs, a low subscription price, and no clear profit path. This chapter exists so you check the numbers <em>before</em> spending a cent.</div>
+        </div>
+    </details>
+
+    <header class="idea-header">
+        <a href="/customer" class="back-link">← Back</a>
+        <div class="module-chip module-chip--orange" style="margin:0">💰 Chapter 4 — Money Math</div>
+    </header>
+
+    <div class="idea-body idea-body--liveradar">
+
+        <!-- ── FAR-LEFT: Live Radar ── -->
+        <aside class="live-radar-col" id="liveRadarCol">
+            <div class="live-radar-title">🧬 Business DNA — Live</div>
+            <div class="mini-radar-wrap" id="miniRadarWrap">
+                <svg viewBox="0 0 180 28" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" style="width:100%;height:24px;display:block;margin-bottom:4px;opacity:0.85">
+                    <line x1="15" y1="5" x2="15" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="45" y1="5" x2="45" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="75" y1="5" x2="75" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="105" y1="5" x2="105" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="135" y1="5" x2="135" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="165" y1="5" x2="165" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <path d="M 0,14 C 4,23 11,23 15,23 C 19,23 26,14 30,14 C 34,5 41,5 45,5 C 49,5 56,14 60,14 C 64,23 71,23 75,23 C 79,23 86,14 90,14 C 94,5 101,5 105,5 C 109,5 116,14 120,14 C 124,23 131,23 135,23 C 139,23 146,14 150,14 C 154,5 161,5 165,5 C 169,5 176,14 180,14" fill="none" stroke="#A78BFA" stroke-width="1.8" stroke-linecap="round"/>
+                    <path d="M 0,14 C 4,5 11,5 15,5 C 19,5 26,14 30,14 C 34,23 41,23 45,23 C 49,23 56,14 60,14 C 64,5 71,5 75,5 C 79,5 86,14 90,14 C 94,23 101,23 105,23 C 109,23 116,14 120,14 C 124,5 131,5 135,5 C 139,5 146,14 150,14 C 154,23 161,23 165,23 C 169,23 176,14 180,14" fill="none" stroke="#34D399" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+                <canvas id="miniRadarChart" class="mini-radar-canvas" height="200"></canvas>
+                <div id="miniRadarPlaceholder" style="display:none;text-align:center;padding:18px 10px 10px;color:var(--muted);font-size:0.72rem;line-height:1.5">🌱 Complete Chapter 1 first<br>to unlock your Business DNA!</div>
+                <div class="radar-axis-toast" id="radarAxisToast"></div>
+            </div>
+            <div style="font-size:0.62rem;color:var(--muted);text-align:center;line-height:1.6">
+                🔥 70+ Strong &nbsp;·&nbsp; 📚 40+ Learning &nbsp;·&nbsp; 🌱 &lt;40 Starting
+            </div>
+            <details style="margin-top:2px">
+                <summary style="font-size:0.66rem;font-weight:900;color:var(--purple);cursor:pointer;list-style:none;padding:2px 0">🧬 Axes explained ▾</summary>
+                <div style="margin-top:6px;display:grid;gap:4px">
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#FFD93D">🔥 Passion</strong> — Excitement &amp; motivation</div>
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#34D399">⚡ Energy</strong> — Hours &amp; commitment</div>
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#FFD93D">💰 Gold</strong> — Financial readiness ← fills here</div>
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#A78BFA">🗣️ Influence</strong> — Customer knowledge</div>
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#60A5FA">📚 Knowledge</strong> — Industry insight</div>
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#F472B6">🎯 Target</strong> — Idea specificity</div>
+                </div>
+            </details>
+        </aside>
+
+        <!-- ── CENTER: Form ── -->
+        <main class="idea-main">
+
+            <div class="idea-mascot-row">
+                <div class="idea-mascot">💰</div>
+                <div class="idea-bubble">
+                    <p id="mentorIntro">Numbers don't lie. Let's check if your idea can actually make money. Fill in your costs and pricing — the rules engine will tell you if your plan is financially viable before you spend a cent. 💡</p>
+                </div>
+            </div>
+
+            <!-- Archetype context banner — tells student which costs apply to them -->
+            {% if archetype and archetype not in ('other', '') %}
+            {% set _hints = {
+                'physical-product': ('📦', 'Include raw material + packaging cost per unit.'),
+                'food-beverage':    ('🍕', 'Include ingredient cost per portion + packaging. Add equipment & permits to startup cost.'),
+                'service':          ('🔧', 'Include your time cost + any travel expenses per job. Your time has real value!'),
+                'skills-for-hire':  ('🎨', 'Include your time + tool/supply cost per job. Don\'t forget travel if you go to clients.'),
+                'maker':            ('🛠️', 'Include raw material cost per item. Tools and equipment go in startup cost.'),
+                'resale-retail':    ('🛒', 'Enter your wholesale purchase price as unit cost. Aim for 2–3× markup to cover shipping & storage.'),
+                'digital-product':  ('💻', 'Per-unit cost = platform/payment fees only (usually 3–30%). Development cost goes in startup.'),
+                'expert':           ('🎓', 'Include your hourly time cost per session. Add professional insurance to startup cost.'),
+                'marketplace':      ('🏪', 'Include platform commission fees per sale in unit cost (usually 5–20%).'),
+                'event-experience': ('🎉', 'Include venue hire, materials, and your own time per event in unit cost.'),
+                'content-media':    ('📱', 'Include distribution or platform cost per piece. Ad revenue comes in separately.'),
+            } %}
+            {% set _icon, _tip = _hints.get(archetype, ('🏷️', 'Fill in your costs honestly — even small costs matter!')) %}
+            <div style="background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.22);border-radius:10px;padding:10px 14px;margin-bottom:16px">
+                <div style="font-size:0.72rem;font-weight:900;color:#A78BFA;margin-bottom:3px">{{ _icon }} Business type: <strong>{{ archetype.replace('-',' ') | title }}</strong></div>
+                <div style="font-size:0.8rem;color:rgba(240,239,244,0.85)">{{ _tip }}</div>
+            </div>
+            {% endif %}
+
+            <!-- C11-01: Archetype cost guide — typical dollar ranges per business type -->
+            {% set _cost_guide = {
+                'physical-product': {
+                    'sell':    '$8 – $40',
+                    'unit':    '$2 – $12',
+                    'startup': '$80 – $300',
+                    'monthly': '20 – 60 units',
+                    'example': 'e.g. Handmade bracelet: sell $15, material cost $3.50, startup (beads + tools) $120',
+                    'tip':     'Aim for at least 2.5× markup: cost $4 → sell $10+',
+                },
+                'food-beverage': {
+                    'sell':    '$3 – $15',
+                    'unit':    '$1 – $5',
+                    'startup': '$150 – $500',
+                    'monthly': '30 – 100 servings',
+                    'example': 'e.g. Baked cookies: sell $2.50 each, ingredients $0.70/cookie, startup (trays + bags) $180',
+                    'tip':     'Aim for at least 2.5× markup — ingredients + packaging must both be costed',
+                },
+                'service': {
+                    'sell':    '$15 – $60 per job',
+                    'unit':    '$3 – $15 (travel + supplies)',
+                    'startup': '$0 – $100',
+                    'monthly': '8 – 25 jobs',
+                    'example': 'e.g. Lawn mowing: sell $30/lawn, supplies + travel $5, startup (flyers) $20',
+                    'tip':     'Your time is the product — price at least 3× your travel + supply cost',
+                },
+                'skills-for-hire': {
+                    'sell':    '$20 – $80 per session',
+                    'unit':    '$2 – $10 (tools + travel)',
+                    'startup': '$0 – $80',
+                    'monthly': '5 – 20 sessions',
+                    'example': 'e.g. Tutoring: sell $40/hr, tool cost $3 (materials), startup (ads) $30',
+                    'tip':     'Price yourself higher than you think — skills are hard to find',
+                },
+                'maker': {
+                    'sell':    '$20 – $120',
+                    'unit':    '$6 – $35 (materials + tools)',
+                    'startup': '$100 – $400',
+                    'monthly': '5 – 20 items',
+                    'example': 'e.g. Custom 3D print: sell $45, filament + wear $9, startup (printer time, not the printer itself) $200',
+                    'tip':     'Aim for at least 2× markup — custom items justify premium pricing',
+                },
+                'resale-retail': {
+                    'sell':    '$15 – $60',
+                    'unit':    '$5 – $25 (what you pay supplier)',
+                    'startup': '$200 – $600',
+                    'monthly': '15 – 50 items',
+                    'example': 'e.g. Thrift flip: buy $4, sell $18, startup (first stock batch) $200',
+                    'tip':     'Aim for 2–3× markup — covers shipping, storage, and returns',
+                },
+                'digital-product': {
+                    'sell':    '$5 – $30',
+                    'unit':    '$0.20 – $2 (payment processing only)',
+                    'startup': '$0 – $150',
+                    'monthly': '10 – 100 downloads/sales',
+                    'example': 'e.g. Canva template pack: sell $9, Gumroad fee $0.90, startup (software) $0',
+                    'tip':     'Development cost is startup cost — per-sale cost is ONLY platform fees',
+                },
+                'expert': {
+                    'sell':    '$40 – $150 per session',
+                    'unit':    '$5 – $20 (your time value + materials)',
+                    'startup': '$0 – $100',
+                    'monthly': '3 – 12 sessions',
+                    'example': 'e.g. Study coaching: sell $60/hr, time cost $10, startup (website) $0',
+                    'tip':     'Consulting commands a premium — don\'t underprice your expertise',
+                },
+                'event-experience': {
+                    'sell':    '$25 – $100 per ticket',
+                    'unit':    '$10 – $50 per attendee (venue + materials + your time)',
+                    'startup': '$100 – $400',
+                    'monthly': '1 – 4 events',
+                    'example': 'e.g. Art workshop (10 kids): sell $35/ticket, cost per kid $12, startup (venue deposit) $150',
+                    'tip':     'Per-event cost is per-attendee × number of attendees — price accordingly',
+                },
+                'content-media': {
+                    'sell':    '$5 – $20/month (subscription) or ad revenue',
+                    'unit':    '$1 – $8 per piece (your time + equipment wear)',
+                    'startup': '$0 – $200',
+                    'monthly': '4 – 20 pieces of content',
+                    'example': 'e.g. Newsletter: sell $7/month sub, time cost $3/issue, startup (domain) $15',
+                    'tip':     'Revenue is slow at first — show a clear path to first paying subscriber',
+                },
+                'marketplace': {
+                    'sell':    '$2 – $20 per transaction (commission or fee)',
+                    'unit':    '$0.50 – $5 (payment processing + your time)',
+                    'startup': '$50 – $300',
+                    'monthly': '10 – 50 transactions',
+                    'example': 'e.g. Local gig board: charge $3/listing, Stripe fee $0.40, startup (web setup) $60',
+                    'tip':     'Plan for both sides — you need buyers AND sellers before launch',
+                },
+            } %}
+            {% if archetype and archetype in _cost_guide %}
+            {% set _cg = _cost_guide[archetype] %}
+            <details open style="background:rgba(52,211,153,0.04);border:1px solid rgba(52,211,153,0.18);border-radius:10px;padding:10px 14px;margin-bottom:16px">
+                <summary style="font-size:0.75rem;font-weight:900;color:#34D399;cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px">
+                    📊 Typical numbers for a <strong style="margin-left:3px">{{ archetype.replace('-',' ') | title }}</strong> business — tap to collapse ▴
+                </summary>
+                <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:6px">
+                    <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 10px">
+                        <div style="font-size:0.62rem;font-weight:900;text-transform:uppercase;color:var(--muted);margin-bottom:2px">Typical sell price</div>
+                        <div style="font-size:0.88rem;font-weight:900;color:#FFD93D">{{ _cg.sell }}</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 10px">
+                        <div style="font-size:0.62rem;font-weight:900;text-transform:uppercase;color:var(--muted);margin-bottom:2px">Typical unit cost</div>
+                        <div style="font-size:0.88rem;font-weight:900;color:#F87171">{{ _cg.unit }}</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 10px">
+                        <div style="font-size:0.62rem;font-weight:900;text-transform:uppercase;color:var(--muted);margin-bottom:2px">Typical startup cost</div>
+                        <div style="font-size:0.88rem;font-weight:900;color:#60A5FA">{{ _cg.startup }}</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 10px">
+                        <div style="font-size:0.62rem;font-weight:900;text-transform:uppercase;color:var(--muted);margin-bottom:2px">Typical monthly sales</div>
+                        <div style="font-size:0.88rem;font-weight:900;color:#A78BFA">{{ _cg.monthly }}</div>
+                    </div>
+                </div>
+                <div style="margin-top:8px;font-size:0.73rem;color:rgba(240,239,244,0.75);padding:7px 10px;background:rgba(255,255,255,0.03);border-radius:8px;line-height:1.6">
+                    💡 <strong>Real example:</strong> {{ _cg.example }}
+                </div>
+                <div style="margin-top:6px;font-size:0.72rem;color:#34D399;font-weight:700;padding:5px 10px;background:rgba(52,211,153,0.07);border-radius:8px">
+                    ✅ {{ _cg.tip }}
+                </div>
+            </details>
+            {% elif not archetype or archetype == 'other' %}
+            <!-- O11-11: 'other' archetype — prompt student to re-classify to unlock cost guide -->
+            <details style="background:rgba(255,217,61,0.04);border:1px solid rgba(255,217,61,0.18);border-radius:10px;padding:10px 14px;margin-bottom:16px">
+                <summary style="font-size:0.75rem;font-weight:900;color:#FFD93D;cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px">
+                    📊 Typical numbers not available — your business type needs re-classifying ▾
+                </summary>
+                <div style="margin-top:8px;font-size:0.73rem;color:rgba(240,239,244,0.75);padding:8px 10px;background:rgba(255,255,255,0.03);border-radius:8px;line-height:1.7">
+                    💡 Your idea was classified as <strong>Other</strong>, so we can't show archetype-specific cost ranges.<br><br>
+                    <a href="/idea" style="color:#A78BFA;text-decoration:underline;font-weight:700">Go back to Chapter 2 →</a> and re-run the business idea analysis. The AI will re-classify your idea and unlock the cost guide with real numbers for your business type.
+                </div>
+            </details>
+            {% endif %}
+
+            <!-- Item 29 – Auto-save indicator -->
+            <div id="autoSaveIndicator" style="font-size:0.7rem;color:var(--muted);text-align:right;margin-bottom:4px;min-height:1em"></div>
+
+            <form id="moneyForm" method="POST" action="/money" novalidate>
+
+                <!-- Selling price — archetype-aware label + revenue model guide -->
+                {% set _sell_cfg = {
+                    'physical-product': {
+                        'label':       '🏷️ What will you charge per item? ($)',
+                        'placeholder': 'e.g. 15.00',
+                        'guide_title': '🧮 The 3-step pricing formula:',
+                        'guide': [
+                            ('STEP 1 — Know your cost', 'How much does it cost you to make ONE item? (materials + packaging + your time)', '👉 e.g. Bracelet: beads $1.50 + bag $0.30 + your time $0.70 = <strong style="color:#60A5FA">$2.50 cost</strong>'),
+                            ('STEP 2 — Pick your markup', 'Multiply your cost by 2.5–3×. This covers your time and gives you profit.', '👉 $2.50 × 3 = <strong style="color:#A78BFA">$7.50 sell price</strong>'),
+                            ('STEP 3 — Sense-check it', 'Would your customer actually pay that? Compare to similar products.', '👉 Similar bracelets sell for $6–$12 → ✅ $8 is fair!'),
+                        ],
+                    },
+                    'food-beverage': {
+                        'label':       '🍕 What will you charge per serving / item? ($)',
+                        'placeholder': 'e.g. 3.50',
+                        'guide_title': '🧮 Food pricing formula:',
+                        'guide': [
+                            ('STEP 1 — Cost your recipe', 'Add up ALL ingredients per serving + packaging. Be exact.', '👉 e.g. Cookie: flour+sugar+butter $0.40 + bag $0.15 = <strong style="color:#60A5FA">$0.55 per cookie</strong>'),
+                            ('STEP 2 — Apply 2.5–3× markup', 'Food businesses need at least 2.5× markup to cover prep time + energy costs.', '👉 $0.55 × 3 = <strong style="color:#A78BFA">$1.65</strong> — round up to <strong style="color:#A78BFA">$2.00</strong>'),
+                            ('STEP 3 — Check the market', 'What do similar items sell for at your school / local market?', '👉 School tuckshop cookies = $1.50–$2.50 → ✅ $2.00 is competitive'),
+                        ],
+                    },
+                    'service': {
+                        'label':       '🔧 What will you charge per job? ($)',
+                        'placeholder': 'e.g. 30.00',
+                        'guide_title': '🧮 How to price a service:',
+                        'guide': [
+                            ('STEP 1 — Value your time', 'Decide what your hour is worth. Even $8–12/hr for a student is reasonable.', '👉 e.g. Lawn mowing takes 45 min → time value = <strong style="color:#60A5FA">$10</strong>'),
+                            ('STEP 2 — Add travel + supplies', 'Add fuel / transport + any supplies used per job.', '👉 Travel $3 + supplies $2 = <strong style="color:#A78BFA">$5 costs</strong> → total charge = $10 + $5 = <strong style="color:#A78BFA">$15</strong>'),
+                            ('STEP 3 — Check what others charge', 'Look at Airtasker or local ads. Price competitively but don\'t undersell.', '👉 Local lawn mowing = $25–$40 → ✅ $30 is fair'),
+                        ],
+                    },
+                    'skills-for-hire': {
+                        'label':       '🎨 What will you charge per session or job? ($)',
+                        'placeholder': 'e.g. 40.00',
+                        'guide_title': '🧮 How to price your skills:',
+                        'guide': [
+                            ('STEP 1 — Value your skill', 'Your skill is harder to find than general labour — price it accordingly.', '👉 e.g. Tutoring 1hr: comparable services cost $30–$70/hr'),
+                            ('STEP 2 — Add real costs', 'Add tool/software subscriptions + any travel to clients.', '👉 Tool subscription $2/session + travel $3 = <strong style="color:#A78BFA">$5 costs</strong>'),
+                            ('STEP 3 — Price with confidence', 'Don\'t underprice! Start at the lower end of market rates, increase as you get reviews.', '👉 Start at <strong style="color:#34D399">$40/session</strong> and raise after 5 happy clients'),
+                        ],
+                    },
+                    'digital-product': {
+                        'label':       '💻 What will you charge per download / licence? ($)',
+                        'placeholder': 'e.g. 9.00',
+                        'guide_title': '🧮 Digital product pricing:',
+                        'guide': [
+                            ('STEP 1 — Consider perceived value', 'Digital products have no per-unit cost — price based on how much time/money you save the buyer.', '👉 e.g. Canva template saves 2hrs of design time → worth $5–$15'),
+                            ('STEP 2 — Research comparable products', 'Search Gumroad or Etsy for similar files. Price slightly below until you have reviews.', '👉 Similar Notion templates sell for $5–$25 → ✅ start at $9'),
+                            ('STEP 3 — Platform fees eat margin', 'Gumroad/Stripe typically take 3–10%. Factor that into your price.', '👉 Sell at $9 → keep ~$8.10 after Gumroad fee'),
+                        ],
+                    },
+                    'resale-retail': {
+                        'label':       '🛒 What will you sell each item for? ($)',
+                        'placeholder': 'e.g. 20.00',
+                        'guide_title': '🧮 Resale pricing formula:',
+                        'guide': [
+                            ('STEP 1 — Know your buy price', 'This is the wholesale price you paid. Include shipping to you ÷ units.', '👉 e.g. Buy thrift item $4 + prep $1 = <strong style="color:#60A5FA">$5 cost</strong>'),
+                            ('STEP 2 — Apply 3× markup minimum', 'Resale needs to cover storage, listing fees, and time. 3× is typical.', '👉 $5 × 3 = <strong style="color:#A78BFA">$15</strong> · $5 × 4 = <strong style="color:#A78BFA">$20</strong>'),
+                            ('STEP 3 — Check sold listings', 'On eBay/Facebook Marketplace, filter by "sold" to see real prices paid.', '👉 Vintage denim jacket sold: $18–$35 → ✅ $22 is realistic'),
+                        ],
+                    },
+                    'maker': {
+                        'label':       '🛠️ What will you charge per custom item? ($)',
+                        'placeholder': 'e.g. 45.00',
+                        'guide_title': '🧮 Maker pricing formula:',
+                        'guide': [
+                            ('STEP 1 — Cost your materials', 'List every raw material used per item. Include tool wear.', '👉 e.g. 3D print: filament $2 + electricity $0.50 + tool wear $0.50 = <strong style="color:#60A5FA">$3 materials</strong>'),
+                            ('STEP 2 — Add your build time', 'Custom work takes time — charge for it. Min $8–12/hr for your time.', '👉 2hr build × $10/hr = <strong style="color:#A78BFA">$20 time cost</strong> → total cost $23'),
+                            ('STEP 3 — Apply maker premium', 'Custom = unique = premium. Charge 2× total cost at minimum.', '👉 $23 × 2 = <strong style="color:#34D399">$46</strong> → round to $45 or $50'),
+                        ],
+                    },
+                    'expert': {
+                        'label':       '🎓 What will you charge per consulting session? ($)',
+                        'placeholder': 'e.g. 60.00',
+                        'guide_title': '🧮 Consulting rate guide:',
+                        'guide': [
+                            ('STEP 1 — Your expertise has value', 'Consulting and coaching command a significant premium over general labour.', '👉 Student tutors on Superprof charge $30–$80/hr depending on subject and grades'),
+                            ('STEP 2 — Start competitive, raise fast', 'Begin at mid-market rates. After 3–5 great reviews, increase 20%.', '👉 Start at $50/session → raise to $60 after first 5 clients'),
+                            ('STEP 3 — Package your sessions', 'Offer 3-session bundles — customers commit, you earn more.', '👉 3 sessions × $50 = $150 → bundle price $130 = still better for you'),
+                        ],
+                    },
+                    'event-experience': {
+                        'label':       '🎉 Ticket price per person ($)',
+                        'placeholder': 'e.g. 35.00',
+                        'guide_title': '🧮 Event pricing formula:',
+                        'guide': [
+                            ('STEP 1 — Total your event cost', 'Venue + materials + your time = total event cost. Divide by max attendees.', '👉 e.g. Art workshop: venue $80 + supplies $60 + time $40 = $180 ÷ 10 kids = <strong style="color:#60A5FA">$18/head cost</strong>'),
+                            ('STEP 2 — Apply 2× markup', 'You need profit AND a buffer for no-shows.', '👉 $18 × 2 = <strong style="color:#A78BFA">$36</strong> → round to $35'),
+                            ('STEP 3 — Test demand early', 'Offer an early-bird price ($5 off) to gauge interest before committing to the venue.', '👉 8 early-birds at $30 = you\'re covered even if 2 pull out'),
+                        ],
+                    },
+                    'content-media': {
+                        'label':       '📱 Expected earnings per video / post ($)',
+                        'placeholder': 'e.g. 2.00',
+                        'guide_title': '📺 How do YouTube / content creators earn money?',
+                        'guide': [
+                            ('REVENUE STREAM 1 — Ad revenue (CPM)', 'YouTube pays you per 1,000 views. New channels earn ~$1–$5 per 1,000 views. Enter your expected earnings per video based on expected views.', '👉 e.g. 1,000 views/video × $2 CPM = <strong style="color:#60A5FA">$2 per video</strong>. Enter $2 in the field above.'),
+                            ('REVENUE STREAM 2 — Sponsorships', 'Once you have 1,000+ subscribers, brands may pay $50–$200 per sponsored video. This is ONE video\'s earnings for that month.', '👉 e.g. 1 sponsored video/month at $80 + 3 regular videos at $2 each = <strong style="color:#A78BFA">$86/month</strong>'),
+                            ('REVENUE STREAM 3 — Merch / digital products', 'Sell a related product: presets, templates, guides. Each sale is extra revenue on top of ad earnings.', '👉 e.g. Sell a $9 Lightroom preset. 5 sales/month = <strong style="color:#34D399">+$45</strong> on top of ad revenue'),
+                        ],
+                        'note': '⚡ YouTube requires 1,000 subscribers + 4,000 watch hours to enable monetisation. In the meantime, enter $0 as your earnings and focus on growing your audience.',
+                    },
+                    'marketplace': {
+                        'label':       '🏪 Commission or fee per transaction ($)',
+                        'placeholder': 'e.g. 3.00',
+                        'guide_title': '🧮 Marketplace pricing:',
+                        'guide': [
+                            ('STEP 1 — Decide your fee model', 'Charge a flat fee per listing, a % commission per sale, or a subscription fee. Flat fee is simplest to start.', '👉 e.g. $3 per listing on your platform'),
+                            ('STEP 2 — Make it worth both sides', 'Sellers won\'t pay to list unless they\'re confident buyers will find them. Start with a low fee to attract first sellers.', '👉 Launch at $1/listing free trial → convert to $3/listing after 10 sellers'),
+                            ('STEP 3 — Estimate transaction volume', 'Revenue = fee × number of transactions. You need both buyer and seller volume.', '👉 10 transactions × $3 = <strong style="color:#34D399">$30/month to start</strong>'),
+                        ],
+                    },
+                } %}
+                {% set _sp = _sell_cfg.get(archetype, {
+                    'label':       '🏷️ What will you charge customers per unit? ($)',
+                    'placeholder': 'e.g. 8.00',
+                    'guide_title': '🧮 The 3-step pricing formula:',
+                    'guide': [
+                        ('STEP 1 — Know your cost', 'How much does it cost you to make ONE unit? (materials + time)', '👉 e.g. Bracelet: beads $1.50 + your time $1.00 = <strong style="color:#60A5FA">$2.50 cost</strong>'),
+                        ('STEP 2 — Pick your markup', 'Multiply your cost by 2–3×. This is your profit margin.', '👉 $2.50 × 2.5 = <strong style="color:#A78BFA">$6.25</strong> · $2.50 × 3 = <strong style="color:#A78BFA">$7.50</strong>'),
+                        ('STEP 3 — Sense-check it', 'Would your customer actually pay that? Compare to similar products.', '👉 Similar items sell for $6–$10 → ✅ $7 is fair!'),
+                    ],
+                }) %}
+                <div class="idea-card">
+                    <div class="idea-card-label">{{ _sp.label }}</div>
+                    {% if archetype == 'content-media' %}
+                    <div style="background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.25);border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:0.72rem;color:rgba(240,239,244,0.85);line-height:1.6">
+                        🎥 <strong style="color:#FFD93D">Not sure what number to enter?</strong> Use this formula:<br>
+                        <span style="color:rgba(240,239,244,0.7)">(Expected views per video ÷ 1000) × CPM rate</span><br>
+                        e.g. 500 views × $2 CPM ÷ 1000 = <strong style="color:#34D399">$1.00 per video</strong>. Start with $1–3 and revise as you learn.
+                    </div>
+                    {% endif %}
+                    <input type="number" name="sell_price" id="sellPriceField" class="money-input"
+                           placeholder="{{ _sp.placeholder }}" min="0" step="0.50" value="{{ saved_sell_price or '' }}"
+                           oninput="checkPriceSanity(this.value)">
+                    <div id="priceSanityHint" style="display:none;margin-top:6px;font-size:0.72rem;padding:6px 10px;border-radius:8px;line-height:1.5"></div>
+                    <div class="price-info-toggle" onclick="document.getElementById('priceInfoBox').classList.toggle('open');this.querySelector('.pt-arrow').textContent=document.getElementById('priceInfoBox').classList.contains('open')?'▲':'▼'">
+                        💡 {{ _sp.guide_title.replace(':', '?') }} <span class="pt-arrow">▼</span>
+                    </div>
+                    <div class="price-info-box" id="priceInfoBox">
+                        <div style="font-weight:900;font-size:0.82rem;margin-bottom:8px;color:var(--yellow)">{{ _sp.guide_title }}</div>
+                        <div style="display:grid;gap:6px">
+                            {% for step_title, step_body, step_example in _sp.guide %}
+                            <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 10px">
+                                <div style="font-weight:900;font-size:0.75rem;color:{% if loop.index == 1 %}#60A5FA{% elif loop.index == 2 %}#A78BFA{% else %}#34D399{% endif %}">{{ step_title }}</div>
+                                <div style="font-size:0.78rem;color:rgba(240,239,244,0.8);margin-top:3px">{{ step_body }}</div>
+                                <div style="font-size:0.72rem;color:var(--muted);margin-top:2px">{{ step_example }}</div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% if _sp.note is defined %}
+                        <div style="margin-top:8px;background:rgba(251,191,36,0.07);border-left:3px solid #FBBF24;border-radius:0 6px 6px 0;padding:6px 10px;font-size:0.72rem;color:rgba(240,239,244,0.8);line-height:1.5">
+                            {{ _sp.note }}
+                        </div>
+                        {% endif %}
+                        <div id="priceSuggestion" style="display:none;margin-top:10px;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.25);border-radius:8px;padding:8px 10px;font-size:0.78rem;color:#34D399;font-weight:700"></div>
+                    </div>
+                </div>
+
+                <!-- Startup cost — archetype-aware -->
+                {% set _startup_cfg = {
+                    'physical-product': ('Equipment / molds / packaging materials before first sale', 'e.g. 150'),
+                    'food-beverage':    ('Ingredients stock, containers, equipment, any permits', 'e.g. 250'),
+                    'service':          ('Tools, any certifications, transport setup', 'e.g. 50'),
+                    'skills-for-hire':  ('Software subscriptions, portfolio materials, tools', 'e.g. 30'),
+                    'digital-product':  ('Development tools, hosting setup, any design assets', 'e.g. 0'),
+                    'resale-retail':    ('First stock order + shipping to you + storage setup', 'e.g. 300'),
+                    'maker':            ('Tools, raw materials stock, workspace setup', 'e.g. 200'),
+                    'expert':           ('Professional indemnity insurance, website, business cards', 'e.g. 0'),
+                    'event-experience': ('Props, venue deposit, first event materials', 'e.g. 100'),
+                    'content-media':    ('Equipment (camera/mic), editing software, domain/hosting', 'e.g. 0'),
+                    'marketplace':      ('Website / app setup, legal structure, first marketing', 'e.g. 50'),
+                } %}
+                {% set _sc_hint, _sc_placeholder = _startup_cfg.get(archetype, ('Everything you need to spend BEFORE your first sale', 'e.g. 200')) %}
+                <!-- C18-16: Startup vs unit cost explainer -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+                    <div style="padding:10px 12px;background:rgba(96,165,250,0.07);border:1px solid rgba(96,165,250,0.2);border-radius:10px">
+                        <div style="font-size:0.65rem;font-weight:900;text-transform:uppercase;color:#60A5FA;margin-bottom:4px">💸 Startup cost</div>
+                        <div style="font-size:0.72rem;color:rgba(240,239,244,0.8);line-height:1.5">Stuff you buy <strong>once</strong> to get started — tools, labels, equipment, first stock order</div>
+                        <div style="font-size:0.65rem;color:var(--muted);margin-top:4px">e.g. A bracelet maker buys beads + wire + tools once for $80</div>
+                    </div>
+                    <div style="padding:10px 12px;background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.2);border-radius:10px">
+                        <div style="font-size:0.65rem;font-weight:900;text-transform:uppercase;color:#F87171;margin-bottom:4px">🏷️ Unit cost</div>
+                        <div style="font-size:0.72rem;color:rgba(240,239,244,0.8);line-height:1.5">What it costs to make or deliver <strong>each single item</strong> you sell</div>
+                        <div style="font-size:0.65rem;color:var(--muted);margin-top:4px">e.g. Each bracelet uses $2 of beads + $0.50 bag = $2.50 per bracelet</div>
+                    </div>
+                </div>
+
+                <div class="idea-card">
+                    <div class="idea-card-label">💸 Total startup cost ($) <button type="button" class="hint-btn" aria-label="Show hint" aria-expanded="false" onclick="toggleHint('hint-startup')" title="What counts?">ℹ️</button></div>
+                    <div id="hint-startup" class="hint-pop">{{ _sc_hint }}</div>
+                    <input type="number" name="startup_cost" id="startupCost" class="money-input"
+                           placeholder="{{ _sc_placeholder }}" min="0" max="200000" step="10"
+                           value="{{ saved_startup_cost or '' }}">
+                    {% if ch1_budget %}
+                    <div style="margin-top:6px;font-size:0.71rem;color:rgba(240,239,244,0.55);font-style:italic">
+                        Your Chapter 1 budget was <strong style="color:#A78BFA">${{ ch1_budget | int }}</strong> — startup cost should be ≤ that unless you have additional funding.
+                    </div>
+                    {% endif %}
+                    <div id="startupCostTranslation" style="display:none;margin-top:6px;font-size:0.72rem;color:rgba(240,239,244,0.6);font-style:italic"></div>
+                </div>
+
+                <!-- Unit cost — archetype template engine -->
+                {% set _cost_cfg = {
+                    'physical-product': {
+                        'icon': '🏭', 'label': 'Cost per unit to make ($)',
+                        'placeholder': 'e.g. 4.50',
+                        'components': ['Raw materials / fabric / parts', 'Packaging per unit', 'Your time (hourly rate × minutes per item)'],
+                        'floor_hint': 'Physical products: include materials + packaging + your time — zero cost is not realistic.',
+                        'floor': 1,
+                    },
+                    'food-beverage': {
+                        'icon': '🍕', 'label': 'Cost per portion / serving ($)',
+                        'placeholder': 'e.g. 2.00',
+                        'components': ['Ingredients per serving', 'Packaging / container', 'Your prep time', 'Gas / electricity (estimate per batch ÷ portions)'],
+                        'floor_hint': 'Food: ingredients + packaging must both be included — zero cost means you haven\'t accounted for ingredients.',
+                        'floor': 0.5,
+                    },
+                    'service': {
+                        'icon': '🔧', 'label': 'Cost per service job ($)',
+                        'placeholder': 'e.g. 5.00',
+                        'components': ['Your time (hourly rate × hours per job)', 'Travel / fuel per job', 'Supplies / consumables used'],
+                        'floor_hint': 'Service: your TIME is a real cost. Enter at least your travel + supply cost even if you price your time separately.',
+                        'floor': 0,
+                    },
+                    'skills-for-hire': {
+                        'icon': '🎨', 'label': 'Cost per job / session ($)',
+                        'placeholder': 'e.g. 3.00',
+                        'components': ['Your time (rate × hours)', 'Tools / software subscriptions (prorated)', 'Travel to client if applicable'],
+                        'floor_hint': 'Skills: include your tool / subscription cost per job even if your time is the main component.',
+                        'floor': 0,
+                    },
+                    'digital-product': {
+                        'icon': '💻', 'label': 'Per-sale platform / payment fees ($)',
+                        'placeholder': 'e.g. 0.50',
+                        'components': ['Payment processing fee (e.g. 2–3% of price)', 'Platform commission (e.g. App Store 30%)', 'Hosting cost per active user (if any)'],
+                        'floor_hint': 'Digital: development cost goes in startup cost — per-sale cost is ONLY platform/payment fees.',
+                        'floor': 0,
+                    },
+                    'resale-retail': {
+                        'icon': '🛒', 'label': 'Wholesale purchase price per item ($)',
+                        'placeholder': 'e.g. 8.00',
+                        'components': ['What you pay supplier per item', 'Shipping / freight to you (per unit)', 'Storage / packaging before resale'],
+                        'floor_hint': 'Resale: you must include what you paid for the stock — zero unit cost means zero profit tracking.',
+                        'floor': 1,
+                    },
+                    'maker': {
+                        'icon': '🛠️', 'label': 'Raw material + production cost per item ($)',
+                        'placeholder': 'e.g. 6.00',
+                        'components': ['Raw materials per item', 'Tool wear / consumables', 'Your build time (hourly rate × hours per item)'],
+                        'floor_hint': 'Maker: custom builds always have material cost — enter raw materials + your time value per item.',
+                        'floor': 1,
+                    },
+                    'expert': {
+                        'icon': '🎓', 'label': 'Cost per consulting session ($)',
+                        'placeholder': 'e.g. 0',
+                        'components': ['Your time (minimum wage × session hours)', 'Any materials / tools used', 'Professional insurance (prorated per session)'],
+                        'floor_hint': 'Expert: even knowledge-only work has a time cost — enter at minimum what your hour is worth.',
+                        'floor': 0,
+                    },
+                    'event-experience': {
+                        'icon': '🎉', 'label': 'Cost per event to run ($)',
+                        'placeholder': 'e.g. 30.00',
+                        'components': ['Venue hire per event', 'Materials / props / decorations', 'Your time delivering the event', 'Any staffing cost'],
+                        'floor_hint': 'Events: venue + materials + your time all count — zero cost for an event is almost never realistic.',
+                        'floor': 5,
+                    },
+                    'content-media': {
+                        'icon': '📱', 'label': 'Cost per content piece ($)',
+                        'placeholder': 'e.g. 0',
+                        'components': ['Platform distribution fee (if any)', 'Equipment amortised per piece', 'Your production time (hourly rate × hours)'],
+                        'floor_hint': 'Content: your production TIME has value — enter at least your time cost per piece.',
+                        'floor': 0,
+                    },
+                    'marketplace': {
+                        'icon': '🏪', 'label': 'Platform & fulfilment cost per transaction ($)',
+                        'placeholder': 'e.g. 2.00',
+                        'components': ['Transaction / payment processing fee', 'Your platform operating cost per transaction', 'Customer support time per order'],
+                        'floor_hint': 'Marketplace: each transaction has payment processing + your platform cost — enter at least the payment fee.',
+                        'floor': 0,
+                    },
+                } %}
+                {% set _cfg = _cost_cfg.get(archetype, {
+                    'icon': '🏭', 'label': 'Cost per unit ($)',
+                    'placeholder': 'e.g. 3.50',
+                    'components': ['Materials / ingredients', 'Packaging', 'Your time', 'Platform / delivery fees'],
+                    'floor_hint': 'Include all real costs — materials, your time, and any fees.',
+                    'floor': 0,
+                }) %}
+                <div class="idea-card" id="unitCostCard">
+                    <div class="idea-card-label">{{ _cfg.icon }} {{ _cfg.label }}</div>
+                    <details style="margin-bottom:6px" {% if loop is not defined %}open{% endif %}>
+                        <summary style="font-size:0.68rem;color:var(--purple);cursor:pointer;list-style:none">💡 What to include for a <strong>{{ archetype.replace('-', ' ') | title if archetype else 'your business type' }}</strong> ▾</summary>
+                        <div style="font-size:0.68rem;color:var(--muted);margin-top:4px;line-height:1.85;padding:6px 10px;background:rgba(255,255,255,0.03);border-radius:6px">
+                            {% for c in _cfg.components %}✅ {{ c }}<br>{% endfor %}
+                            <div style="margin-top:6px;padding:5px 8px;background:rgba(255,217,61,0.07);border-radius:6px;color:rgba(255,217,61,0.9);font-size:0.67rem;line-height:1.5">
+                                ⚠️ {{ _cfg.floor_hint }}
+                            </div>
+                        </div>
+                    </details>
+                    <input type="number" name="unit_cost" id="unitCost" class="money-input"
+                           placeholder="{{ _cfg.placeholder }}" min="0" step="0.50"
+                           value="{{ saved_unit_cost or '' }}"
+                           data-floor="{{ _cfg.floor }}">
+                    <!-- hidden unit_price mirrors sell_price for form submission & API -->
+                    <input type="hidden" name="unit_price" id="unitPrice" value="">
+                    <div class="money-margin-display" id="marginDisplay"></div>
+                    <div id="costFloorWarn" style="display:none;margin-top:6px;font-size:0.73rem;color:#FFD93D;font-weight:700;padding:5px 10px;background:rgba(255,217,61,0.08);border-radius:8px">
+                        ⚠️ {{ _cfg.floor_hint }}
+                    </div>
+                    <div id="costPriceIndicator" style="display:none;margin-top:6px;font-size:0.78rem;padding:6px 10px;border-radius:8px;font-weight:700"></div>
+                </div>
+
+                <!-- Monthly units goal — archetype-aware label -->
+                {% set _units_cfg = {
+                    'physical-product': ('📦 How many items per month do you expect to sell?',           'e.g. 30',  '📦 items/month'),
+                    'food-beverage':    ('🍕 How many servings / portions per month?',                   'e.g. 80',  '🍕 servings/month'),
+                    'service':          ('🔧 How many jobs per month do you expect?',                    'e.g. 10',  '🔧 jobs/month'),
+                    'skills-for-hire':  ('🎨 How many sessions or jobs per month?',                     'e.g. 8',   '🎨 sessions/month'),
+                    'digital-product':  ('💻 How many downloads or sales per month?',                   'e.g. 20',  '💻 sales/month'),
+                    'resale-retail':    ('🛒 How many items per month do you expect to sell?',           'e.g. 15',  '🛒 items/month'),
+                    'maker':            ('🛠️ How many custom items per month can you realistically make?', 'e.g. 8', '🛠️ items/month'),
+                    'expert':           ('🎓 How many consulting sessions per month?',                   'e.g. 5',   '🎓 sessions/month'),
+                    'event-experience': ('🎉 Total event attendees per month (across all events)',       'e.g. 20',  '🎉 attendees/month'),
+                    'content-media':    ('📹 How many videos / posts per month?',                       'e.g. 4',   '📹 videos/month'),
+                    'marketplace':      ('🏪 How many transactions per month do you expect?',            'e.g. 20',  '🏪 transactions/month'),
+                } %}
+                {% set _ul, _up, _us = _units_cfg.get(archetype, ('📦 How many units per month do you expect to sell?', 'e.g. 30', '📦 units/month')) %}
+                <div class="idea-card">
+                    <div class="idea-card-label">{{ _ul }}</div>
+                    {% if archetype == 'content-media' %}
+                    <div style="font-size:0.7rem;color:var(--muted);margin-bottom:8px;line-height:1.5">
+                        Be realistic — most new YouTubers post 1–4 videos/month. Quality beats quantity.
+                        Your total monthly revenue = earnings per video × videos per month.
+                    </div>
+                    {% elif archetype == 'event-experience' %}
+                    <div style="font-size:0.7rem;color:var(--muted);margin-bottom:8px;line-height:1.5">
+                        Total headcount across all events this month. e.g. 2 workshops × 10 kids each = enter 20.
+                    </div>
+                    {% endif %}
+                    <input type="number" name="monthly_units" id="monthlyUnits" class="money-input"
+                           placeholder="{{ _up }}" min="0" step="1" value="{{ saved_monthly_units or '' }}"
+                           data-unit-suffix="{{ _us }}">
+                    <div class="money-projection" id="projectionDisplay"></div>
+                </div>
+
+                <!-- Profit plan -->
+                <div class="idea-card">
+                    <div class="idea-card-label">What will you do with your profits?</div>
+                    <input type="hidden" name="profit_plan" id="f-profit_plan" value="{{ saved_profit_plan or '' }}">
+                    <div class="pill-row" data-field="profit_plan">
+                        {% for opt in ['Reinvest 20%+ back in', 'Save it all', 'Split: save + spend', 'Spend it all'] %}
+                        <button type="button" class="pill {% if opt == 'Spend it all' %}pill--danger{% endif %} {% if opt == saved_profit_plan %}active{% endif %}"
+                                data-val="{{ opt }}">{{ opt }}</button>
+                        {% endfor %}
+                    </div>
+                    <!-- C7-15: Profit plan consequence visual -->
+                    <div id="profitPlanConsequence" style="display:none;margin-top:8px;font-size:0.72rem;color:rgba(240,239,244,0.7);padding:6px 10px;background:rgba(255,255,255,0.03);border-radius:8px;line-height:1.6"></div>
+                </div>
+
+                <!-- C7-12: What If? exploration mode -->
+                <div class="idea-card" style="background:rgba(96,165,250,0.04);border-color:rgba(96,165,250,0.2)">
+                    <div class="idea-card-label">🔮 What If? Explorer</div>
+                    <p class="field-sub">🔮 Adjust any number to see how your profit changes — great for finding your best price! Changes here don't affect your saved answers.</p>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
+                        <button type="button" onclick="_whatIf('units',2)" class="pill" style="font-size:0.72rem">
+                            {% if archetype == 'content-media' %}2× My Videos{% elif archetype in ('service','skills-for-hire','expert') %}2× My Jobs{% elif archetype == 'event-experience' %}2× Attendees{% else %}2× My Sales{% endif %}
+                        </button>
+                        <button type="button" onclick="_whatIf('price',1.25)" class="pill" style="font-size:0.72rem">
+                            {% if archetype == 'content-media' %}+25% Earnings/video{% elif archetype in ('service','skills-for-hire','expert') %}+25% Rate{% else %}+25% Price{% endif %}
+                        </button>
+                        <button type="button" onclick="_whatIf('cost',0.8)" class="pill" style="font-size:0.72rem">−20% Costs</button>
+                        <button type="button" onclick="_whatIfReset()" class="pill pill--warn" style="font-size:0.72rem">↺ Reset</button>
+                    </div>
+                    <div id="whatIfResult" style="display:none;font-size:0.78rem;color:#34D399;font-weight:700;padding:6px 10px;background:rgba(52,211,153,0.08);border-radius:8px"></div>
+                </div>
+
+                <!-- Contingency — C6-18: dynamic example -->
+                <div class="idea-card">
+                    <div class="idea-card-label">Have you added a 20% contingency buffer to your startup cost?</div>
+                    <input type="hidden" name="has_contingency" id="f-has_contingency" value="{{ saved_has_contingency or '' }}">
+                    <div class="pill-row" data-field="has_contingency">
+                        <button type="button" class="pill {% if saved_has_contingency == 'Yes' %}active{% endif %}" data-val="Yes">✅ Yes, I've added buffer</button>
+                        <button type="button" class="pill pill--warn {% if saved_has_contingency == 'No' %}active{% endif %}" data-val="No">❌ Not yet</button>
+                    </div>
+                    <div id="contingencyExample" style="font-size:0.75rem;color:var(--muted);margin-top:6px;padding:4px 8px;background:rgba(255,255,255,0.03);border-radius:6px">
+                        💡 <em>Example: If your startup cost is <strong id="contExStartup">$200</strong>, add at least <strong id="contExBuffer">$40</strong> as a buffer — for unexpected costs like buying extra supplies or a broken tool.</em>
+                    </div>
+                </div>
+
+                <!-- C6-21: Scenario A / B toggle -->
+                <div class="idea-card" style="background:rgba(96,165,250,0.05);border-color:rgba(96,165,250,0.2)">
+                    <div class="idea-card-label">🔀 Compare two pricing scenarios <button type="button" class="hint-btn" aria-label="Show hint" aria-expanded="false" onclick="toggleHint('hint-scenario')" title="How does this work?">ℹ️</button></div>
+                    <div id="hint-scenario" class="hint-pop" style="margin-bottom:8px">Save your current numbers as Scenario A, then try a different price as Scenario B.</div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+                        <button type="button" id="saveScenarioA" class="pill" style="flex:1">💾 Save as Scenario A</button>
+                        <button type="button" id="saveScenarioB" class="pill" style="flex:1">💾 Save as Scenario B</button>
+                    </div>
+                    <div id="scenarioCompare" style="display:none;font-size:0.78rem;line-height:1.6">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px">
+                            <div id="scenarioACard" style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px">
+                                <div style="font-size:0.65rem;font-weight:900;color:#60A5FA;margin-bottom:4px">SCENARIO A</div>
+                                <div id="scenarioAText" style="color:rgba(240,239,244,0.8)">—</div>
+                            </div>
+                            <div id="scenarioBCard" style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px">
+                                <div style="font-size:0.65rem;font-weight:900;color:#A78BFA;margin-bottom:4px">SCENARIO B</div>
+                                <div id="scenarioBText" style="color:rgba(240,239,244,0.8)">—</div>
+                            </div>
+                        </div>
+                        <div id="scenarioWinner" style="margin-top:6px;font-size:0.75rem;color:#34D399;font-weight:700"></div>
+                    </div>
+                </div>
+
+                <button type="button" id="validateBtn" class="btn-validate" style="display:none">🔬 Run Analysis</button>
+                <!-- Item 5 – CTA subtitle (hidden with button — Run Analysis is now in the side panel) -->
+                <p class="validate-sub-hint" style="display:none">⏳ Checks your numbers for gaps and gives you honest AI feedback — about 5–10 seconds</p>
+                <p class="validate-hint" id="validateHint" style="display:none">👆 Enter your numbers above, then click to check if your plan adds up!</p>
+
+                <!-- Module summary (shown after validation) -->
+                <div id="moduleSummary" style="display:none;margin-top:16px">
+                    <div class="module-cert-card">
+                        <div class="mcc-badge">💰</div>
+                        <div class="mcc-title">Chapter 4 Complete!</div>
+                        <div class="mcc-body" id="mccBody">
+                            Your money math checks out! Your mentor score: <strong id="mccScore">—</strong>
+                        </div>
+                        <div class="mcc-hint" id="mccHint"></div>
+                    </div>
+                </div>
+
+                <button type="submit" id="submitBtn" class="btn-analyse" disabled style="margin-top:12px">
+                    Next: Customer Discovery 🔍 →
+                </button>
+
+            </form>
+        </main>
+
+        <!-- ── RIGHT: ITS Panel ── -->
+        <aside class="research-panel" id="labPanel">
+
+            <!-- Profit basics explainer -->
+            <details class="why-matters-box" style="margin-bottom:10px">
+                <summary style="font-size:0.78rem">💡 What do Revenue, Cost &amp; Profit mean?</summary>
+                <div style="display:grid;gap:6px;margin-top:8px">
+                    <div style="display:flex;align-items:center;gap:8px;font-size:0.75rem">
+                        <span style="font-size:1.2rem">💰</span>
+                        <div><strong style="color:#60A5FA">Revenue</strong> = Price × Units sold<br><span style="color:var(--muted)">Everything customers pay you</span></div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;font-size:0.75rem">
+                        <span style="font-size:1.2rem">📉</span>
+                        <div><strong style="color:#F87171">Cost</strong> = What you spend to run the business<br><span style="color:var(--muted)">Materials, supplies, fees</span></div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;font-size:0.75rem">
+                        <span style="font-size:1.2rem">🎉</span>
+                        <div><strong style="color:#34D399">Profit</strong> = Revenue − Cost = <em>what you KEEP</em><br><span style="color:var(--muted)">This is your real reward!</span></div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 10px;font-size:0.72rem;color:rgba(240,239,244,0.7);line-height:1.6">
+                        {% if archetype == 'content-media' %}
+                        📺 <em>Example: You post 4 videos/month, earning $2 each from ads = <strong style="color:#60A5FA">$8 earnings</strong>. Each video costs $1 to produce = <strong style="color:#F87171">$4 cost</strong>. You keep <strong style="color:#34D399">$4 net</strong>!</em>
+                        {% elif archetype in ('service','skills-for-hire') %}
+                        🔧 <em>Example: You do 10 jobs/month at $30 each = <strong style="color:#60A5FA">$300 income</strong>. Each job costs $5 in travel + supplies = <strong style="color:#F87171">$50 costs</strong>. You keep <strong style="color:#34D399">$250 profit</strong>!</em>
+                        {% elif archetype == 'food-beverage' %}
+                        🍕 <em>Example: You sell 80 cookies at $2.50 each = <strong style="color:#60A5FA">$200 revenue</strong>. Each cookie costs $0.70 to make = <strong style="color:#F87171">$56 cost</strong>. You keep <strong style="color:#34D399">$144 profit</strong>!</em>
+                        {% else %}
+                        🍕 <em>Example: You sell 10 pizzas at $8 each = <strong style="color:#60A5FA">$80 revenue</strong>. Each pizza costs $3 to make = <strong style="color:#F87171">$30 cost</strong>. You keep <strong style="color:#34D399">$50 profit</strong>!</em>
+                        {% endif %}
+                    </div>
+                </div>
+            </details>
+
+            <!-- Live financials -->
+            <div class="money-live-card" id="liveMath">
+                <div class="mlc-row">
+                    <span>💰 {% if archetype == 'content-media' %}Earnings/month{% elif archetype in ('service','skills-for-hire','expert') %}Income/month{% else %}Revenue/month{% endif %}</span>
+                    <span id="liveRevenue">—</span>
+                </div>
+                <!-- C6-20: Revenue benchmark -->
+                <div id="revenueBenchmark" style="display:none;font-size:0.68rem;color:var(--muted);padding:2px 0 4px;line-height:1.4"></div>
+                <div class="mlc-row"><span>📉 Costs/month</span><span id="liveCosts">—</span></div>
+                <div class="mlc-row mlc-row--profit"><span>✅ {% if archetype == 'content-media' %}Net earnings/month{% else %}Profit/month{% endif %}</span><span id="liveProfit">—</span></div>
+                <div class="mlc-row"><span>⏱ <span data-gloss="break-even">Break-even</span></span><span id="liveBreakeven">—</span></div>
+                <!-- C7-13: Break-even plain English explainer -->
+                <div id="breakevenExplain" style="display:none;font-size:0.68rem;color:rgba(240,239,244,0.55);font-style:italic;margin-top:2px;padding:0 4px;line-height:1.5"></div>
+                <!-- Per-sale visual breakdown -->
+                <div id="perSaleBreakdown" style="display:none;margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.07)">
+                    <div style="font-size:0.65rem;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px">
+                        {% if archetype == 'content-media' %}Per video breakdown{% elif archetype in ('service','skills-for-hire','expert') %}Per job breakdown{% elif archetype == 'event-experience' %}Per attendee breakdown{% else %}Per sale breakdown{% endif %}
+                    </div>
+                    <div style="font-size:0.72rem;color:rgba(240,239,244,0.8);margin-bottom:5px">
+                        {% if archetype == 'content-media' %}
+                        Each video earns <strong id="psPrice">$0</strong> → keep <strong id="psProfit" style="color:#34D399">$0</strong> net · spend <strong id="psCost" style="color:#F87171">$0</strong> on production
+                        {% elif archetype in ('service','skills-for-hire','expert') %}
+                        Each job earns <strong id="psPrice">$0</strong> → keep <strong id="psProfit" style="color:#34D399">$0</strong> profit · spend <strong id="psCost" style="color:#F87171">$0</strong> on costs
+                        {% else %}
+                        You charge <strong id="psPrice">$0</strong> → keep <strong id="psProfit" style="color:#34D399">$0</strong> profit · spend <strong id="psCost" style="color:#F87171">$0</strong> on costs
+                        {% endif %}
+                    </div>
+                    <div style="height:10px;border-radius:99px;overflow:hidden;background:rgba(255,255,255,0.06);display:flex">
+                        <div id="psCostBar" style="background:#F87171;height:100%;transition:width 0.3s;width:50%"></div>
+                        <div id="psProfitBar" style="background:#34D399;height:100%;transition:width 0.3s;width:50%"></div>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;margin-top:3px;font-size:0.62rem;color:var(--muted)">
+                        <span>📉 Cost</span><span>🎉 Profit</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rp-header" style="display:flex;align-items:center;justify-content:space-between;">
+                <span>🔬 ITS Lab</span>
+                <a href="/progress" style="font-size:0.68rem;font-weight:900;color:var(--muted);text-decoration:none;padding:3px 8px;border:1px solid rgba(255,255,255,0.1);border-radius:99px;" title="View full journey audit">📊 Audit</a>
+            </div>
+
+            <!-- Run Analysis — always visible -->
+            <div class="lab-run-row" style="margin:8px 0">
+                <button id="analyseLabBtn" class="lab-btn-run" title="Check your numbers — takes about 10 seconds">🔬 Run Analysis</button>
+            </div>
+
+            <!-- Research toggle -->
+            <div class="rt-wrap">
+                <span class="rt-label">Kid View</span>
+                <label class="rt-toggle">
+                    <input type="checkbox" id="researchToggle" class="rt-input">
+                    <span class="rt-slider"></span>
+                </label>
+                <span class="rt-label rt-label--research">Mentor Feedback</span>
+                <span class="rt-info" data-tip="Shows the 3-way AI scoring: Rules Check (logic), AI Optimist (cheerful AI), and Mentor Feedback (honest mentor). Great for understanding how AI feedback works!">i</span>
+            </div>
+
+            <!-- Kid View (default) -->
+            <div id="kidView">
+                <div class="its-pillar">
+                    <div class="its-p-head">🐍 Rules Check</div>
+                    <div class="its-p-icons" id="rulesIcons">
+                        <span class="its-icon--placeholder">Run Analysis to see your check results! ✅</span>
+                    </div>
+                </div>
+                <div class="its-pillar">
+                    <div class="its-p-head">📊 Mentor Score</div>
+                    <div class="its-p-icons" id="hybridScoreIcon">
+                        <span class="its-icon--placeholder">—</span>
+                    </div>
+                </div>
+                <div class="its-pillar its-pillar--hybrid">
+                    <div class="its-p-head">🧑‍🏫 Mentor Says</div>
+                    <div id="whyScoreBox" style="display:none;background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 10px;margin-bottom:8px;border-left:2px solid rgba(167,139,250,0.4)"></div>
+                    <div class="its-p-text" id="hybridText">
+                        <span class="np-placeholder">Fill in your answers, then tap <strong>Run Analysis</strong> to get tips from your AI mentor! 🤖</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Research View (toggle ON) -->
+            <div id="researchView" style="display:none">
+                <div class="rs-tabs">
+                    <button class="rs-tab rs-tab--active" onclick="switchRsTab(this,'rules')">
+                        🐍 Rules<span class="rs-tab-score" id="rsSymScore">—</span>
+                    </button>
+                    <button class="rs-tab" onclick="switchRsTab(this,'pure')">
+                        🤖 AI Optimist<span class="rs-tab-score" id="rsPureTruth">—</span>
+                    </button>
+                    <button class="rs-tab" onclick="switchRsTab(this,'hybrid')">
+                        🧠 Mentor Feedback<span class="rs-tab-score" id="rsHybridTruth">—</span>
+                    </button>
+                </div>
+                <div class="rs-pane" id="rsPane-rules">
+                    <div class="rs-violations" id="rsViolations"><span style="color:var(--muted);font-size:0.78rem">Run analysis to see rule results.</span></div>
+                </div>
+                <div class="rs-pane rs-pane--hidden" id="rsPane-pure">
+                    <div class="rs-text" id="pureLlmBox" style="color:var(--muted);font-size:0.78rem">🤖 <em>AI Optimist:</em> Waiting for analysis…</div>
+                    <div class="truth-bar-wrap" id="pureTruth"></div>
+                    <!-- Item 17 – Grade band for pure -->
+                    <div id="rsBandPure" style="display:none;font-size:0.72rem;font-weight:800;margin-top:4px;padding:3px 0"></div>
+                </div>
+                <div class="rs-pane rs-pane--hidden" id="rsPane-hybrid">
+                    <div class="rs-text" id="hybridLlmBox" style="color:var(--muted);font-size:0.78rem">🧠 <em>Mentor Feedback:</em> Waiting for analysis…</div>
+                    <div class="truth-bar-wrap" id="hybridTruth"></div>
+                    <!-- Item 17 – Grade band for hybrid -->
+                    <div id="rsBandHybrid" style="display:none;font-size:0.72rem;font-weight:800;margin-top:6px;padding:3px 0"></div>
+                    <!-- Item 19 – Next step CTA -->
+                    <div id="rsNextStep" style="display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:0.75rem;line-height:1.6"></div>
+                    <!-- Item 23 – Growth mindset -->
+                    <div id="rsGrowthHint" style="display:none;margin-top:6px;font-size:0.7rem;color:var(--muted);padding:6px 8px;border-top:1px solid rgba(255,255,255,0.07)">
+                        📝 Update your answers and re-run the analysis — your best score is always saved! 💪
+                    </div>
+                </div>
+                <div class="rs-gap rs-gap--ok" id="rsGap" style="display:none"></div>
+                <div id="moneyGapExplainer" style="display:none"></div>
+                <div id="rsScoreDelta" style="display:none;font-size:0.7rem;font-weight:800;text-align:center;padding:4px 8px;margin-top:4px;background:rgba(52,211,153,0.08);border-radius:6px"></div>
+                <!-- O16-01: Score history strip -->
+                <div id="rsScoreHistory" style="display:none;margin-top:4px;font-size:0.68rem;color:var(--muted);text-align:center;line-height:2"></div>
+            </div>
+
+        </aside>
+
+    </div>
+</div>
+
+<!-- Run Analysis reminder modal -->
+<div id="analysisReminderOverlay" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(9,9,15,0.75);align-items:center;justify-content:center;padding:20px;pointer-events:none">
+    <div style="background:#16161E;border:1px solid rgba(167,139,250,0.35);border-radius:16px;padding:24px 28px;max-width:420px;width:100%;font-family:Nunito,sans-serif;box-shadow:0 8px 40px rgba(0,0,0,0.6)">
+        <div style="font-size:1.6rem;text-align:center;margin-bottom:10px">🔬</div>
+        <div style="font-size:1rem;font-weight:900;color:var(--text);text-align:center;margin-bottom:8px">Don't forget to Run Analysis!</div>
+        <div style="font-size:0.82rem;color:rgba(240,239,244,0.75);line-height:1.6;text-align:center;margin-bottom:20px">
+            You've entered your numbers but haven't checked them yet.<br>
+            <strong style="color:#A78BFA">Running Analysis</strong> gives you AI feedback and a score — it only takes 10 seconds! 🚀
+        </div>
+        <div style="display:flex;gap:10px;flex-direction:column">
+            <button id="reminderRunBtn" style="background:linear-gradient(135deg,#A78BFA,#60A5FA);color:#09090F;font-weight:900;font-size:0.9rem;border:none;border-radius:99px;padding:12px 20px;cursor:pointer;font-family:Nunito,sans-serif">🔬 Run Analysis Now</button>
+            <button id="reminderContinueBtn" style="background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(240,239,244,0.6);font-size:0.8rem;font-weight:700;border-radius:99px;padding:9px 20px;cursor:pointer;font-family:Nunito,sans-serif">Continue without analysing →</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// DEBUG: Catch ALL errors including async promise rejections
+window.addEventListener('error', function(e) {
+    const d = document.createElement('div');
+    d.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#FF0000;color:#fff;padding:10px 16px;font-size:0.82rem;font-weight:700;font-family:monospace;word-break:break-all';
+    d.textContent = 'JS ERROR: ' + e.message + ' (line ' + e.lineno + ')';
+    document.body.appendChild(d);
+});
+window.addEventListener('unhandledrejection', function(e) {
+    const d = document.createElement('div');
+    d.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#c00;color:#fff;padding:10px 16px;font-size:0.82rem;font-weight:700;font-family:monospace;word-break:break-all';
+    d.textContent = 'ASYNC ERROR: ' + (e.reason && e.reason.message ? e.reason.message : String(e.reason));
+    document.body.appendChild(d);
+});
+const MONEY_RULES = {{ money_rules_json | safe }};
+const RADAR = {{ radar_scores_json | safe }};
+const answers = {};
+const _ARCHETYPE_PRICE_RANGES = {
+    'food-beverage':    [2, 30,  'Most food/drink items sell for $2–$30'],
+    'maker':            [5, 80,  'Most handmade items sell for $5–$80'],
+    'service':          [10, 150,'Most student services charge $10–$150'],
+    'digital-product':  [0, 50,  'Most student digital products sell for $0–$50 (or free + subscription)'],
+    'resale-retail':    [5, 100, 'Most resale items sell for $5–$100'],
+    'expert':           [15, 120,'Most tutoring/coaching charges $15–$120/session'],
+    'content-media':    [0, 20,  'Most student content earns through sponsorship/ads, not direct sales'],
+    'event-experience': [5, 60,  'Most student events charge $5–$60 per person'],
+    'marketplace':      [0, 50,  'Marketplace platforms typically charge commission, not a flat price'],
+};
+const _PAGE_ARCHETYPE = {{ ('"' ~ archetype ~ '"') | safe if archetype else 'null' }};
+function checkPriceSanity(val) {
+    const hint = document.getElementById('priceSanityHint');
+    if (!hint) return;
+    const price = parseFloat(val);
+    if (!val || isNaN(price)) { hint.style.display = 'none'; return; }
+    const range = _ARCHETYPE_PRICE_RANGES[_PAGE_ARCHETYPE];
+    if (!range) { hint.style.display = 'none'; return; }
+    const [lo, hi, msg] = range;
+    if (price > hi * 3) {
+        hint.style.display = '';
+        hint.style.cssText = 'display:block;margin-top:6px;font-size:0.72rem;padding:6px 10px;border-radius:8px;line-height:1.5;background:rgba(248,113,113,0.1);color:#F87171;border:1px solid rgba(248,113,113,0.2)';
+        hint.textContent = '⚠️ $' + price + ' seems very high for this type of business. ' + msg + '. Is that realistic for your customers?';
+    } else if (price < lo * 0.3 && price > 0) {
+        hint.style.display = '';
+        hint.style.cssText = 'display:block;margin-top:6px;font-size:0.72rem;padding:6px 10px;border-radius:8px;line-height:1.5;background:rgba(255,217,61,0.08);color:#FFD93D;border:1px solid rgba(255,217,61,0.2)';
+        hint.textContent = '💡 $' + price + ' seems very low. ' + msg + '. Make sure you\'re covering your costs!';
+    } else {
+        hint.style.display = 'none';
+    }
+}
+
+const _RADAR_AXES = ['Passion','Energy','Gold','Influence','Knowledge','Target'];
+let _radarData = _RADAR_AXES.map(k => RADAR[k] || 0);
+let _miniChart  = null;
+
+// Item 14 – Restore Mentor panel state on load
+if (localStorage.getItem('lrnbiz_money_rs_open') === '1') {
+    const _rtRestore = document.querySelector('.rt-toggle input[type="checkbox"]');
+    const _rvRestore = document.getElementById('researchView');
+    const _kvRestore = document.getElementById('kidView');
+    if (_rtRestore && _rvRestore && _kvRestore) {
+        _rtRestore.checked = true;
+        _rvRestore.style.display = '';
+        _kvRestore.style.display = 'none';
+        const _hybBtnRestore = document.querySelector('.rs-tab[onclick*="hybrid"]');
+        if (_hybBtnRestore) switchRsTab(_hybBtnRestore, 'hybrid');
+    }
+}
+
+function _axisColors(data) {
+    return data.map(v => v >= 70 ? '#34D399' : v >= 40 ? '#FFD93D' : v > 0 ? '#FF6B6B' : 'rgba(255,255,255,0.15)');
+}
+
+function initMiniRadar() {
+    const hasData = _radarData.some(v => v > 0);
+    document.getElementById('miniRadarChart').style.display       = hasData ? '' : 'none';
+    document.getElementById('miniRadarPlaceholder').style.display = hasData ? 'none' : '';
+    if (!hasData) return;
+    // Start at zero so the radar visibly animates in on page load
+    _miniChart = new Chart(document.getElementById('miniRadarChart'), {
+        type: 'radar',
+        data: {
+            labels: _RADAR_AXES,
+            datasets: [{
+                data: _RADAR_AXES.map(() => 0),
+                backgroundColor: 'rgba(251,146,60,0.08)',
+                borderColor: '#FB923C',
+                borderWidth: 2,
+                pointRadius: 4,
+                pointBackgroundColor: _axisColors(_radarData),
+                pointBorderColor: 'rgba(9,9,15,0.6)',
+                pointBorderWidth: 1,
+            }]
+        },
+        options: {
+            responsive: true, animation: {duration: 400},
+            scales: { r: {
+                min: 0, max: 100,
+                ticks: { display: false },
+                grid:        { color: 'rgba(255,255,255,0.07)' },
+                angleLines:  { color: 'rgba(255,255,255,0.1)' },
+                pointLabels: { color: 'rgba(240,239,244,0.7)', font: { size: 9, weight: '900', family: "'Nunito',sans-serif" } }
+            }},
+            plugins: { legend: { display: false } }
+        }
+    });
+    // Animate in to the real saved values
+    setTimeout(() => pulseRadar(_miniChart, _radarData, _axisColors), 120);
+}
+
+function updateMiniRadar(radarObj) {
+    if (!radarObj) return;
+    const axIdx = {Passion:0, Energy:1, Gold:2, Influence:3, Knowledge:4, Target:5};
+    let changed = false; let boostedAxis = null;
+    Object.entries(radarObj).forEach(([k, v]) => {
+        const i = axIdx[k];
+        if (i !== undefined && v > _radarData[i]) { _radarData[i] = v; changed = true; boostedAxis = k; }
+    });
+    if (!changed) return;
+    if (!_miniChart) { initMiniRadar(); return; }
+    document.getElementById('miniRadarChart').style.display       = '';
+    document.getElementById('miniRadarPlaceholder').style.display = 'none';
+    _miniChart.data.datasets[0].data = [..._radarData];
+    _miniChart.data.datasets[0].pointBackgroundColor = _axisColors(_radarData);
+    _miniChart.update('active');
+    if (boostedAxis) {
+        const toast = document.getElementById('radarAxisToast');
+        if (toast) {
+            toast.textContent = '💰 ' + boostedAxis + ' axis updated!';
+            toast.classList.add('show');
+            clearTimeout(toast._t);
+            toast._t = setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+    }
+}
+
+initMiniRadar();
+
+/* ── Live radar: set absolute values (allows decreasing) ── */
+function setLiveRadar(radarObj) {
+    if (!radarObj) return;
+    const axes = ['Passion','Energy','Gold','Influence','Knowledge','Target'];
+    const newData = axes.map(k => Math.max(0, Math.min(100, radarObj[k] || 0)));
+    _radarData = newData;
+    if (!_miniChart) { initMiniRadar(); return; }
+    document.getElementById('miniRadarChart').style.display = '';
+    document.getElementById('miniRadarPlaceholder').style.display = 'none';
+    _miniChart.data.datasets[0].data = [..._radarData];
+    _miniChart.data.datasets[0].pointBackgroundColor = _axisColors(_radarData);
+    _miniChart.update('active');
+}
+
+/* ── Ch4 live radar: boosts Gold as student fills money fields ── */
+function computeLiveRadar() {
+    const price   = parseFloat((document.getElementById('sellPriceField') || {}).value) || 0;
+    const cost    = parseFloat((document.getElementById('unitCost')       || {}).value) || 0;
+    const startup = parseFloat((document.getElementById('startupCost')    || {}).value) || 0;
+    const sales   = parseFloat((document.getElementById('monthlyUnits')   || {}).value) || 0;
+    let goldExtra = 0;
+    if (price > 0)    goldExtra += 8;
+    if (cost > 0)     goldExtra += 5;
+    if (price > cost) goldExtra += 12;
+    const margin = price > 0 ? (price - cost) / price : 0;
+    if (margin >= 0.4) goldExtra += 8;
+    if (margin >= 0.6) goldExtra += 8;
+    if (startup > 0)  goldExtra += 5;
+    if (sales > 0)    goldExtra += 5;
+    return {
+        Passion:   RADAR.Passion   || 0,
+        Energy:    RADAR.Energy    || 0,
+        Gold:      Math.min(100, (RADAR.Gold || 0) + goldExtra),
+        Influence: RADAR.Influence || 0,
+        Knowledge: RADAR.Knowledge || 0,
+        Target:    RADAR.Target    || 0,
+    };
+}
+
+let _liveRadarTimer = null;
+function scheduleLiveRadarUpdate() {
+    clearTimeout(_liveRadarTimer);
+    _liveRadarTimer = setTimeout(() => setLiveRadar(computeLiveRadar()), 300);
+}
+
+// Wire live radar to all money input fields
+(function() {
+    ['sellPriceField','unitCost','startupCost','monthlyUnits'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', scheduleLiveRadarUpdate);
+    });
+    scheduleLiveRadarUpdate();
+})();
+
+// Pill selectors
+document.querySelectorAll('.pill-row').forEach(row => {
+    const field = row.dataset.field;
+    row.querySelectorAll('.pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+            row.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('f-' + field).value = btn.dataset.val;
+            answers[field] = btn.dataset.val;
+            updateLiveDebounced();
+            _triggerAutoSave();
+        });
+    });
+});
+
+// Seed answers from saved server values on page load
+(function() {
+    const initMap = {
+        startup_cost:   document.getElementById('startupCost'),
+        unit_cost:      document.getElementById('unitCost'),
+        monthly_units:  document.getElementById('monthlyUnits'),
+        profit_plan:    document.getElementById('f-profit_plan'),
+        has_contingency:document.getElementById('f-has_contingency'),
+    };
+    Object.entries(initMap).forEach(([key, el]) => {
+        if (el && el.value) answers[key] = el.value;
+    });
+    // Always trigger live update on load so stale cost/price values are shown immediately
+    if (answers.unit_cost || answers.startup_cost || answers.monthly_units) updateLiveDebounced();
+
+    // Warn if unit_cost looks like it might be a stale wrong value (e.g. typed video count there before)
+    const _costEl = document.getElementById('unitCost');
+    const _unitsEl = document.getElementById('monthlyUnits');
+    if (_costEl && _unitsEl && _costEl.value && _unitsEl.value) {
+        const _cv = parseFloat(_costEl.value), _uv = parseFloat(_unitsEl.value);
+        if (_cv > 0 && _uv > 0 && Math.abs(_cv - _uv) < 1) {
+            const _w = document.createElement('div');
+            _w.id = 'costStalWarn';
+            _w.style.cssText = 'margin-top:6px;font-size:0.72rem;color:#FFD93D;font-weight:700;padding:5px 10px;background:rgba(255,217,61,0.08);border-radius:8px';
+            _w.textContent = '⚠️ Your cost (' + _costEl.value + ') equals your unit count (' + _unitsEl.value + ') — did you accidentally type your quantity in the cost field? Fix the cost per unit.';
+            _costEl.parentNode.insertBefore(_w, _costEl.nextSibling);
+        }
+    }
+})();
+
+// Number inputs
+['startupCost','unitCost','monthlyUnits'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', function() {
+        answers[this.name] = this.value;
+        updateLiveDebounced();
+        _triggerAutoSave();
+    });
+});
+// sell_price is the single source of truth for price — mirrors into unit_price hidden field
+const sellPriceField = document.getElementById('sellPriceField');
+if (sellPriceField) {
+    sellPriceField.addEventListener('input', function() {
+        answers['sell_price'] = this.value;
+        answers['unit_price'] = this.value;
+        document.getElementById('unitPrice').value = this.value;
+        updateLiveDebounced();
+        _triggerAutoSave();
+    });
+    if (sellPriceField.value) {
+        answers['sell_price'] = sellPriceField.value;
+        answers['unit_price'] = sellPriceField.value;
+        document.getElementById('unitPrice').value = sellPriceField.value;
+    }
+}
+
+// C6-16: Debounce live calculator (300ms)
+// var (not let) — var hoists so updateLiveDebounced() can be called during
+// page init before this line is reached. let here causes a TDZ ReferenceError
+// that kills all subsequent JS (event listeners never attach, page goes dead).
+var _liveTimer = null;
+function updateLiveDebounced() { clearTimeout(_liveTimer); _liveTimer = setTimeout(updateLive, 300); }
+
+function updateLive() {
+    // Show hint when user has entered cost and price
+    if (answers.unit_cost && answers.unit_price) {
+        const h = document.getElementById('validateHint');
+        if (h) h.style.display = '';
+    }
+    // Cost floor validation
+    const costInput = document.getElementById('unitCost');
+    const floorWarn = document.getElementById('costFloorWarn');
+    if (costInput && floorWarn) {
+        const floor = parseFloat(costInput.dataset.floor || 0);
+        const costVal = parseFloat(costInput.value || 0);
+        if (floor > 0 && costVal > 0 && costVal < floor) {
+            floorWarn.style.display = '';
+        } else {
+            floorWarn.style.display = 'none';
+        }
+    }
+    const startup  = parseFloat(answers.startup_cost || 0);
+    const cost     = parseFloat(answers.unit_cost    || 0);
+    const price    = parseFloat(answers.sell_price   || answers.unit_price || 0);
+    const units    = parseFloat(answers.monthly_units || 0);
+    const revenue  = price * units;
+    const costs    = cost  * units;
+    const profit   = revenue - costs;
+    const beRaw    = profit > 0 ? startup / profit : null;
+
+    document.getElementById('liveRevenue').textContent   = '$' + revenue.toFixed(2);
+    document.getElementById('liveCosts').textContent     = '$' + costs.toFixed(2);
+    const profitEl = document.getElementById('liveProfit');
+    profitEl.textContent  = (profit >= 0 ? '+' : '') + '$' + profit.toFixed(2);
+    profitEl.style.color  = profit > 0 ? '#34D399' : '#FF4444';
+
+    // C6-17: Friendly break-even display
+    const beEl = document.getElementById('liveBreakeven');
+    if (beRaw === null) {
+        beEl.textContent = '∞ months';
+    } else if (beRaw <= 0) {
+        beEl.textContent = 'Already profitable!';
+    } else {
+        const lo = Math.floor(beRaw), hi = Math.ceil(beRaw);
+        const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        const now = new Date();
+        const targetMonth = MONTHS[(now.getMonth() + Math.round(beRaw)) % 12];
+        beEl.textContent = lo === hi ? `~${lo} month${lo>1?'s':''}` : `About ${lo}–${hi} months (around ${targetMonth})`;
+    }
+
+    if (price > 0 && cost > 0) {
+        const margin = document.getElementById('marginDisplay');
+        const pct = ((price - cost) / price * 100).toFixed(0);
+        margin.textContent = `Margin: ${pct}% · Profit per unit: $${(price - cost).toFixed(2)}`;
+        margin.style.color = price > cost ? '#34D399' : '#FF4444';
+        // Per-sale visual breakdown
+        const perProfit = price - cost;
+        const psBd = document.getElementById('perSaleBreakdown');
+        if (psBd) {
+            psBd.style.display = '';
+            document.getElementById('psPrice').textContent  = '$' + price.toFixed(2);
+            document.getElementById('psProfit').textContent = (perProfit >= 0 ? '+' : '') + '$' + perProfit.toFixed(2);
+            document.getElementById('psCost').textContent   = '$' + cost.toFixed(2);
+            const costPct = Math.min(100, Math.max(0, (cost / price) * 100));
+            document.getElementById('psCostBar').style.width   = costPct + '%';
+            document.getElementById('psProfitBar').style.width = (100 - costPct) + '%';
+            document.getElementById('psProfitBar').style.background = perProfit > 0 ? '#34D399' : '#F87171';
+        }
+        // Live price suggestion in the pricing guide
+        const ps = document.getElementById('priceSuggestion');
+        if (ps && cost > 0) {
+            const sug2x = (cost * 2).toFixed(2);
+            const sug3x = (cost * 3).toFixed(2);
+            const verdict = price < cost ? '❌ You\'re losing money! Raise your price.' : price < cost * 1.5 ? '⚠️ Very thin margin — aim for at least 2× your cost.' : price >= cost * 2 ? `✅ Good! At $${price.toFixed(2)} you make $${perProfit.toFixed(2)} per sale.` : `👍 OK start — consider raising to $${sug2x}–$${sug3x} for a stronger margin.`;
+            ps.textContent = verdict;
+            ps.style.display = '';
+            ps.style.color = price >= cost * 2 ? '#34D399' : price < cost ? '#F87171' : '#FFD93D';
+        }
+        // Live Gold radar boost — handled by computeLiveRadar() / scheduleLiveRadarUpdate()
+        scheduleLiveRadarUpdate();
+
+        // C6-19: Cost vs price comparison indicator
+        const cpi = document.getElementById('costPriceIndicator');
+        if (cpi) {
+            cpi.style.display = '';
+            if (cost > price) {
+                cpi.style.cssText = 'display:block;margin-top:6px;font-size:0.78rem;padding:6px 10px;border-radius:8px;font-weight:700;background:rgba(248,113,113,0.1);color:#F87171';
+                cpi.textContent = `⚠️ Cost $${cost.toFixed(2)} → Price $${price.toFixed(2)} — you're selling at a loss! Raise your price or lower your cost.`;
+            } else {
+                cpi.style.cssText = 'display:block;margin-top:6px;font-size:0.78rem;padding:6px 10px;border-radius:8px;font-weight:700;background:rgba(52,211,153,0.08);color:#34D399';
+                cpi.textContent = `✅ Cost $${cost.toFixed(2)} → Price $${price.toFixed(2)} — you're making $${(price-cost).toFixed(2)} per unit!`;
+            }
+        }
+    }
+
+    // C6-18: Contingency example (dynamic based on startup cost)
+    if (startup > 0) {
+        const startEl = document.getElementById('contExStartup');
+        const buffEl  = document.getElementById('contExBuffer');
+        if (startEl) startEl.textContent = '$' + startup.toFixed(0);
+        if (buffEl)  buffEl.textContent  = '$' + (startup * 0.2).toFixed(0);
+    }
+
+    // C7-11: Plain English startup cost translation
+    const sctEl = document.getElementById('startupCostTranslation');
+    if (sctEl && startup > 0) {
+        sctEl.style.display = '';
+        const unitsToCover = cost > 0 && price > cost ? Math.ceil(startup / (price - cost)) : null;
+        sctEl.textContent = unitsToCover ? `= You need to sell about ${unitsToCover} units just to get your startup money back.` : `= This is everything you spend before your first sale.`;
+    } else if (sctEl) { sctEl.style.display = 'none'; }
+
+    // C7-13: Break-even plain English
+    const beExpEl = document.getElementById('breakevenExplain');
+    if (beExpEl && beRaw !== null && beRaw > 0) {
+        beExpEl.style.display = '';
+        beExpEl.textContent = `After ~${Math.ceil(beRaw)} month${Math.ceil(beRaw)>1?'s':''} you'll have earned back everything you spent to start. After that, it's pure profit! 🎉`;
+    } else if (beExpEl) { beExpEl.style.display = 'none'; }
+
+    // C7-16: MVP price floor visual
+    const mvpEl = document.getElementById('mvpPriceFloor');
+    if (mvpEl && cost > 0 && price > 0) {
+        mvpEl.style.display = '';
+        const maxScale = price * 1.5;
+        const floorPct = Math.min(100, (cost / maxScale) * 100);
+        const pricePct = Math.min(100, (price / maxScale) * 100);
+        document.getElementById('mvpFloorBar').style.width  = floorPct + '%';
+        document.getElementById('mvpPriceBar').style.width  = pricePct + '%';
+        document.getElementById('mvpFloorLabel').textContent = `Floor: $${cost.toFixed(2)} · Your price: $${price.toFixed(2)}`;
+        document.getElementById('mvpFloorLabel').style.color = price <= cost ? '#F87171' : '#34D399';
+    } else if (mvpEl) { mvpEl.style.display = 'none'; }
+
+    // C7-20: Revenue benchmark hint
+    const benchEl = document.getElementById('revenueBenchmark');
+    if (benchEl && revenue > 0) {
+        benchEl.style.display = '';
+        if (revenue < 50) {
+            benchEl.innerHTML = '📊 <em>Benchmark: $50–200/month is typical for a first school business. Could you sell more units?</em>';
+            benchEl.style.color = '#FFD93D';
+        } else if (revenue <= 200) {
+            benchEl.innerHTML = '📊 <em>Great range! $50–200/month is typical for a first venture — you\'re on track!</em>';
+            benchEl.style.color = '#34D399';
+        } else {
+            benchEl.innerHTML = '📊 <em>Impressive target! Make sure your sales plan is realistic — even amazing businesses start small.</em>';
+            benchEl.style.color = '#A78BFA';
+        }
+    } else if (benchEl) {
+        benchEl.style.display = 'none';
+    }
+}
+
+// C6-21: Scenario A/B comparison
+const _scenarios = { A: null, B: null };
+function _getScenarioLabel(s) {
+    return `Price: $${parseFloat(s.unit_price||0).toFixed(2)} · Cost: $${parseFloat(s.unit_cost||0).toFixed(2)} · Units: ${s.monthly_units||0}/mo → Profit: $${((parseFloat(s.unit_price||0)-parseFloat(s.unit_cost||0))*parseFloat(s.monthly_units||0)).toFixed(2)}/mo`;
+}
+function _renderScenarios() {
+    const cmp = document.getElementById('scenarioCompare');
+    if (!_scenarios.A && !_scenarios.B) { if (cmp) cmp.style.display = 'none'; return; }
+    if (cmp) cmp.style.display = '';
+    const aEl = document.getElementById('scenarioAText');
+    const bEl = document.getElementById('scenarioBText');
+    const winEl = document.getElementById('scenarioWinner');
+    if (aEl) aEl.textContent = _scenarios.A ? _getScenarioLabel(_scenarios.A) : '—';
+    if (bEl) bEl.textContent = _scenarios.B ? _getScenarioLabel(_scenarios.B) : '—';
+    if (winEl && _scenarios.A && _scenarios.B) {
+        const profA = (parseFloat(_scenarios.A.unit_price||0)-parseFloat(_scenarios.A.unit_cost||0))*parseFloat(_scenarios.A.monthly_units||0);
+        const profB = (parseFloat(_scenarios.B.unit_price||0)-parseFloat(_scenarios.B.unit_cost||0))*parseFloat(_scenarios.B.monthly_units||0);
+        winEl.textContent = profA > profB ? '🏆 Scenario A has higher profit!' : profB > profA ? '🏆 Scenario B has higher profit!' : '🤝 Both scenarios earn the same profit.';
+    } else if (winEl) { winEl.textContent = ''; }
+}
+document.getElementById('saveScenarioA').addEventListener('click', () => {
+    _scenarios.A = Object.assign({}, answers);
+    _renderScenarios();
+    SoundFX.pick();
+    document.getElementById('saveScenarioA').textContent = '✅ Scenario A saved!';
+    setTimeout(() => { document.getElementById('saveScenarioA').textContent = '💾 Save as Scenario A'; }, 2000);
+});
+document.getElementById('saveScenarioB').addEventListener('click', () => {
+    _scenarios.B = Object.assign({}, answers);
+    _renderScenarios();
+    SoundFX.pick();
+    document.getElementById('saveScenarioB').textContent = '✅ Scenario B saved!';
+    setTimeout(() => { document.getElementById('saveScenarioB').textContent = '💾 Save as Scenario B'; }, 2000);
+});
+
+// C7-12: What If? exploration mode
+function _whatIf(type, multiplier) {
+    const cost  = parseFloat(answers.unit_cost   || 0);
+    const price = parseFloat(answers.unit_price  || 0);
+    const units = parseFloat(answers.monthly_units || 0);
+    let newRevenue, newProfit, label;
+    if (type === 'units') {
+        const newUnits = units * multiplier;
+        newRevenue = price * newUnits;
+        newProfit  = (price - cost) * newUnits;
+        label = `2× sales (${Math.round(newUnits)} units/mo)`;
+    } else if (type === 'price') {
+        const newPrice = price * multiplier;
+        newRevenue = newPrice * units;
+        newProfit  = (newPrice - cost) * units;
+        label = `Price raised to $${newPrice.toFixed(2)}`;
+    } else {
+        const newCost = cost * multiplier;
+        newRevenue = price * units;
+        newProfit  = (price - newCost) * units;
+        label = `Cost cut to $${newCost.toFixed(2)}`;
+    }
+    const res = document.getElementById('whatIfResult');
+    if (res) {
+        res.style.display = '';
+        const profitChange = newProfit - (price - cost) * units;
+        res.textContent = `${label} → Revenue: $${newRevenue.toFixed(2)}/mo · Profit: $${newProfit.toFixed(2)}/mo (${profitChange >= 0 ? '+' : ''}$${profitChange.toFixed(2)} vs now)`;
+    }
+}
+function _whatIfReset() {
+    const res = document.getElementById('whatIfResult');
+    if (res) res.style.display = 'none';
+}
+
+// C7-15: Profit plan consequence
+document.addEventListener('DOMContentLoaded', function() {
+    const ppRow = document.querySelector('.pill-row[data-field="profit_plan"]');
+    if (!ppRow) return;
+    ppRow.addEventListener('click', function(e) {
+        const btn = e.target.closest('[data-val]');
+        if (!btn) return;
+        const val = btn.dataset.val;
+        const profit = (parseFloat(answers.unit_price||0) - parseFloat(answers.unit_cost||0)) * parseFloat(answers.monthly_units||0);
+        const ppDiv = document.getElementById('profitPlanConsequence');
+        if (!ppDiv) return;
+        const msgs = {
+            'Reinvest 20%+ back in': profit > 0 ? `💡 If your monthly profit is $${profit.toFixed(0)}, reinvesting 20% = $${(profit*0.2).toFixed(0)}/month back into the business. After 6 months: $${(profit*0.2*6).toFixed(0)} extra to grow with!` : '💡 Enter your numbers above to see what 20% reinvestment looks like.',
+            'Save it all': profit > 0 ? `💰 Saving $${profit.toFixed(0)}/month means $${(profit*6).toFixed(0)} saved after 6 months — great financial discipline!` : '💡 Fill in your numbers to see your saving potential.',
+            'Split: save + spend': profit > 0 ? `🎯 Smart balance! Half saved ($${(profit/2).toFixed(0)}/mo) + half to enjoy. Best of both worlds!` : '💡 Fill in your numbers above first.',
+            'Spend it all': `⚠️ Spending all your profit means $0 left to grow your business. What happens when something breaks or you need more supplies?`
+        };
+        ppDiv.textContent = msgs[val] || '';
+        ppDiv.style.display = msgs[val] ? '' : 'none';
+        ppDiv.style.color = val === 'Spend it all' ? '#F87171' : val === 'Reinvest 20%+ back in' ? '#34D399' : 'rgba(240,239,244,0.7)';
+    });
+});
+
+// Item 29 – Auto-save (debounced 800ms)
+let _autoSaveTimer = null;
+function _triggerAutoSave() {
+    clearTimeout(_autoSaveTimer);
+    const _ind = document.getElementById('autoSaveIndicator');
+    if (_ind) _ind.textContent = '💾 Saving…';
+    _autoSaveTimer = setTimeout(() => {
+        try { localStorage.setItem('lrnbiz_money_draft', JSON.stringify(answers)); } catch(e) {}
+        if (_ind) { _ind.textContent = '✅ Saved'; setTimeout(() => { _ind.textContent = ''; }, 2000); }
+    }, 800);
+}
+
+// Item 17 – Grade bands
+function _scoreBand(s) {
+    if (s >= 80) return {label:'🏆 Excellent', color:'#34D399'};
+    if (s >= 60) return {label:'👍 Good', color:'#A78BFA'};
+    if (s >= 40) return {label:'📚 Developing', color:'#FFD93D'};
+    return {label:'🌱 Early Stage', color:'var(--muted)'};
+}
+
+function renderTruthBar(id, score) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (score === null || score === undefined) { el.innerHTML = ''; return; }
+    const cls = score >= 70 ? 'truth-fill--green' : score >= 40 ? 'truth-fill--yellow' : 'truth-fill--red';
+    // C6-46: ARIA progressbar
+    el.setAttribute('role', 'progressbar');
+    el.setAttribute('aria-valuenow', score);
+    el.setAttribute('aria-valuemin', '0');
+    el.setAttribute('aria-valuemax', '100');
+    el.setAttribute('aria-label', 'Plan Strength: ' + score + ' out of 100');
+    el.innerHTML = `
+        <div class="truth-bar-label">📊 Plan Strength <span class="truth-val">${score}/100</span></div>
+        <div class="truth-track"><div class="truth-fill ${cls}" style="width:${score}%"></div></div>
+        <div class="truth-desc">${score >= 70 ? '💪 Strong plan — AI and rules agree!' : score >= 40 ? '🔧 Getting there — check the Rules tab for tips' : '📈 Needs work — Rules tab has your next steps'}</div>`;
+}
+
+// Item 7 – Next chapter CTA
+function MONEY_NEXT_showNextCTA() {
+    if (document.getElementById('nextChapterBar')) return;
+    const _b = document.createElement('div');
+    _b.id = 'nextChapterBar';
+    _b.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:9000;background:linear-gradient(90deg,#A78BFA,#34D399);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;font-family:Nunito,sans-serif;font-weight:900;font-size:0.9rem;color:#09090F;gap:10px';
+    _b.innerHTML = '🎉 Numbers look good! Ready for the next step? <a href="/discovery" style="background:#09090F;color:#A78BFA;padding:6px 16px;border-radius:99px;text-decoration:none;font-size:0.85rem;white-space:nowrap" onclick="document.getElementById(\'nextChapterBar\').remove()">🔍 Discovery →</a><button onclick="document.getElementById(\'nextChapterBar\').remove()" style="background:none;border:none;color:#09090F;opacity:0.6;cursor:pointer;font-size:1rem">✕</button>';
+    document.body.appendChild(_b);
+}
+
+// Item 22 – Confetti
+function _launchConfetti() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const _cols = ['#A78BFA','#34D399','#FFD93D','#F87171','#60A5FA'];
+    for (let _i = 0; _i < 55; _i++) {
+        const _el = document.createElement('div');
+        _el.className = 'confetti-dot';
+        _el.style.left = (Math.random() * 100) + 'vw';
+        _el.style.animationDelay = (Math.random() * 0.5) + 's';
+        _el.style.animationDuration = (1.2 + Math.random() * 1.5) + 's';
+        _el.style.background = _cols[Math.floor(Math.random() * _cols.length)];
+        const _sz = (6 + Math.random() * 6) + 'px';
+        _el.style.width = _el.style.height = _sz;
+        document.body.appendChild(_el);
+        setTimeout(() => _el.remove(), 3000);
+    }
+}
+
+// Item 28 – XP float
+function _showXpFloat(xp, btn) {
+    const _el = document.createElement('div'); _el.className = 'xp-float';
+    _el.textContent = '+' + Math.round(xp) + ' XP';
+    const _r = btn ? btn.getBoundingClientRect() : {left:100,top:200,width:100};
+    _el.style.left = (_r.left + _r.width/2 - 20) + 'px';
+    _el.style.top = (_r.top + window.scrollY - 10) + 'px';
+    document.body.appendChild(_el); setTimeout(() => _el.remove(), 1500);
+}
+
+document.getElementById('validateBtn').addEventListener('click', async () => {
+    const btn = document.getElementById('validateBtn');
+    // Wrap EVERYTHING in try/finally so btn.disabled is always restored,
+    // even if code before the inner try block throws.
+    let _slowT = null;
+    let _timeout = null;
+    try {
+    btn.textContent = '⏳ Checking…';
+    btn.disabled = true;
+
+    // Item 25 – Score drop: capture previous score
+    const _prevScore = parseInt(localStorage.getItem('lrnbiz_money_score') || '0');
+
+    // Item 45 – Loading state
+    const _hEl = document.getElementById('hybridLlmBox');
+    const _pEl = document.getElementById('pureLlmBox');
+    if (_hEl) _hEl.innerHTML = '<span style="color:var(--muted);font-size:0.78rem">⏳ Asking your AI mentor… (usually 5–10 seconds)</span>';
+    if (_pEl) _pEl.innerHTML = '<span style="color:var(--muted);font-size:0.78rem">⏳ Running AI Optimist check…</span>';
+    const _rtIn2 = document.querySelector('.rt-toggle input[type="checkbox"]');
+    if (_rtIn2 && !_rtIn2.checked) { _rtIn2.checked = true; const _rv2 = document.getElementById('researchView'); if (_rv2) _rv2.style.display = ''; const _kv2 = document.getElementById('kidView'); if (_kv2) _kv2.style.display = 'none'; }
+    const _hybTab2 = document.querySelectorAll('.rs-tab')[2]; if (_hybTab2) switchRsTab(_hybTab2, 'hybrid');
+    _slowT = setTimeout(() => { const _ht = document.getElementById('hybridLlmBox'); if (_ht && _ht.textContent.includes('Asking')) _ht.innerHTML = '<span style="color:var(--muted);font-size:0.78rem">🔁 Still waiting — taking a moment more…</span>'; }, 15000);
+
+    if (typeof showAnalysisProgress === 'function') showAnalysisProgress();
+    // C8-29: Skeleton loader
+    const _labPanelM = document.getElementById('labPanel');
+    if (_labPanelM && !document.getElementById('moneySkeleton')) {
+        const _rp = document.getElementById('rsPane-hybrid');
+        if (_rp) _rp.insertAdjacentHTML('afterbegin', `<div id="moneySkeleton" style="padding:12px;animation:skeletonPulse 1.2s ease-in-out infinite"><div style="height:12px;background:rgba(255,255,255,0.07);border-radius:6px;margin-bottom:8px;width:70%"></div><div style="height:10px;background:rgba(255,255,255,0.05);border-radius:6px;margin-bottom:6px;width:90%"></div><div style="height:10px;background:rgba(255,255,255,0.05);border-radius:6px;width:60%"></div></div>`);
+    }
+    const _ctrl = new AbortController();
+    _timeout = setTimeout(() => _ctrl.abort(), 15000);
+    try {
+        const res  = await fetch('/api/validate_money', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({answers, _page_archetype: _PAGE_ARCHETYPE || null}),
+            signal: _ctrl.signal,
+        });
+        clearTimeout(_timeout);
+        if (typeof clearAnalysisProgress === 'function') clearAnalysisProgress();
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+        const _skM = document.getElementById('moneySkeleton');
+        if (_skM) _skM.remove();
+        // C8-28: Scroll results into view on mobile
+        if (_labPanelM) _labPanelM.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+
+        // Item 46 – Graceful failure checks
+        if (!data.hybrid_llm || !data.hybrid_llm.trim()) { const _h = document.getElementById('hybridLlmBox'); if (_h) _h.textContent = '🤖 Your AI mentor is taking a short break — your Rules Check score is still accurate! Try again soon.'; }
+        if (!data.pure_llm || !data.pure_llm.trim()) { const _p = document.getElementById('pureLlmBox'); if (_p) _p.textContent = '🤖 AI Optimist unavailable right now. Rules score is valid!'; }
+
+        updateITSPanel(data);
+        if (data.radar_scores) {
+            const _axes = ['Passion','Energy','Gold','Influence','Knowledge','Target'];
+            _radarData = _axes.map(k => data.radar_scores[k] || 0);
+            if (!_miniChart) { initMiniRadar(); }
+            else {
+                document.getElementById('miniRadarChart').style.display = '';
+                document.getElementById('miniRadarPlaceholder').style.display = 'none';
+                pulseRadar(_miniChart, _radarData, _axisColors);
+            }
+        }
+
+        document.getElementById('submitBtn').disabled = false;
+        document.getElementById('submitBtn').textContent = data.passed
+            ? '✅ Numbers checked! Next: Discovery 🔍 →'
+            : 'Continue anyway →';
+        if (data.passed) SoundFX.win();
+
+        if (data.triple) {
+            const ht = data.triple.hybrid_truth;
+            document.getElementById('mccScore').textContent = ht + '/100';
+            document.getElementById('mccHint').textContent = ht >= 70
+                ? '🌟 Financially solid plan! Great work.'
+                : ht >= 40 ? '💪 Numbers look okay — consider your margins.'
+                : '📚 Review your pricing and costs before moving forward.';
+            document.getElementById('moduleSummary').style.display = '';
+
+            // Item 25 – Save score and check for drop
+            localStorage.setItem('lrnbiz_money_score', String(data.triple.hybrid_truth||0));
+            _analysisRunThisSession = true;
+            const _scoreDrop = _prevScore - (data.triple.hybrid_truth||0);
+
+            // Item 14 – Auto-expand Mentor panel
+            const _rtIn = document.querySelector('.rt-toggle input[type="checkbox"]');
+            if (_rtIn && !_rtIn.checked) {
+                _rtIn.checked = true;
+                const _rv = document.getElementById('researchView');
+                if (_rv) _rv.style.display = '';
+                const _kv = document.getElementById('kidView');
+                if (_kv) _kv.style.display = 'none';
+                localStorage.setItem('lrnbiz_money_rs_open', '1');
+            }
+            const _hybTab = document.querySelectorAll('.rs-tab')[2];
+            if (_hybTab) switchRsTab(_hybTab, 'hybrid');
+
+            renderTruthBar('pureTruth',   data.triple.pure_truth   ?? null);
+            renderTruthBar('hybridTruth', data.triple.hybrid_truth ?? null);
+
+            // Item 17 – Apply grade bands — prefer server-provided (anchored score)
+            const _hb = data.triple?.mentor_band || _scoreBand(data.triple.hybrid_truth);
+            const _hbEl = document.getElementById('rsBandHybrid');
+            if (_hbEl) { _hbEl.textContent = _hb.label; _hbEl.style.color = _hb.color; _hbEl.style.display = ''; }
+            const _pb = data.triple?.pure_band || _scoreBand(data.triple.pure_truth);
+            const _pbEl = document.getElementById('rsBandPure');
+            if (_pbEl) { _pbEl.textContent = _pb.label; _pbEl.style.color = _pb.color; _pbEl.style.display = ''; }
+
+            // Item 19 – Next step CTA
+            const _ns = document.getElementById('rsNextStep');
+            if (_ns) {
+                const _s = data.triple.hybrid_truth;
+                if (_scoreDrop > 2) {
+                    _ns.style.cssText = 'display:block;background:rgba(255,107,107,0.1);color:#FF6B6B;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:0.75rem;line-height:1.6';
+                    _ns.innerHTML = `📉 <strong>Score dropped ${_scoreDrop} pts.</strong> Check the 🐍 Rules Check tab to see what changed.`;
+                } else if (_s >= 80) {
+                    _ns.style.cssText = 'display:block;background:rgba(52,211,153,0.1);color:#34D399;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:0.75rem;line-height:1.6';
+                    _ns.innerHTML = '🎉 <strong>Great Mentor score!</strong><br><a href="/discovery" style="display:inline-block;margin-top:6px;background:#34D399;color:#09090F;padding:4px 12px;border-radius:99px;text-decoration:none;font-weight:900;font-size:0.72rem">🔍 Next: Discovery →</a>';
+                } else if (_s < 60) {
+                    _ns.style.cssText = 'display:block;background:rgba(255,217,61,0.08);color:#FFD93D;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:0.75rem;line-height:1.6';
+                    _ns.innerHTML = '💡 <strong>Here\'s what to improve:</strong> Check the 🐍 Rules Check tab for specific fixes, then re-validate!';
+                } else { _ns.style.display = 'none'; }
+            }
+
+            // Item 22 – Confetti for hybrid_truth >= 70
+            if (data.triple.hybrid_truth >= 90) {
+                if (typeof launchBigConfetti === 'function') launchBigConfetti(data.triple.hybrid_truth);
+            } else if (data.triple.hybrid_truth >= 70) {
+                _launchConfetti();
+            }
+
+            // O10-10: Signal progress page that scores changed
+            localStorage.setItem('lrnbiz_scores_updated', Date.now());
+            // C6-38 / C6-39: Badges and improvement celebration
+            if (typeof checkBadges === 'function') {
+                const _ac = (parseInt(localStorage.getItem('lrnbiz_money_analyses')||'0') + 1);
+                localStorage.setItem('lrnbiz_money_analyses', String(_ac));
+                checkBadges(data.triple.hybrid_truth, (data.triple.pure_truth - data.triple.hybrid_truth), 'money', _ac);
+            }
+            if (typeof checkImprovementCelebration === 'function') checkImprovementCelebration('money', data.triple.hybrid_truth);
+            if (typeof showShareMoment === 'function') showShareMoment('Money Math', data.triple.hybrid_truth);
+            // Gap explainer
+            if (typeof renderGapExplainer === 'function') {
+                renderGapExplainer('moneyGapExplainer', data.triple.pure_truth, data.triple.hybrid_truth, data.violations);
+            }
+
+            // Item 7 – Show next chapter bar if score >= 60 or passed
+            if (data.triple.hybrid_truth >= 60) MONEY_NEXT_showNextCTA();
+
+            // Item 28 – XP float
+            _showXpFloat(Math.round((data.triple.hybrid_truth||0)*2.4), document.getElementById('validateBtn'));
+        }
+
+        // Item 23 – Growth mindset: show after every validate
+        const _gh = document.getElementById('rsGrowthHint');
+        if (_gh) _gh.style.display = '';
+
+        // C8-18: End-of-chapter reflection question
+        if (!document.getElementById('reflectionBox')) {
+            const _rflDiv = document.createElement('div');
+            _rflDiv.id = 'reflectionBox';
+            _rflDiv.style.cssText = 'margin-top:14px;padding:12px 14px;background:rgba(255,217,61,0.07);border:1px solid rgba(255,217,61,0.2);border-radius:12px';
+            _rflDiv.innerHTML = `<div style="font-size:0.75rem;font-weight:900;color:var(--yellow);margin-bottom:6px">🤔 Reflection: What surprised you about the numbers?</div><textarea id="rflText" placeholder="e.g. I didn't realise how much startup costs would eat into my profit — I need to rethink my pricing…" rows="3" maxlength="200" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.04);border:1px solid rgba(255,217,61,0.2);border-radius:8px;color:var(--text);font-size:0.75rem;padding:8px;resize:none;outline:none"></textarea><div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px"><span id="rflCount" style="font-size:0.65rem;color:var(--muted)">0/200</span><button type="button" id="rflSaveBtn" style="font-size:0.72rem;font-weight:800;background:rgba(255,217,61,0.15);border:1px solid rgba(255,217,61,0.35);color:var(--yellow);border-radius:8px;padding:4px 12px;cursor:pointer">Save reflection</button></div><div id="rflMsg" style="display:none;font-size:0.7rem;margin-top:4px;color:#34D399">✅ Saved!</div>`;
+            const _moneyForm = document.getElementById('moneyForm');
+            if (_moneyForm) _moneyForm.appendChild(_rflDiv);
+            document.getElementById('rflText').addEventListener('input', function(){document.getElementById('rflCount').textContent=this.value.length+'/200';});
+            document.getElementById('rflSaveBtn').addEventListener('click', async function(){
+                const txt = document.getElementById('rflText').value.trim();
+                if (!txt) return;
+                try {
+                    await fetch('/api/save_reflection',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chapter:'money',text:txt})});
+                    document.getElementById('rflMsg').style.display='';
+                    setTimeout(()=>{document.getElementById('rflMsg').style.display='none';},2500);
+                } catch(e){}
+            });
+        }
+
+    } catch(e) {
+        clearTimeout(_timeout);
+        if (typeof clearAnalysisProgress === 'function') clearAnalysisProgress();
+        // C7-47: Offline-friendly error message
+        if (!navigator.onLine || e.name === 'TypeError') {
+            if (typeof showOfflineToast === 'function') showOfflineToast();
+        }
+        const msg = e.name === 'AbortError'
+            ? '⏱ Taking longer than usual. Try again?'
+            : `❌ ${e.message}`;
+        const _rvEl = document.getElementById('rsViolations');
+        if (_rvEl) _rvEl.innerHTML = `<div style="color:#FF6B6B">${msg}</div>`;
+        // Item 46 – catch: show error in panels
+        const _hErr = document.getElementById('hybridLlmBox');
+        if (_hErr && _hErr.textContent.includes('Asking')) _hErr.innerHTML = '<span style="color:#FF6B6B;font-size:0.78rem">❌ Could not reach AI mentor. Your Rules Check score is still valid!</span>';
+        const _pErr = document.getElementById('pureLlmBox');
+        if (_pErr && _pErr.textContent.includes('Running')) _pErr.innerHTML = '<span style="color:#FF6B6B;font-size:0.78rem">❌ AI Optimist unavailable. Try again soon.</span>';
+    } finally {
+        clearTimeout(_slowT);
+        // Always re-enable the button — even if catch block threw
+        btn.textContent = '🔬 Run Analysis';
+        btn.disabled = false;
+        const _lbr = document.getElementById('analyseLabBtn'); if (_lbr) { _lbr.textContent = '🔬 Run Analysis'; _lbr.disabled = false; _lbr.classList.remove('lab-btn-run--remind'); }
+    }
+    // Close the outer try that wraps the entire handler
+    } catch(_outerErr) {
+        // Show the crash so we can see exactly what failed
+        const _errD = document.createElement('div');
+        _errD.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#c00;color:#fff;padding:10px 16px;font-size:0.82rem;font-weight:700;font-family:monospace;word-break:break-all';
+        _errD.textContent = 'CLICK ERROR: ' + (_outerErr && _outerErr.message ? _outerErr.message : String(_outerErr));
+        document.body.appendChild(_errD);
+        setTimeout(() => _errD.remove(), 8000);
+    } finally {
+        if (_slowT) clearTimeout(_slowT);
+        if (_timeout) clearTimeout(_timeout);
+        btn.textContent = '🔬 Run Analysis';
+        btn.disabled = false;
+        const _lbr = document.getElementById('analyseLabBtn'); if (_lbr) { _lbr.textContent = '🔬 Run Analysis'; _lbr.disabled = false; _lbr.classList.remove('lab-btn-run--remind'); }
+    }
+});
+
+// Item 7 – Show next CTA on form submit too
+document.getElementById('moneyForm').addEventListener('submit', () => {
+    _pageDirty = false;
+    MONEY_NEXT_showNextCTA();
+});
+
+function setBattery(pct) {
+    const _batSec = document.getElementById('batSection');
+    if (!_batSec) return;
+    _batSec.style.display = '';
+    const fill = document.getElementById('batFill');
+    fill.style.width = pct + '%';
+    fill.style.background = pct < 40 ? '#FF6B6B' : pct < 70 ? '#FFD93D' : '#34D399';
+    document.getElementById('batStatus').textContent = pct < 40 ? '🔴 Numbers need work' : pct < 70 ? '🟡 Getting viable' : '🟢 Financially solid!';
+    document.getElementById('batLabel').textContent = `Financial strength: ${pct}%`;
+}
+
+function updateITSPanel(data) {
+    if (data.symbolic_score !== undefined) setBattery(data.symbolic_score);
+    const violations = data.violations || [];
+    const totalRules = data.total_rules || violations.length;
+    const passCount  = Math.max(0, totalRules - violations.length);
+    const reds   = violations.map(v => `<span class="its-icon" title="${v.id}: ${v.message}">${v.severity==='error'?'📌':'🟡'}</span>`).join('');
+    const greens = '✅'.repeat(Math.min(passCount, 12));
+    if (totalRules > 0) document.getElementById('rulesIcons').innerHTML = reds + (greens ? `<span class="its-icon">${greens}</span>` : '');
+
+    if (data.triple) {
+        const ht = data.triple.hybrid_truth;
+        document.getElementById('hybridScoreIcon').innerHTML =
+            `<span class="its-icon" style="font-size:1.4rem">${ht >= 70 ? '🏆' : ht >= 40 ? '🎯' : '📈'}</span>
+             <span style="font-size:0.72rem;color:var(--muted);margin-left:4px">${ht}/100</span>`;
+    }
+    if (data.hybrid_llm) document.getElementById('hybridText').textContent = data.hybrid_llm;
+    renderWhyScore(data.top_issues);
+    if (data.triple) {
+        document.getElementById('rsSymScore').textContent    = data.triple.symbolic_score + '/100';
+        document.getElementById('rsPureTruth').textContent   = data.triple.pure_truth + '/100';
+        document.getElementById('rsHybridTruth').textContent = data.triple.hybrid_truth + '/100';
+
+        // C8-08: Score delta + C8-10: Sycophancy gap interpretation
+        const _g = (data.triple.pure_truth||0) - (data.triple.hybrid_truth||0);
+        const _gEl = document.getElementById('rsGap');
+        if (_gEl) {
+            if (_g > 10) {
+                _gEl.innerHTML = `ℹ️ AI was ${_g} pts more generous than your Mentor. This is the gap between what AI wants you to hear and what your plan actually needs.`;
+                _gEl.className = 'rs-gap rs-gap--warn';
+            } else if (_g < -10) {
+                _gEl.innerHTML = `Your plan is stronger than the AI thought — Mentor is ${Math.abs(_g)} pts higher!`;
+                _gEl.className = 'rs-gap rs-gap--ok';
+            } else {
+                _gEl.innerHTML = '✅ AI and Mentor agree — scores are well-calibrated.';
+                _gEl.className = 'rs-gap rs-gap--ok';
+            }
+            _gEl.style.display = '';
+        }
+        const _prevMoneyScore = window._lastMoneyScore;
+        const _curHT = data.triple.hybrid_truth;
+        if (_prevMoneyScore !== undefined && _prevMoneyScore !== _curHT) {
+            const _dlt = _curHT - _prevMoneyScore;
+            const _deltaEl = document.getElementById('rsScoreDelta');
+            if (_deltaEl) { _deltaEl.textContent = `${_prevMoneyScore} → ${_curHT} (${_dlt>0?'+':''}${_dlt} pts)`; _deltaEl.style.color = _dlt>0?'#34D399':'#F87171'; _deltaEl.style.display=''; }
+        }
+        window._lastMoneyScore = _curHT;
+        // O16-01: Score history strip
+        _renderScoreHistory(data.triple && data.triple.score_history);
+    }
+    if (data.pure_llm)   document.getElementById('pureLlmBox').innerHTML   = `<p>${data.pure_llm}</p>`;
+    if (data.hybrid_llm) document.getElementById('hybridLlmBox').innerHTML = `<p>${data.hybrid_llm}</p>`;
+    updateKidView(data);
+    // C8-02: CC-aware violations + Reality Check section
+    (function() {
+        const nrV = violations.filter(v => !v.id || !v.id.startsWith('CC'));
+        const ccV = violations.filter(v => v.id && v.id.startsWith('CC'));
+        let h = '';
+        if (violations.length === 0) { h = '<span style="color:#34D399;font-size:0.78rem">✅ All rules passed!</span>'; }
+        if (nrV.length) { h += '<div style="font-size:0.68rem;font-weight:900;text-transform:uppercase;color:var(--purple);letter-spacing:0.06em;margin-bottom:6px;margin-top:4px">📋 Structure Check</div>'; h += nrV.map(v => `<div style="margin-bottom:8px;padding:6px 8px;background:rgba(${v.severity==='error'?'248,113,113':'251,191,36'},0.07);border-left:3px solid ${v.severity==='error'?'#F87171':'#FBBF24'};border-radius:0 6px 6px 0;font-size:0.72rem;line-height:1.6;white-space:pre-wrap">${v.message}</div>`).join(''); }
+        if (ccV.length) { h += '<div style="font-size:0.68rem;font-weight:900;text-transform:uppercase;color:#34D399;letter-spacing:0.06em;margin-bottom:6px;margin-top:10px">⚡ Reality Check</div>'; h += ccV.map(v => `<div style="margin-bottom:8px;padding:6px 8px;background:rgba(52,211,153,0.06);border-left:3px solid #34D399;border-radius:0 6px 6px 0;font-size:0.72rem;line-height:1.6;white-space:pre-wrap">${v.message}</div>`).join(''); }
+        document.getElementById('rsViolations').innerHTML = h || '<span style="color:var(--muted);font-size:0.78rem">Run analysis to see results.</span>';
+    })();
+}
+
+document.getElementById('analyseLabBtn').addEventListener('click', () => {
+    document.getElementById('validateBtn').click();
+});
+
+function updateKidView(data) {
+    const violations = data.violations || [];
+    const totalRules = data.total_rules || violations.length || 5;
+    const passCount  = Math.max(0, totalRules - violations.length);
+    const reds   = violations.map(v => `<span class="its-icon" title="${v.id}: ${v.message}">${v.severity==='error'?'📌':'🟡'}</span>`).join('');
+    const greens = violations.length === 0
+        ? `<span class="its-icon" style="color:#34D399;font-size:0.8rem">✅ No conflicts found!</span>`
+        : '✅'.repeat(Math.min(passCount, 8));
+    document.getElementById('rulesIcons').innerHTML = reds + (greens ? `<span class="its-icon">${greens}</span>` : '');
+    if (data.triple) {
+        const ht = data.triple.hybrid_truth;
+        document.getElementById('hybridScoreIcon').innerHTML =
+            `<span class="its-icon" style="font-size:1.4rem">${ht >= 70 ? '🏆' : ht >= 40 ? '🎯' : '📈'}</span>
+             <span style="font-size:0.72rem;color:var(--muted);margin-left:4px">${ht}/100</span>`;
+    }
+    if (data.hybrid_llm) {
+        document.getElementById('hybridText').textContent = data.hybrid_llm;
+    }
+}
+
+const _resTogEl = document.getElementById('researchToggle');
+if (_resTogEl) _resTogEl.addEventListener('change', function() {
+    const _kv3 = document.getElementById('kidView');
+    const _rv3 = document.getElementById('researchView');
+    if (_kv3) _kv3.style.display      = this.checked ? 'none' : '';
+    if (_rv3) _rv3.style.display = this.checked ? '' : 'none';
+    localStorage.setItem('lrnbiz_money_rs_open', this.checked ? '1' : '0');
+    if (this.checked) {
+        const _hybBtn = document.querySelector('.rs-tab[onclick*="hybrid"]');
+        if (_hybBtn) switchRsTab(_hybBtn, 'hybrid');
+    }
+});
+
+function switchRsTab(btn, tabName) {
+    const rv = document.getElementById('researchView');
+    rv.querySelectorAll('.rs-tab').forEach(b => b.classList.remove('rs-tab--active'));
+    rv.querySelectorAll('.rs-pane').forEach(p => p.classList.add('rs-pane--hidden'));
+    btn.classList.add('rs-tab--active');
+    document.getElementById('rsPane-' + tabName).classList.remove('rs-pane--hidden');
+}
+
+// Item 31 – Character counters for textareas
+document.querySelectorAll('form textarea').forEach(ta => {
+    const _cc = document.createElement('div');
+    _cc.style.cssText = 'font-size:0.68rem;color:var(--muted);text-align:right;margin-top:2px';
+    _cc.textContent = ta.value.length + (ta.maxLength > 0 ? ' / ' + ta.maxLength : '') + ' chars';
+    ta.parentNode.insertBefore(_cc, ta.nextSibling);
+    ta.addEventListener('input', () => {
+        _cc.textContent = ta.value.length + (ta.maxLength > 0 ? ' / ' + ta.maxLength : '') + ' chars';
+    });
+});
+
+let _pageDirty = false;
+let _analysisRunThisSession = {{ 'true' if audit_scores.get('money') else 'false' }};
+
+/* ── Analysis Reminder Modal ── */
+let _reminderPendingUrl = null;
+function _showAnalysisReminder(continueUrl) {
+    _reminderPendingUrl = continueUrl;
+    document.getElementById('analysisReminderOverlay').style.display = 'flex';
+}
+document.getElementById('reminderRunBtn').addEventListener('click', () => {
+    document.getElementById('analysisReminderOverlay').style.display = 'none';
+    _reminderPendingUrl = null;
+    document.getElementById('validateBtn').click();
+    document.getElementById('validateBtn').scrollIntoView({behavior:'smooth', block:'center'});
+});
+document.getElementById('reminderContinueBtn').addEventListener('click', () => {
+    document.getElementById('analysisReminderOverlay').style.display = 'none';
+    if (_reminderPendingUrl) { window.location.href = _reminderPendingUrl; _reminderPendingUrl = null; }
+});
+// Navigation is always allowed — the reminder overlay was blocking all clicks
+// in edge cases (session reset, first visit, bfcache). Removed the interceptor.
+// Students can navigate freely; the Run Analysis button is always visible.
+document.querySelectorAll('input, select, textarea').forEach(el => {
+    el.addEventListener('change', () => {
+        _pageDirty = true;
+        const _lb = document.getElementById('analyseLabBtn');
+        if (_lb && !_lb.disabled) { _lb.classList.remove('lab-btn-run--remind'); void _lb.offsetWidth; _lb.classList.add('lab-btn-run--remind'); }
+    });
+});
+document.querySelector('form[method="POST"]') && document.querySelector('form[method="POST"]').addEventListener('submit', function(e) {
+    if (!_analysisRunThisSession && typeof _showRunAnalysisNudge === 'function') {
+        e.preventDefault();
+        _showRunAnalysisNudge(function() { document.querySelector('form[method="POST"]').submit(); });
+        return;
+    }
+    _pageDirty = false;
+});
+window.addEventListener('beforeunload', e => {
+    if (_pageDirty) { e.preventDefault(); e.returnValue = ''; }
+});
+
+// O12-04: Auto-expand cost guide card on first visit if archetype is known
+// Uses localStorage so it only opens automatically once per archetype
+(function() {
+    const archetype = {{ archetype | tojson }};
+    if (!archetype || archetype === 'other') return;
+    const _key = 'lrnbiz_costguide_seen_' + archetype;
+    const _det = document.querySelector('details[style*="52,211,153"]');
+    if (_det && !localStorage.getItem(_key)) {
+        _det.setAttribute('open', '');
+        localStorage.setItem(_key, '1');
+    }
+})();
+
+// O16-01: Render score history pills
+function _renderScoreHistory(history) {
+    const el = document.getElementById('rsScoreHistory');
+    if (!el || !history || history.length < 2) return;
+    const recent = history.slice(-5);
+    el.innerHTML = '<span style="font-weight:700;color:rgba(240,239,244,0.4)">History: </span>' +
+        recent.map((h, i) => {
+            const isLast = i === recent.length - 1;
+            const color = h.score >= 70 ? '#34D399' : h.score >= 40 ? '#FFD93D' : '#F87171';
+            const bg = isLast ? 'rgba(167,139,250,0.18)' : 'rgba(255,255,255,0.06)';
+            const fg = isLast ? '#A78BFA' : color;
+            return `<span title="${h.at || ('Attempt ' + (i+1))}" style="display:inline-block;padding:1px 7px;border-radius:99px;background:${bg};color:${fg};font-weight:800;margin:0 2px">${h.score}</span>`;
+        }).join('<span style="opacity:0.35;margin:0 1px">›</span>');
+    el.style.display = '';
+}
+(function() {
+    const saved = {{ session.get('audit_scores', {}).get('money', {}) | tojson | safe }};
+    if (saved && saved.score_history) _renderScoreHistory(saved.score_history);
+})();
+
+// Bfcache fix: when browser restores this page from the back-forward cache,
+// btn.disabled may be stuck=true from an in-flight analysis that was interrupted.
+// Reset all interactive state so the page is fully usable on return.
+window.addEventListener('pageshow', function(_psEv) {
+    if (_psEv.persisted) {
+        const _btn = document.getElementById('validateBtn');
+        if (_btn) { _btn.textContent = '🔬 Run Analysis'; _btn.disabled = false; }
+        // Hide the analysis-reminder overlay in case it was open when user left
+        const _ov = document.getElementById('analysisReminderOverlay');
+        if (_ov) _ov.style.display = 'none';
+        // Reset dirty/session flags so the overlay never re-triggers on a bfcache restore.
+        // The bfcached JS variables may hold stale values from a previous visit.
+        _pageDirty = false;
+        _analysisRunThisSession = true;
+    }
+});
+
+// O15-02 (money): show previous score passively — NO auto-click.
+// Auto-clicking the button disables it for 5-15s during the LLM call.
+// During that window, _analysisRunThisSession=false + any input touch = overlay
+// intercepts all link clicks and makes the page feel completely broken.
+// Instead: show the last score and a prompt. User clicks Run Analysis when ready.
+{% if audit_scores.get('money') %}
+(function() {
+    const _prevScore = {{ audit_scores.get('money', {}).get('hybrid_truth', 0) | tojson }};
+    if (!_prevScore) return;
+    const _vBtn = document.getElementById('validateBtn');
+    if (!_vBtn) return;
+    const _prevBanner = document.createElement('div');
+    _prevBanner.style.cssText = 'background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.2);border-radius:10px;padding:8px 14px;font-size:0.78rem;color:rgba(240,239,244,0.7);margin-bottom:10px;display:flex;align-items:center;gap:8px';
+    _prevBanner.innerHTML = '📊 Last score: <strong style="color:#A78BFA">' + _prevScore + '/100</strong> &nbsp;·&nbsp; <span style="color:rgba(240,239,244,0.5)">Update your numbers then click Run Analysis to re-check.</span>';
+    _vBtn.parentNode.insertBefore(_prevBanner, _vBtn);
+    // Remove the banner once the user runs analysis
+    _vBtn.addEventListener('click', function() { _prevBanner.remove(); }, { once: true });
+})();
+{% endif %}
+</script>
+{% endblock %}

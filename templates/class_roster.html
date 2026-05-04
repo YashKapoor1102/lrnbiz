@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Roster — LrnBiz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body { max-width: 860px; margin: 0 auto; padding: 24px 16px 60px; }
+        .cr-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .cr-badge { font-size: 2.2rem; }
+        .cr-title { font-size: 1.3rem; font-weight: 900; color: var(--text); margin: 0; }
+        .cr-subtitle { font-size: 0.78rem; color: var(--muted); margin: 2px 0 0; }
+        .cr-code-pill { display: inline-block; background: rgba(167,139,250,0.15); border: 1px solid rgba(167,139,250,0.3); color: var(--purple); font-weight: 900; font-size: 1rem; letter-spacing: 0.15em; padding: 4px 14px; border-radius: 99px; font-family: monospace; }
+        .cr-meta { font-size: 0.72rem; color: var(--muted); margin-bottom: 20px; }
+        .cr-table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+        th { font-size: 0.65rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); padding: 6px 10px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        td { padding: 10px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(255,255,255,0.02); }
+        .cr-score { font-weight: 800; }
+        .cr-score--high { color: #34D399; }
+        .cr-score--mid  { color: #A78BFA; }
+        .cr-score--low  { color: #F87171; }
+        .cr-score--none { color: var(--muted); }
+        .cr-bar-wrap { width: 60px; height: 5px; background: rgba(255,255,255,0.07); border-radius: 3px; overflow: hidden; display: inline-block; vertical-align: middle; margin-left: 5px; }
+        .cr-bar-fill { height: 100%; border-radius: 3px; }
+        .cr-share-link { color: var(--purple); font-size: 0.7rem; text-decoration: none; font-weight: 700; }
+        .cr-share-link:hover { text-decoration: underline; }
+        .cr-empty { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 0.85rem; }
+        .cr-error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); border-radius: 10px; padding: 18px 20px; color: #F87171; font-size: 0.85rem; text-align: center; margin-top: 40px; }
+        .cr-stat-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+        .cr-stat { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px 16px; min-width: 100px; }
+        .cr-stat-val { font-size: 1.4rem; font-weight: 900; color: var(--text); }
+        .cr-stat-lbl { font-size: 0.62rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; margin-top: 2px; }
+        .cr-no-data { color: var(--muted); font-style: italic; }
+        @media (max-width: 600px) { table { font-size: 0.72rem; } th, td { padding: 7px 7px; } }
+    </style>
+</head>
+<body>
+
+<div class="cr-header">
+    <div class="cr-badge">📋</div>
+    <div>
+        <h1 class="cr-title">Class Roster</h1>
+        <p class="cr-subtitle">LrnBiz — Teacher View</p>
+    </div>
+    <div style="margin-left:auto">
+        <a href="/" style="font-size:0.75rem;color:var(--muted);text-decoration:none;font-weight:700">← Home</a>
+    </div>
+</div>
+
+{% if error %}
+<div class="cr-error">❌ {{ error }}</div>
+
+{% elif cls %}
+
+<div style="margin-bottom:14px">
+    <div style="font-size:0.65rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:4px">Class code</div>
+    <span class="cr-code-pill">{{ cls.code }}</span>
+    <span style="font-size:0.75rem;color:var(--muted);margin-left:10px">Share this code with students to join</span>
+</div>
+
+<div class="cr-meta">
+    <strong style="color:var(--text)">{{ cls.class_name }}</strong> &nbsp;·&nbsp;
+    Teacher: {{ cls.teacher_name }} &nbsp;·&nbsp;
+    Created: {{ cls.created_at[:10] if cls.created_at else '—' }}
+</div>
+
+{% set students = cls.students or [] %}
+
+<div class="cr-stat-row">
+    <div class="cr-stat">
+        <div class="cr-stat-val">{{ students | length }}</div>
+        <div class="cr-stat-lbl">Students</div>
+    </div>
+    {% set completed = students | selectattr('scores') | list %}
+    <div class="cr-stat">
+        <div class="cr-stat-val">{{ completed | length }}</div>
+        <div class="cr-stat-lbl">Submitted</div>
+    </div>
+    {% if completed %}
+    {% set avg = (completed | map(attribute='scores') | map('dictsort') | map('last') | map(attribute=1) | map(attribute='hybrid_truth') | select('number') | list | sum) // (completed | length) %}
+    <div class="cr-stat">
+        <div class="cr-stat-val" style="color:var(--purple)">{{ avg }}</div>
+        <div class="cr-stat-lbl">Avg mentor score</div>
+    </div>
+    {% endif %}
+</div>
+
+{% if students %}
+<div class="cr-table-wrap">
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Student name</th>
+            <th>Joined</th>
+            <th>Chapters done</th>
+            <th>Mentor scores</th>
+            <th>View plan</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in students %}
+        {% set sc = s.scores or {} %}
+        {% set chapters_done = sc | length %}
+        <tr>
+            <td style="color:var(--muted);font-size:0.7rem">{{ loop.index }}</td>
+            <td style="font-weight:800">{{ s.name or '—' }}</td>
+            <td style="color:var(--muted);font-size:0.7rem">{{ s.joined_at[:10] if s.joined_at else '—' }}</td>
+            <td>
+                {% if chapters_done %}
+                <span style="font-weight:800;color:{% if chapters_done >= 5 %}#34D399{% elif chapters_done >= 3 %}#A78BFA{% else %}#FFD93D{% endif %}">{{ chapters_done }}/5</span>
+                {% else %}
+                <span class="cr-no-data">0/5</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if sc %}
+                    {% for ch_id, triple in sc.items() %}
+                    {% set ht = triple.hybrid_truth if triple.hybrid_truth is defined else 0 %}
+                    <span title="{{ ch_id }}: {{ ht }}/100"
+                          class="cr-score {% if ht >= 70 %}cr-score--high{% elif ht >= 50 %}cr-score--mid{% elif ht > 0 %}cr-score--low{% else %}cr-score--none{% endif %}">
+                        {{ ht }}<span style="font-size:0.65rem;color:var(--muted)">/100</span>
+                        <span class="cr-bar-wrap"><span class="cr-bar-fill" style="width:{{ ht }}%;background:{% if ht >= 70 %}#34D399{% elif ht >= 50 %}#A78BFA{% else %}#F87171{% endif %}"></span></span>
+                    </span>
+                    {% if not loop.last %}&nbsp;{% endif %}
+                    {% endfor %}
+                {% else %}
+                <span class="cr-no-data">Not yet</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if s.share_url %}
+                <a href="{{ s.share_url }}" class="cr-share-link" target="_blank" rel="noopener">View →</a>
+                {% else %}
+                <span class="cr-no-data">—</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+{% else %}
+<div class="cr-empty">
+    <div style="font-size:2rem;margin-bottom:8px">🎒</div>
+    <div style="font-weight:800;color:var(--text);margin-bottom:4px">No students yet</div>
+    <div>Share the class code <strong>{{ cls.code }}</strong> with your students so they can join.</div>
+</div>
+{% endif %}
+
+{% else %}
+<div class="cr-error">❌ Class not found. Check the code and try again.</div>
+{% endif %}
+
+<div style="margin-top:30px;font-size:0.68rem;color:var(--muted);text-align:center">LrnBiz — Class Roster · <a href="/" style="color:var(--muted)">Home</a></div>
+
+</body>
+</html>

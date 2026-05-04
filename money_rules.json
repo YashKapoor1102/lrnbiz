@@ -1,0 +1,84 @@
+{
+  "version": "1.0",
+  "module": "money_validator",
+  "description": "Deterministic money math rules — ITS Stage 4: Money Math. Rules validate that the student's pricing, costs, and revenue goals are financially viable.",
+  "rules": [
+    {
+      "id": "MR001",
+      "name": "Price below cost",
+      "type": "derived_check",
+      "derived_field": "unit_price_gt_unit_cost",
+      "blocked_values": ["No"],
+      "severity": "error",
+      "flag": "price_below_cost",
+      "message": "If your selling price is lower than what it costs to make each unit, every sale makes you poorer — fix this before anything else.",
+      "socratic_hint": "The student's unit price is at or below their unit cost. Ask them to list every cost that goes into one unit — materials, packaging, time, fees. Then ask: what price do you need to charge to make at least $1 per sale?"
+    },
+    {
+      "id": "MR002",
+      "name": "Break-even beyond archetype-appropriate threshold",
+      "type": "derived_check",
+      "derived_field": "months_to_breakeven_gt_threshold",
+      "blocked_values": ["Yes"],
+      "severity": "error",
+      "flag": "slow_breakeven",
+      "message": "⏰ It would take too long to earn back your startup money for this type of business. Try raising your price, increasing your monthly sales target, or cutting startup costs.",
+      "socratic_hint": "The student's break-even is beyond the typical range for their business type. Ask: what's one startup cost you could eliminate or delay? Or: what price increase would cut the break-even time in half?"
+    },
+    {
+      "id": "MR003",
+      "name": "Monthly profit too low to be worthwhile",
+      "type": "derived_check",
+      "derived_field": "monthly_profit_lt_threshold",
+      "blocked_values": ["Yes"],
+      "severity": "error",
+      "flag": "low_profit",
+      "message": "💸 Your monthly profit is very low — after covering costs, you're barely earning anything for your time. Raise your price, reduce your costs, or sell more units.",
+      "socratic_hint": "The student's monthly profit is very low. Ask: if you divide your monthly profit by your hours worked, what's your hourly rate? Is that worth it to you? What would need to change to make it worthwhile?"
+    },
+    {
+      "id": "MR004",
+      "name": "No reinvestment plan",
+      "type": "field_equals",
+      "field": "profit_plan",
+      "blocked_values": ["Spend it all"],
+      "severity": "warning",
+      "flag": "no_reinvestment",
+      "message": "📈 A business that puts nothing back into itself can't grow — try to save at least 20% of your profit to reinvest (buy more materials, better tools, etc.).",
+      "socratic_hint": "The student plans to spend all profit. Ask: what would you need to buy more of to scale up — more materials? Better tools? Could reinvesting 20% get you there faster?"
+    },
+    {
+      "id": "MR005",
+      "name": "No contingency buffer",
+      "type": "field_equals",
+      "field": "has_contingency",
+      "blocked_values": ["No"],
+      "severity": "warning",
+      "flag": "no_contingency",
+      "message": "🛡️ Every first business owner underestimates costs! Add a safety buffer of at least 20% extra to your budget — otherwise you might run out of money before you even start.",
+      "socratic_hint": "The student hasn't budgeted a contingency. Ask: name one thing that could go wrong in the first month — spoiled ingredients, a broken tool, a refund request. How much would that cost? Is that in your budget?"
+    },
+    {
+      "id": "MR006",
+      "name": "Implied hourly rate below minimum wage",
+      "type": "derived_check",
+      "derived_field": "hourly_rate_lt_minimum",
+      "blocked_values": ["Yes"],
+      "severity": "error",
+      "flag": "below_minimum_wage",
+      "message": "⏱️ Your monthly profit divided by your hours worked comes to less than $5/hour — below most minimum wages. Is your time worth that little?\n\nWhat to do: Try raising your price, reducing your cost per unit, or selling more units. Even a small price increase can dramatically change your hourly rate.",
+      "socratic_hint": "The student's implied hourly rate is below $5. Walk them through the calculation: monthly profit ÷ (hours/week × 4 weeks) = hourly rate. Then ask: would you do any paid job for that rate? What is the smallest price increase that would bring your hourly rate above $10?"
+    },
+    {
+      "id": "MR007",
+      "name": "Zero or missing startup cost",
+      "type": "min_value_field",
+      "field": "startup_cost",
+      "threshold": 1,
+      "severity": "warning",
+      "flag": "zero_startup_cost",
+      "message": "💡 You've entered £0 for startup costs — almost every business has at least some initial expense (materials, packaging, a domain name, printing, tools). Double-check: is there anything you need to buy or pay for before your first sale?",
+      "socratic_hint": "The student entered zero startup cost. Ask: what is the very first thing you would need to spend money on before making your first sale — even if it's just a bag, a poster, or an app subscription? List three things and estimate a cost for each."
+    }
+  ]
+}

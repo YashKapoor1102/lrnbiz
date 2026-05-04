@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}LrnBiz — Certificate of Innovation{% endblock %}
+{% block og_title %}I earned my LrnBiz Certificate! 🎓{% endblock %}
+{% block og_description %}I completed all 5 chapters of LrnBiz and validated my business idea with an AI mentor.{% endblock %}
+{% block meta_description %}LrnBiz Certificate of Innovation — awarded on completion of all 5 business planning chapters.{% endblock %}
+
+{% block content %}
+<div class="cert-page">
+
+    <div class="cert-wrap">
+        <div class="cert-border">
+
+            <div class="cert-top-ribbon">🎓 LrnBiz Academy of Young Entrepreneurs 🎓</div>
+
+            <div class="cert-seal">🏆</div>
+
+            <div class="cert-heading">Certificate of Innovation</div>
+
+            <div class="cert-sub">This is to certify that</div>
+
+            <div class="cert-name">{{ idea_data.student_name }}{% if idea_data.grade %} · {{ idea_data.grade }}{% endif %}</div>
+
+            <div class="cert-statement">
+                <span class="cert-verb">is launching</span>
+                <span class="cert-product">{{ idea_data.sell_what }}</span>
+                <span class="cert-verb">to help</span>
+                <span class="cert-who">{{ idea_data.sell_to }}</span>{% if idea_data.sell_where %}
+                <span class="cert-verb">at</span>
+                <span class="cert-where">{{ idea_data.sell_where }}</span>{% endif %}
+                <span class="cert-verb">stop</span>
+                <span class="cert-problem">{{ idea_data.problem_solved[:140] if idea_data.problem_solved|length > 140 else idea_data.problem_solved }}</span>
+            </div>
+
+            <div class="cert-divider"></div>
+
+            <div class="cert-stats">
+                <div class="cs-item">
+                    <div class="cs-num">{{ idea_data.modules_done }}</div>
+                    <div class="cs-label">Chapters Audited</div>
+                </div>
+                <div class="cs-item">
+                    <div class="cs-num">🌟</div>
+                    <div class="cs-label">Innovation Award</div>
+                </div>
+                <div class="cs-item">
+                    <div class="cs-num">🤖</div>
+                    <div class="cs-label">AI + Rules Validated</div>
+                </div>
+            </div>
+
+            <div class="cert-divider"></div>
+
+            <!-- C8-23: Skills demonstrated -->
+            <div style="text-align:left;padding:0 10px;margin-bottom:8px">
+                <div style="font-size:0.6rem;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;color:rgba(167,139,250,0.7);margin-bottom:8px;text-align:center">Skills Demonstrated</div>
+                <div style="display:flex;flex-wrap:wrap;gap:5px;justify-content:center">
+                    <span style="display:inline-block;background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.3);color:#34D399;font-size:0.62rem;font-weight:800;padding:3px 9px;border-radius:99px">🎯 Customer Research</span>
+                    <span style="display:inline-block;background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.3);color:var(--purple);font-size:0.62rem;font-weight:800;padding:3px 9px;border-radius:99px">💡 Opportunity Identification</span>
+                    <span style="display:inline-block;background:rgba(255,217,61,0.12);border:1px solid rgba(255,217,61,0.3);color:#FFD93D;font-size:0.62rem;font-weight:800;padding:3px 9px;border-radius:99px">💰 Financial Planning</span>
+                    <span style="display:inline-block;background:rgba(96,165,250,0.12);border:1px solid rgba(96,165,250,0.3);color:#60A5FA;font-size:0.62rem;font-weight:800;padding:3px 9px;border-radius:99px">🔍 Evidence-Based Thinking</span>
+                    <span style="display:inline-block;background:rgba(244,114,182,0.12);border:1px solid rgba(244,114,182,0.3);color:#F472B6;font-size:0.62rem;font-weight:800;padding:3px 9px;border-radius:99px">🧠 Critical Self-Assessment</span>
+                    {% if idea_data.modules_done >= 5 %}
+                    <span style="display:inline-block;background:rgba(255,107,53,0.12);border:1px solid rgba(255,107,53,0.3);color:#FF6B35;font-size:0.62rem;font-weight:800;padding:3px 9px;border-radius:99px">🏆 Full Plan Completion</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="cert-divider"></div>
+
+            <div class="cert-footer">
+                <div class="cert-sig">LrnBiz ITS Engine · Symbolic Rules + Hybrid AI Mentoring</div>
+                <div class="cert-date" id="certDate"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="cert-actions">
+        <a href="/progress" class="cert-btn cert-btn--audit">📊 View Full Audit →</a>
+        <button onclick="window.print()" class="cert-btn cert-btn--print">🖨️ Print Certificate</button>
+        <a href="/" class="cert-btn cert-btn--home">🏠 Start New Idea</a>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('certDate').textContent =
+    'Awarded ' + new Date().toLocaleDateString('en-AU', {year:'numeric', month:'long', day:'numeric'});
+</script>
+{% endblock %}

@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% block title %}LrnBiz — How It Works{% endblock %}
+
+{% block content %}
+<div style="max-width:680px;margin:0 auto;padding:32px 16px 80px">
+
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:32px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,0.1)">
+        <div style="font-size:2.4rem">🧠</div>
+        <div>
+            <h1 style="margin:0;font-size:1.5rem;font-weight:900;color:var(--text)">How LrnBiz Works</h1>
+            <p style="margin:4px 0 0;font-size:0.8rem;color:var(--muted)">Architecture overview — for teachers, evaluators, and curious students</p>
+        </div>
+    </div>
+
+    <!-- ── Triple Truth ── -->
+    <section style="margin-bottom:36px">
+        <h2 style="font-size:1rem;font-weight:900;color:#A78BFA;margin:0 0 14px">The Triple Truth Scoring Pipeline</h2>
+        <p style="font-size:0.82rem;color:rgba(240,239,244,0.8);line-height:1.7;margin:0 0 16px">
+            Every chapter in LrnBiz is scored three simultaneous ways. This is the core architectural claim:
+            a single student submission passes through three independent scoring systems, each with a different
+            view of the plan.
+        </p>
+
+        <div style="display:flex;flex-direction:column;gap:12px">
+
+            <!-- Layer 1 -->
+            <div style="background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.2);border-radius:14px;padding:16px 20px">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+                    <span style="font-size:1.4rem">🐍</span>
+                    <div>
+                        <div style="font-size:0.7rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;color:#F87171">Layer 1 — Rules Check (Symbolic)</div>
+                        <div style="font-size:0.88rem;font-weight:800;color:var(--text)">Deterministic, zero AI</div>
+                    </div>
+                </div>
+                <p style="font-size:0.78rem;color:rgba(240,239,244,0.75);line-height:1.6;margin:0">
+                    37 hand-crafted business validation rules across 5 JSON files are evaluated against the student's
+                    answers using a symbolic rule engine. No machine learning — pure if/then logic. This layer runs
+                    offline, never hallucinates, and is fully auditable. Each rule carries a <code>score_impact</code>
+                    on one of six business axes: Passion, Energy, Gold, Influence, Knowledge, Target.
+                </p>
+            </div>
+
+            <!-- Layer 2 -->
+            <div style="background:rgba(251,146,60,0.06);border:1px solid rgba(251,146,60,0.2);border-radius:14px;padding:16px 20px">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+                    <span style="font-size:1.4rem">🤖</span>
+                    <div>
+                        <div style="font-size:0.7rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;color:#FB923C">Layer 2 — AI Optimist (Pure LLM)</div>
+                        <div style="font-size:0.88rem;font-weight:800;color:var(--text)">Blind encourager, temperature=0</div>
+                    </div>
+                </div>
+                <p style="font-size:0.78rem;color:rgba(240,239,244,0.75);line-height:1.6;margin:0">
+                    A large language model reads only the student's raw answers — no rules context, no violation list.
+                    It is asked to self-report a score alongside its feedback. Temperature is fixed at 0.0 for full
+                    determinism. This layer intentionally over-praises: it is the "sycophantic AI" baseline that students
+                    learn to see through.
+                </p>
+            </div>
+
+            <!-- Layer 3 -->
+            <div style="background:rgba(167,139,250,0.07);border:1px solid rgba(167,139,250,0.2);border-radius:14px;padding:16px 20px">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+                    <span style="font-size:1.4rem">🧠</span>
+                    <div>
+                        <div style="font-size:0.7rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;color:#A78BFA">Layer 3 — Hybrid Mentor (Grounded LLM)</div>
+                        <div style="font-size:0.88rem;font-weight:800;color:var(--text)">Honest coach, rules-aware</div>
+                    </div>
+                </div>
+                <p style="font-size:0.78rem;color:rgba(240,239,244,0.75);line-height:1.6;margin:0">
+                    The same LLM receives the student's answers <em>plus</em> the full list of rule violations from Layer 1
+                    as context. It is instructed to give honest, Socratic feedback. Its score becomes the <strong>Mentor Score</strong> —
+                    the primary grade. Because it is grounded in the symbolic rules, it cannot overlook structural problems
+                    the way the AI Optimist can.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ── Sycophancy detection ── -->
+    <section style="margin-bottom:36px">
+        <h2 style="font-size:1rem;font-weight:900;color:#34D399;margin:0 0 14px">Sycophancy Detection</h2>
+        <p style="font-size:0.82rem;color:rgba(240,239,244,0.8);line-height:1.7;margin:0 0 12px">
+            The <strong>AI Honesty Gap</strong> is calculated as:
+        </p>
+        <div style="background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.18);border-radius:10px;padding:12px 18px;font-family:monospace;font-size:0.82rem;color:#34D399;margin-bottom:12px">
+            Sycophancy Gap = AI Optimist Score − Mentor Score
+        </div>
+        <p style="font-size:0.82rem;color:rgba(240,239,244,0.75);line-height:1.7;margin:0">
+            A large positive gap means the AI was over-generous — it praised a plan that had real structural problems.
+            Students see this number after every chapter. The pedagogical goal is for students to learn to question
+            AI praise and look for the grounded evaluation instead. Research shows most LLMs have a strong sycophancy
+            bias at default settings; this system makes that bias visible in real time.
+        </p>
+    </section>
+
+    <!-- ── Business DNA Radar ── -->
+    <section style="margin-bottom:36px">
+        <h2 style="font-size:1rem;font-weight:900;color:#FFD93D;margin:0 0 14px">Business DNA Radar</h2>
+        <p style="font-size:0.82rem;color:rgba(240,239,244,0.8);line-height:1.7;margin:0 0 12px">
+            A 6-axis spider chart tracks the student's business readiness across:
+        </p>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px">
+            {% for axis, desc in [
+                ('Passion 🔥', 'Intrinsic motivation — does the student care about this idea?'),
+                ('Energy ⚡', 'Hustle capacity — hours committed per week vs challenge level'),
+                ('Gold 💰', 'Financial viability — budget, pricing, break-even'),
+                ('Influence 📣', 'Market reach — can they get in front of real customers?'),
+                ('Knowledge 🧠', 'Domain expertise — have they validated assumptions?'),
+                ('Target 🎯', 'Customer focus — is the niche specific enough to win?'),
+            ] %}
+            <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:10px 12px">
+                <div style="font-size:0.78rem;font-weight:800;color:var(--text)">{{ axis }}</div>
+                <div style="font-size:0.7rem;color:var(--muted);margin-top:3px;line-height:1.4">{{ desc }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        <p style="font-size:0.78rem;color:rgba(240,239,244,0.65);line-height:1.6;margin:0">
+            Each rule's <code>score_impact</code> targets one or more axes. As students fix rule violations,
+            specific axes rise. The radar visualises which entrepreneurial dimensions are strong vs weak —
+            a more actionable signal than a single aggregate score.
+        </p>
+    </section>
+
+    <!-- ── Evaluation Lab ── -->
+    <section style="margin-bottom:36px">
+        <h2 style="font-size:1rem;font-weight:900;color:#FB923C;margin:0 0 14px">Evaluation Lab</h2>
+        <p style="font-size:0.82rem;color:rgba(240,239,244,0.8);line-height:1.7;margin:0">
+            The <a href="/eval" style="color:#FB923C;font-weight:700">Evaluation Lab</a> (<code>/eval</code>) contains
+            20 synthetic student personas with known profiles — covering a range of business types, grade levels, budgets,
+            and common mistakes. Running triple-truth scoring on these personas benchmarks the scoring engine independently
+            of real student data. This is the reproducibility layer: results on personas are deterministic and comparable
+            across code changes.
+        </p>
+    </section>
+
+    <!-- ── Teacher features ── -->
+    <section style="margin-bottom:36px">
+        <h2 style="font-size:1rem;font-weight:900;color:#60A5FA;margin:0 0 14px">Teacher Features</h2>
+        <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;gap:12px;align-items:flex-start">
+                <span style="font-size:1rem;flex-shrink:0">📋</span>
+                <div style="font-size:0.78rem;color:rgba(240,239,244,0.78);line-height:1.55">
+                    <strong style="color:var(--text)">Class Codes</strong> — Teachers create a class and share a 6-character code. Students enter it on the Scores page to register. Their snapshot (name, chapter progress, scores) appears in the class roster automatically.
+                </div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start">
+                <span style="font-size:1rem;flex-shrink:0">🔗</span>
+                <div style="font-size:0.78rem;color:rgba(240,239,244,0.78);line-height:1.55">
+                    <strong style="color:var(--text)">Share Links</strong> — Students can generate a read-only share link to their completed plan, which any teacher or peer can view without logging in.
+                </div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start">
+                <span style="font-size:1rem;flex-shrink:0">📊</span>
+                <div style="font-size:0.78rem;color:rgba(240,239,244,0.78);line-height:1.55">
+                    <strong style="color:var(--text)">Research Log</strong> — Every scoring event is written to an audit log accessible at <code>/admin/research</code> (requires HTTP Basic Auth). Exportable as JSON or CSV for further analysis.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Demo links ── -->
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:18px 20px">
+        <div style="font-size:0.68rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:12px">Try It</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <a href="/" style="background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.3);color:#A78BFA;font-size:0.78rem;font-weight:800;padding:7px 14px;border-radius:99px;text-decoration:none">🚀 Start a plan</a>
+            <a href="/share/sample" style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.25);color:#34D399;font-size:0.78rem;font-weight:800;padding:7px 14px;border-radius:99px;text-decoration:none">📋 Sample student plan</a>
+            <a href="/teacher/dashboard" style="background:rgba(251,146,60,0.1);border:1px solid rgba(251,146,60,0.25);color:#FB923C;font-size:0.78rem;font-weight:800;padding:7px 14px;border-radius:99px;text-decoration:none">👩‍🏫 Teacher dashboard</a>
+            <a href="/class/DEMO00" style="background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.25);color:#60A5FA;font-size:0.78rem;font-weight:800;padding:7px 14px;border-radius:99px;text-decoration:none">📋 Demo class roster</a>
+            <a href="/eval" style="background:rgba(255,217,61,0.1);border:1px solid rgba(255,217,61,0.25);color:#FFD93D;font-size:0.78rem;font-weight:800;padding:7px 14px;border-radius:99px;text-decoration:none">🧪 Eval lab (20 personas)</a>
+        </div>
+    </div>
+
+    <div style="margin-top:24px;text-align:center;font-size:0.68rem;color:var(--muted)">
+        <a href="/" style="color:var(--muted)">← Home</a>
+    </div>
+
+</div>
+{% endblock %}

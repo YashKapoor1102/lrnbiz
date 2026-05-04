@@ -1,0 +1,1038 @@
+{% extends "base.html" %}
+{% block title %}LrnBiz — Target Customer{% endblock %}
+
+{% block story_banner %}
+<div class="story-banner" id="storyBanner">
+    <div class="story-banner-icon">🎯</div>
+    <div class="story-banner-body">
+        <div class="story-banner-quest">Quest 3 of 5 · Know Your People</div>
+        <div class="story-banner-text">
+            You know your business type. Now lock in the <em>one specific person</em> who will actually pay you — and how you'll reach them. 🎯
+        </div>
+    </div>
+    <button class="story-banner-close" onclick="this.closest('.story-banner').style.display='none'" title="Close">✕</button>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="idea-page idea-page--lab">
+
+    <header class="idea-header">
+        <a href="/idea" class="back-link">← Back</a>
+        <div class="module-chip module-chip--teal" style="margin:0">🎯 Chapter 3 — Target Customer</div>
+    </header>
+
+    {% if cc020_mismatch %}
+    <div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.4);border-radius:10px;padding:10px 14px;margin:0 0 12px 0;font-size:0.75rem;line-height:1.6">
+        <strong style="color:#f87171">⚠️ Cross-chapter conflict:</strong> You selected <strong>{{ cc020_mismatch.business_type }}</strong> as your business type in Chapter 1, but your Chapter 2 idea was classified as <strong>{{ cc020_mismatch.archetype }}</strong>. These chapters are telling different stories.
+        <div style="margin-top:4px">👉 <a href="/context" style="color:#60a5fa;text-decoration:underline">Update Chapter 1</a> or <a href="/idea" style="color:#60a5fa;text-decoration:underline">revise your idea in Chapter 2</a> to make them consistent.</div>
+    </div>
+    {% endif %}
+
+    <div class="idea-body idea-body--liveradar">
+
+        <!-- ── FAR-LEFT: Live Radar ── -->
+        <aside class="live-radar-col" id="liveRadarCol">
+            <div class="live-radar-title">🧬 Business DNA — Live</div>
+            <div class="mini-radar-wrap" id="miniRadarWrap">
+                <svg viewBox="0 0 180 28" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" style="width:100%;height:24px;display:block;margin-bottom:4px;opacity:0.85">
+                    <line x1="15" y1="5" x2="15" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="45" y1="5" x2="45" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="75" y1="5" x2="75" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="105" y1="5" x2="105" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="135" y1="5" x2="135" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="165" y1="5" x2="165" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <path d="M 0,14 C 4,23 11,23 15,23 C 19,23 26,14 30,14 C 34,5 41,5 45,5 C 49,5 56,14 60,14 C 64,23 71,23 75,23 C 79,23 86,14 90,14 C 94,5 101,5 105,5 C 109,5 116,14 120,14 C 124,23 131,23 135,23 C 139,23 146,14 150,14 C 154,5 161,5 165,5 C 169,5 176,14 180,14" fill="none" stroke="#A78BFA" stroke-width="1.8" stroke-linecap="round"/>
+                    <path d="M 0,14 C 4,5 11,5 15,5 C 19,5 26,14 30,14 C 34,23 41,23 45,23 C 49,23 56,14 60,14 C 64,5 71,5 75,5 C 79,5 86,14 90,14 C 94,23 101,23 105,23 C 109,23 116,14 120,14 C 124,5 131,5 135,5 C 139,5 146,14 150,14 C 154,23 161,23 165,23 C 169,23 176,14 180,14" fill="none" stroke="#34D399" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+                <canvas id="miniRadarChart" class="mini-radar-canvas" height="200"></canvas>
+                <div id="miniRadarPlaceholder" style="display:none;text-align:center;padding:18px 10px 10px;color:var(--muted);font-size:0.72rem;line-height:1.5">🌱 Complete Chapter 1 first<br>to unlock your Business DNA!</div>
+                <div class="radar-axis-toast" id="radarAxisToast"></div>
+            </div>
+            <div style="font-size:0.62rem;color:var(--muted);text-align:center;line-height:1.6">
+                🔥 70+ Strong &nbsp;·&nbsp; 📚 40+ Learning &nbsp;·&nbsp; 🌱 &lt;40 Starting
+            </div>
+            <details style="margin-top:2px">
+                <summary style="font-size:0.66rem;font-weight:900;color:var(--purple);cursor:pointer;list-style:none;padding:2px 0">🧬 Axes explained ▾</summary>
+                <div style="margin-top:6px;display:grid;gap:4px">
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#FFD93D">🔥 Passion</strong> — Excitement &amp; motivation</div>
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#34D399">⚡ Energy</strong> — Hours &amp; commitment</div>
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#FFD93D">💰 Gold</strong> — Financial readiness</div>
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#A78BFA">🗣️ Influence</strong> — Customer knowledge ← fills here</div>
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#60A5FA">📚 Knowledge</strong> — Industry insight</div>
+                    <div style="font-size:0.63rem;line-height:1.4;padding:4px 6px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#F472B6">🎯 Target</strong> — Idea specificity</div>
+                </div>
+            </details>
+        </aside>
+
+        <!-- ── CENTER: Form ── -->
+        <main class="idea-main">
+
+            <!-- Cross-chapter context card -->
+            <div style="background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.22);border-radius:12px;padding:12px 16px;margin-bottom:16px">
+                <div style="font-size:0.63rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;color:var(--purple);margin-bottom:10px">📋 Your plan so far (Chapters 1 &amp; 2)</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:0.74rem">
+                    <div>
+                        <span style="color:var(--muted)">Business type</span><br>
+                        <strong id="ctxArchetype" style="color:var(--text)">—</strong>
+                    </div>
+                    <div>
+                        <span style="color:var(--muted)">Your location</span><br>
+                        <strong style="color:var(--text)">{{ ch1_location or '—' }}</strong>
+                    </div>
+                    <div>
+                        <span style="color:var(--muted)">Your budget</span><br>
+                        <strong style="color:var(--text)">{% if ch1_budget %}${{ ch1_budget }}{% else %}—{% endif %}</strong>
+                    </div>
+                    <div>
+                        <span style="color:var(--muted)">Planned sell price</span><br>
+                        <strong style="color:var(--text)">{% if sell_price %}${{ sell_price }}{% else %}—{% endif %}</strong>
+                    </div>
+                </div>
+                {% if saved_idea %}
+                <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.07);font-size:0.73rem;color:rgba(240,239,244,0.75);line-height:1.5">
+                    💡 <strong style="color:rgba(240,239,244,0.9)">Your idea:</strong> {{ saved_idea }}
+                </div>
+                {% endif %}
+            </div>
+
+            <form id="customerForm" method="POST" action="/customer" novalidate>
+
+                <!-- Auto-derived hidden fields — no longer asked in UI -->
+                <input type="hidden" name="customer_age_range" value="Adult (18+)">
+                <input type="hidden" name="customer_role" value="">
+                <input type="hidden" name="problem_confirmed" value="Yes">
+                <input type="hidden" name="competitor_name" value="">
+                <input type="hidden" name="competitor_gap" value="">
+                <input type="hidden" name="customer_quote" value="">
+
+                <!-- ── 1. CUSTOMER PERSONA ── -->
+                <div class="idea-card">
+                    <div class="idea-card-label">Describe one real customer — imagine one specific person 🧑</div>
+                    <div style="font-size:0.71rem;color:var(--muted);margin-bottom:8px;line-height:1.5">
+                        Picture a real person. Who are they, what situation are they in, and what do they need from you?
+                    </div>
+                    <!-- C18-10: Starter examples students can tap to pre-fill -->
+                    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+                        <button type="button" onclick="const _ta=document.getElementById('customerPersona');_ta.value=this.dataset.ex;document.getElementById('personaCount').textContent=this.dataset.ex.length;window._customerDirty=true;_ta.dispatchEvent(new Event('input'));" data-ex="A Grade 8 student who always forgets their lunch money and is hungry by break time." style="background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.25);border-radius:8px;padding:5px 10px;font-size:0.65rem;color:rgba(240,239,244,0.8);cursor:pointer;text-align:left;line-height:1.4">💡 "Grade 8 student who forgets lunch money…"</button>
+                        <button type="button" onclick="const _ta=document.getElementById('customerPersona');_ta.value=this.dataset.ex;document.getElementById('personaCount').textContent=this.dataset.ex.length;window._customerDirty=true;_ta.dispatchEvent(new Event('input'));" data-ex="Parents dropping kids off at soccer practice on Saturday mornings who need a quick, healthy snack." style="background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.25);border-radius:8px;padding:5px 10px;font-size:0.65rem;color:rgba(240,239,244,0.8);cursor:pointer;text-align:left;line-height:1.4">💡 "Parents at Saturday sport who need snacks…"</button>
+                        <button type="button" onclick="const _ta=document.getElementById('customerPersona');_ta.value=this.dataset.ex;document.getElementById('personaCount').textContent=this.dataset.ex.length;window._customerDirty=true;_ta.dispatchEvent(new Event('input'));" data-ex="Teenagers aged 14–17 who want personalised gifts for friends but can't find anything affordable or unique." style="background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.25);border-radius:8px;padding:5px 10px;font-size:0.65rem;color:rgba(240,239,244,0.8);cursor:pointer;text-align:left;line-height:1.4">💡 "Teens who want affordable personalised gifts…"</button>
+                    </div>
+                    <textarea name="customer_problem" id="customerPersona" class="niche-textarea"
+                              placeholder="e.g. A Grade 9 student who is stressed before exams and wants something small and personal to cheer them up."
+                              rows="3" maxlength="400">{{ saved_customer_problem or '' }}</textarea>
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px">
+                        <div class="char-count"><span id="personaCount">{{ (saved_customer_problem or '') | length }}</span>/400</div>
+                        <!-- O10-02: Persona live strength meter -->
+                        <div id="personaStrength" style="display:flex;gap:4px;align-items:center">
+                            <span style="font-size:0.62rem;color:var(--muted)">Strength</span>
+                            <span id="ps1" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.1);display:inline-block;transition:background 0.3s"></span>
+                            <span id="ps2" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.1);display:inline-block;transition:background 0.3s"></span>
+                            <span id="ps3" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.1);display:inline-block;transition:background 0.3s"></span>
+                        </div>
+                    </div>
+                    <div id="personaStrengthHint" style="display:none;margin-top:3px;font-size:0.67rem;color:var(--muted);font-style:italic"></div>
+                </div>
+
+                <!-- ── 2. PROXIMITY FILTER ── -->
+                <div class="idea-card">
+                    <div class="idea-card-label">Where will your customers find you? 📍 <button type="button" class="hint-btn" aria-label="Show hint" aria-expanded="false" onclick="toggleHint('hint-proximity')" title="Help me choose">ℹ️</button></div>
+                    <div id="hint-proximity" class="hint-pop">A food stall or market stall can only serve people nearby. An online shop or app can reach anyone. Pick the option that matches how you'll actually sell your product or service.</div>
+                    <div style="font-size:0.71rem;color:var(--muted);margin-bottom:8px">
+                        Pick the option that matches your <strong id="proximityArchetypeLabel">business type</strong>.
+                    </div>
+                    <input type="hidden" name="customer_location" id="f-customer_location" value="{{ saved_customer_location }}">
+                    <div class="pill-row" id="proximityPills" data-field="customer_location"></div>
+                </div>
+
+                <!-- ── 3. SPENDING POWER ── -->
+                <div class="idea-card">
+                    <div class="idea-card-label">Their budget — how much can they spend per visit? 💵 <button type="button" class="hint-btn" aria-label="Show hint" aria-expanded="false" onclick="toggleHint('hint-wtp')" title="How to estimate spending power?">ℹ️</button></div>
+                    <div id="hint-wtp" class="hint-pop">Think about what your customer normally spends on ONE purchase of something like yours. Not their total income — just this type of product or service. Be realistic: a student at lunch has $10–$15, not $150.</div>
+                    <div style="font-size:0.71rem;color:var(--muted);margin-bottom:6px">How much would this customer spend on one purchase from you?</div>
+                    <div style="font-size:0.67rem;color:rgba(240,239,244,0.5);margin-bottom:8px;padding:5px 8px;background:rgba(255,255,255,0.03);border-radius:7px;line-height:1.6">
+                        💡 Reference: <strong style="color:rgba(240,239,244,0.7)">Under $20</strong> = snack, sticker, small gift &nbsp;·&nbsp; <strong style="color:rgba(240,239,244,0.7)">$20–$50</strong> = meal out or small gift &nbsp;·&nbsp; <strong style="color:rgba(240,239,244,0.7)">$50–$150</strong> = shoes, game, or clothing &nbsp;·&nbsp; <strong style="color:rgba(240,239,244,0.7)">$150+</strong> = electronics or experiences
+                    </div>
+                    <input type="hidden" name="willingness_to_pay" id="f-willingness_to_pay" value="{{ saved_willingness_to_pay }}">
+                    <div class="pill-row" data-field="willingness_to_pay">
+                        {% for opt in ['Under $20', '$20–$50', '$50–$150', 'Over $150'] %}
+                        <button type="button" class="pill {% if opt == saved_willingness_to_pay %}active{% endif %}" data-val="{{ opt }}">{{ opt }}</button>
+                        {% endfor %}
+                    </div>
+                    <!-- O12-05: Static CC008 advisory — sets expectation before analysis runs -->
+                    {% if not sell_price %}
+                    <div style="margin-top:7px;font-size:0.68rem;color:var(--muted);padding:5px 8px;background:rgba(255,255,255,0.03);border-radius:7px;line-height:1.5">
+                        💡 Once you set your sell price in <a href="/money" style="color:#A78BFA;text-decoration:underline">Chapter 4</a>, we'll automatically check if it matches what your customer can afford.
+                    </div>
+                    {% else %}
+                    <div style="margin-top:7px;font-size:0.68rem;color:rgba(52,211,153,0.8);padding:5px 8px;background:rgba(52,211,153,0.05);border-radius:7px;line-height:1.5">
+                        ✅ Your sell price (${{ sell_price }}) will be checked against the tier you pick here after analysis.
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- ── 4. DIFFERENTIATION ── -->
+                <div class="idea-card">
+                    <div class="idea-card-label">Your edge — why would they choose you over someone else? ⚡ <button type="button" class="hint-btn" aria-label="Show hint" aria-expanded="false" onclick="toggleHint('hint-diff')" title="Which edge is strongest?">ℹ️</button></div>
+                    <div id="hint-diff" class="hint-pop">Better quality, more personal, or first-of-its-kind edges are hard to copy. "Cheaper" is the weakest choice — anyone can lower their price tomorrow and beat you.</div>
+                    <input type="hidden" name="differentiation" id="f-differentiation" value="{{ saved_differentiation }}">
+                    <div id="cheaperWarning" style="display:none;margin-bottom:6px;font-size:0.7rem;color:#FB923C;padding:5px 10px;background:rgba(251,146,60,0.08);border-radius:8px;line-height:1.5">
+                        ⚠️ <strong>Being the cheapest is risky</strong> — anyone can lower their price and beat you tomorrow. Try to offer something extra, not just a lower price.
+                    </div>
+                    <div class="pill-row" data-field="differentiation">
+                        <button type="button" class="pill pill--warn" data-val="Cheaper" onclick="document.getElementById('cheaperWarning').style.display=''">Cheaper ⚠️</button>
+                        <button type="button" class="pill" data-val="Better quality">Better quality</button>
+                        <button type="button" class="pill" data-val="Faster">Faster</button>
+                        <button type="button" class="pill" data-val="More personal">More personal</button>
+                        <button type="button" class="pill" data-val="First of its kind">First of its kind</button>
+                        <button type="button" class="pill" data-val="More local / convenient">More local / convenient</button>
+                        <button type="button" class="pill pill--danger" data-val="Not sure yet">Not sure yet</button>
+                    </div>
+                </div>
+
+                <!-- ── 5. CHANNEL ── -->
+                <div class="idea-card">
+                    <div class="idea-card-label">How will you reach your customers? 📣</div>
+                    <div style="font-size:0.7rem;color:var(--muted);margin-bottom:8px;line-height:1.6">
+                        How will customers discover you? Pick the most realistic way for your business.<br>
+                        <span style="font-size:0.65rem;color:rgba(240,239,244,0.45)">e.g. 🗣️ Word of mouth = tell friends &nbsp;·&nbsp; 📱 Social media = Instagram/TikTok &nbsp;·&nbsp; 🏫 At school/events = in person</span>
+                    </div>
+                    <input type="hidden" name="how_to_reach" id="f-how_to_reach" value="{{ saved_how_to_reach }}">
+                    <div class="pill-row" id="channelPills" data-field="how_to_reach"></div>
+                    <!-- O10-03 / O13 CR005: Not sure consequence message with archetype-specific suggestion -->
+                    <div id="channelNotSureMsg" style="display:none;margin-top:8px;font-size:0.72rem;color:#FFD93D;padding:6px 10px;background:rgba(255,217,61,0.07);border-radius:8px;line-height:1.6">
+                        ⚠️ <strong>No clear channel blocks your progress.</strong> Without a concrete way to find customers, you can't validate your idea or make your first sale.<br>
+                        <span id="channelSuggestion" style="color:rgba(240,239,244,0.8);margin-top:3px;display:block"></span>
+                    </div>
+                </div>
+
+                <button type="button" id="validateBtn" class="btn-validate" style="display:none">🔬 Run Analysis</button>
+                <!-- CTA subtitle hidden — Run Analysis is now in the side panel -->
+                <p class="validate-sub-hint" style="display:none">⏳ Checks your customer profile for gaps and gives you honest AI feedback — about 5–10 seconds</p>
+
+                <!-- O10-04: Completion card (shown after validation passes) -->
+                <div id="customerModuleSummary" style="display:none;margin-top:16px">
+                    <div class="module-cert-card">
+                        <div class="mcc-badge">🎯</div>
+                        <div class="mcc-title">Chapter 3 Complete!</div>
+                        <div class="mcc-body" id="customerMccBody">
+                            Your target customer is defined! Mentor score: <strong id="customerMccScore">—</strong>
+                        </div>
+                        <div class="mcc-hint" id="customerMccHint"></div>
+                    </div>
+                </div>
+
+                <button type="submit" id="submitBtn" class="btn-analyse" style="margin-top:12px">
+                    {% if customer_passed %}✅ Validated! Next: Money Math 💰 →{% else %}Next: Money Math 💰 →{% endif %}
+                </button>
+                <p id="submitHint" style="font-size:0.7rem;color:var(--muted);text-align:center;margin-top:6px;{% if customer_passed %}display:none{% endif %}">
+                    🔬 Run Analysis above first for best results
+                </p>
+
+            </form>
+        </main>
+
+        <!-- ── RIGHT: ITS Panel (matching money/idea structure) ── -->
+        <aside class="research-panel" id="labPanel">
+
+            <div class="rp-header" style="display:flex;align-items:center;justify-content:space-between;">
+                <span>🔬 ITS Lab</span>
+                <a href="/progress" style="font-size:0.68rem;font-weight:900;color:var(--muted);text-decoration:none;padding:3px 8px;border:1px solid rgba(255,255,255,0.1);border-radius:99px;" title="View full journey audit">📊 Audit</a>
+            </div>
+
+            <div class="lab-run-row" style="margin:8px 0">
+                <button id="analyseLabBtn" class="lab-btn-run" title="Check your customer profile — takes about 10 seconds">🔬 Run Analysis</button>
+            </div>
+
+            <!-- Kid / Research toggle -->
+            <div class="rt-wrap">
+                <span class="rt-label">Kid View</span>
+                <label class="rt-toggle">
+                    <input type="checkbox" id="researchToggle" class="rt-input">
+                    <span class="rt-slider"></span>
+                </label>
+                <span class="rt-label rt-label--research">Mentor Feedback</span>
+                <span class="rt-info" data-tip="Shows the 3-way AI scoring: Rules Check (logic), AI Optimist (cheerful AI), and Mentor Feedback (honest mentor).">i</span>
+            </div>
+
+            <!-- Kid View (default) -->
+            <div id="kidView">
+                <div class="its-pillar">
+                    <div class="its-p-head">🐍 Rules Check</div>
+                    <div class="its-p-icons" id="rulesIcons">
+                        <span class="its-icon--placeholder">Run Analysis to see your check results! ✅</span>
+                    </div>
+                </div>
+                <div class="its-pillar">
+                    <div class="its-p-head">📊 Mentor Score</div>
+                    <div class="its-p-icons" id="hybridScoreIcon">
+                        <span class="its-icon--placeholder">—</span>
+                    </div>
+                </div>
+                <div class="its-pillar its-pillar--hybrid">
+                    <div class="its-p-head">🧑‍🏫 Mentor Says</div>
+                    <div id="whyScoreBox" style="display:none;background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 10px;margin-bottom:8px;border-left:2px solid rgba(167,139,250,0.4)"></div>
+                    <div class="its-p-text" id="hybridText">
+                        <span class="np-placeholder">Fill in your answers, then tap <strong>Run Analysis</strong> to get tips from your AI mentor! 🤖</span>
+                    </div>
+                    <!-- O12-02: Socratic hint surfaced in Kid View -->
+                    <div id="kidSocraticHint" style="display:none;margin-top:8px;padding:7px 10px;background:rgba(167,139,250,0.07);border-left:3px solid rgba(167,139,250,0.4);border-radius:0 8px 8px 0;font-size:0.7rem;color:rgba(240,239,244,0.8);line-height:1.6;font-style:italic">
+                        💭 <span id="kidSocraticHintText"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Research View (toggle ON) -->
+            <div id="researchView" style="display:none">
+                <div class="rs-tabs">
+                    <button class="rs-tab rs-tab--active" onclick="switchRsTab(this,'rules')">
+                        🐍 Rules<span class="rs-tab-score" id="rsSymScore">—</span>
+                    </button>
+                    <button class="rs-tab" onclick="switchRsTab(this,'pure')">
+                        🤖 AI Optimist<span class="rs-tab-score" id="rsPureTruth">—</span>
+                    </button>
+                    <button class="rs-tab" onclick="switchRsTab(this,'hybrid')">
+                        🧠 Mentor Feedback<span class="rs-tab-score" id="rsHybridTruth">—</span>
+                    </button>
+                </div>
+                <div class="rs-pane" id="rsPane-rules">
+                    <div class="rs-violations" id="rsViolations"><span style="color:var(--muted);font-size:0.78rem">Run analysis to see rule results.</span></div>
+                </div>
+                <div class="rs-pane rs-pane--hidden" id="rsPane-pure">
+                    <div class="rs-text" id="pureLlmBox" style="color:var(--muted);font-size:0.78rem">🤖 <em>AI Optimist:</em> Waiting for analysis…</div>
+                    <div class="truth-bar-wrap" id="pureTruth"></div>
+                    <div id="rsBandPure" style="display:none;font-size:0.72rem;font-weight:800;margin-top:4px;padding:3px 0"></div>
+                </div>
+                <div class="rs-pane rs-pane--hidden" id="rsPane-hybrid">
+                    <div class="rs-text" id="hybridLlmBox" style="color:var(--muted);font-size:0.78rem">🧠 <em>Mentor Feedback:</em> Waiting for analysis…</div>
+                    <div class="truth-bar-wrap" id="hybridTruth"></div>
+                    <div id="rsBandHybrid" style="display:none;font-size:0.72rem;font-weight:800;margin-top:6px;padding:3px 0"></div>
+                    <div id="rsNextStep" style="display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:0.75rem;line-height:1.6"></div>
+                    <div id="rsGrowthHint" style="display:none;margin-top:6px;font-size:0.7rem;color:var(--muted);padding:6px 8px;border-top:1px solid rgba(255,255,255,0.07)">
+                        📝 Update your answers and re-run the analysis — your best score is always saved! 💪
+                    </div>
+                </div>
+                <div class="rs-gap rs-gap--ok" id="rsGap" style="display:none"></div>
+                <div id="customerGapExplainer" style="display:none"></div>
+                <div id="rsScoreDelta" style="display:none;font-size:0.7rem;font-weight:800;text-align:center;padding:4px 8px;margin-top:4px;background:rgba(52,211,153,0.08);border-radius:6px"></div>
+                <!-- O16-01: Score history strip -->
+                <div id="rsScoreHistory" style="display:none;margin-top:4px;font-size:0.68rem;color:var(--muted);text-align:center;line-height:2"></div>
+            </div>
+
+        </aside>
+
+    </div>
+</div>
+
+<!-- Run Analysis reminder modal -->
+<div id="analysisReminderOverlay" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(9,9,15,0.75);align-items:center;justify-content:center;padding:20px">
+    <div style="background:#16161E;border:1px solid rgba(167,139,250,0.35);border-radius:16px;padding:24px 28px;max-width:420px;width:100%;font-family:Nunito,sans-serif;box-shadow:0 8px 40px rgba(0,0,0,0.6)">
+        <div style="font-size:1.6rem;text-align:center;margin-bottom:10px">🔬</div>
+        <div style="font-size:1rem;font-weight:900;color:var(--text);text-align:center;margin-bottom:8px">Don't forget to Run Analysis!</div>
+        <div style="font-size:0.82rem;color:rgba(240,239,244,0.75);line-height:1.6;text-align:center;margin-bottom:20px">
+            You've described your customer but haven't checked it yet.<br>
+            <strong style="color:#A78BFA">Running Analysis</strong> gives you AI feedback and a score — it only takes 10 seconds! 🚀
+        </div>
+        <div style="display:flex;gap:10px;flex-direction:column">
+            <button id="reminderRunBtn" style="background:linear-gradient(135deg,#A78BFA,#60A5FA);color:#09090F;font-weight:900;font-size:0.9rem;border:none;border-radius:99px;padding:12px 20px;cursor:pointer;font-family:Nunito,sans-serif">🔬 Run Analysis Now</button>
+            <button id="reminderContinueBtn" style="background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(240,239,244,0.6);font-size:0.8rem;font-weight:700;border-radius:99px;padding:9px 20px;cursor:pointer;font-family:Nunito,sans-serif">Continue without analysing →</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const CUSTOMER_RULES = {{ customer_rules_json | safe }};
+const RADAR          = {{ radar_scores_json | safe }};
+const SAVED_IDEA     = {{ saved_idea | tojson }};
+const ARCHETYPE      = {{ archetype | tojson }};
+const CH1_LOCATION   = {{ ch1_location | tojson }};
+
+// Saved fields from previous session visit
+const SAVED_FIELDS = {
+    customer_location:  {{ saved_customer_location | tojson }},
+    customer_problem:   {{ saved_customer_problem | tojson }},
+    willingness_to_pay: {{ saved_willingness_to_pay | tojson }},
+    differentiation:    {{ saved_differentiation | tojson }},
+    how_to_reach:       {{ saved_how_to_reach | tojson }},
+};
+
+// ── Archetype labels ──────────────────────────────────────────
+const ARCHETYPE_LABELS = {
+    'service':'Service Business','food-beverage':'Food & Beverage',
+    'physical-product':'Physical Product','digital-product':'Digital Product',
+    'skills-for-hire':'Skills for Hire','content-media':'Content / Media',
+    'resale-retail':'Resale / Retail','event-experience':'Event / Experience',
+    'maker':'Maker / Builder','expert':'Consulting / Expert',
+    'marketplace':'Marketplace','other':'Business',
+};
+const archetypeLabel = ARCHETYPE_LABELS[ARCHETYPE] || (ARCHETYPE || 'Business');
+
+// ── Proximity options per archetype ──────────────────────────
+const PROXIMITY_MAP = {
+    'service':          [{v:'My street / block',l:'My street / block'},{v:'Within 1–2 km',l:'Within 1–2 km'},{v:'Same suburb',l:'Same suburb'},{v:'City-wide',l:'City-wide'}],
+    'food-beverage':    [{v:'Same school / venue',l:'Same school / venue'},{v:'Walking distance (<500m)',l:'Walking distance'},{v:'Same neighbourhood',l:'Same neighbourhood'},{v:'Delivery within 5 km',l:'Delivery within 5 km'}],
+    'physical-product': [{v:'Local pickup only',l:'Local pickup only'},{v:'Post / ship anywhere',l:'Post / ship anywhere'},{v:'Local + online',l:'Local + online'}],
+    'digital-product':  [{v:'Online platform',l:'Online platform'},{v:'Social media reach',l:'Social media reach'},{v:'Global (online)',l:'Global (online)'}],
+    'skills-for-hire':  [{v:'In-person (same area)',l:'In-person'},{v:'Online sessions',l:'Online sessions'},{v:'In-person + online',l:'Both'}],
+    'content-media':    [{v:'Social media followers',l:'Social media'},{v:'Online community',l:'Online community'},{v:'Email subscribers',l:'Email list'}],
+    'resale-retail':    [{v:'Local market / stall',l:'Local market / stall'},{v:'Online store',l:'Online store'},{v:'Local + online',l:'Both'}],
+    'event-experience': [{v:'Same school / venue',l:'Same school / venue'},{v:'Local community',l:'Local community'},{v:'City-wide events',l:'City-wide events'}],
+    'maker':            [{v:'Local pickup / delivery',l:'Local pickup'},{v:'Ship anywhere',l:'Ship anywhere'},{v:'Local + ship',l:'Both'}],
+    'expert':           [{v:'In-person consulting',l:'In-person consulting'},{v:'Online / remote',l:'Online / remote'},{v:'Both in-person + online',l:'Both'}],
+    'marketplace':      [{v:'Online marketplace',l:'Online marketplace'},{v:'Local exchange',l:'Local exchange'},{v:'Global platform',l:'Global platform'}],
+};
+const _DEFAULT_PROXIMITY = [{v:'Within walking distance',l:'Walking distance'},{v:'Same suburb',l:'Same suburb'},{v:'City-wide',l:'City-wide'},{v:'Online',l:'Online'}];
+
+// ── Channel options per archetype ────────────────────────────
+const CHANNEL_MAP = {
+    'service':         [{v:'Word of mouth / referrals',l:'Word of mouth'},{v:'Social media (Facebook / Nextdoor)',l:'Social media'},{v:'Door-to-door / flyers',l:'Door-to-door / flyers'},{v:'Local community groups',l:'Local community groups'},{v:'Online listings (Airtasker / Gumtree)',l:'Online listings'},{v:'Not sure',l:'Not sure',danger:true}],
+    'food-beverage':   [{v:'Word of mouth / referrals',l:'Word of mouth'},{v:'School / workplace notice board',l:'Notice board'},{v:'Social media',l:'Social media'},{v:'Local events / markets',l:'Local events'},{v:'Not sure',l:'Not sure',danger:true}],
+    'digital-product': [{v:'App store / platform listing',l:'App store'},{v:'Social media ads',l:'Social media ads'},{v:'Online communities / forums',l:'Online communities'},{v:'Content marketing / SEO',l:'Content / SEO'},{v:'Not sure',l:'Not sure',danger:true}],
+    'skills-for-hire': [{v:'Word of mouth / referrals',l:'Word of mouth'},{v:'Social media',l:'Social media'},{v:'School / community notice board',l:'Notice board'},{v:'Online tutoring platforms',l:'Online platforms'},{v:'Not sure',l:'Not sure',danger:true}],
+};
+const _DEFAULT_CHANNELS = [{v:'Word of mouth / referrals',l:'Word of mouth'},{v:'Social media',l:'Social media'},{v:'Local events / markets',l:'Local events / markets'},{v:'Direct outreach (door-to-door / DM)',l:'Direct outreach'},{v:'Online listings / marketplace',l:'Online listings'},{v:'Not sure',l:'Not sure',danger:true}];
+
+// ── Persona placeholder per archetype ────────────────────────
+const PERSONA_PLACEHOLDERS = {
+    'service': 'e.g. Local car owners near ' + (CH1_LOCATION || 'my area') + ' who need fast, reliable tire changes without waiting days at a big workshop',
+    'food-beverage': 'e.g. Students at my school who skip breakfast and need a quick, healthy snack before first period',
+    'physical-product': 'e.g. Teenage girls in my city who want unique, handmade jewellery that stands out from chain store options',
+    'digital-product': 'e.g. Small business owners who need a simple, affordable app to track daily invoices on their phone',
+    'skills-for-hire': 'e.g. Year 9–10 students who are struggling with maths and need one-on-one help after school',
+    'content-media': 'e.g. Young parents looking for honest, relatable advice about raising toddlers on a tight budget',
+    'resale-retail': "e.g. Fashion-conscious teens who want trendy, affordable second-hand clothes they can't find in stores",
+    'event-experience': 'e.g. Families with young children who want fun, affordable local activities they can book on weekends',
+    'maker': "e.g. Home owners who need custom-built shelving and storage solutions they can't find in furniture stores",
+    'expert': 'e.g. First-time small business owners who need affordable marketing strategy advice from someone who gets them',
+    'marketplace': "e.g. Local sellers who need a simple way to connect with nearby buyers without a big platform's fees",
+};
+
+// ── Mini Radar ───────────────────────────────────────────────
+const _RADAR_AXES = ['Passion','Energy','Gold','Influence','Knowledge','Target'];
+let _radarData = _RADAR_AXES.map(k => RADAR[k] || 0);
+let _miniChart = null;
+
+function _axisColors(data) {
+    return data.map(v => v >= 70 ? '#34D399' : v >= 40 ? '#FFD93D' : v > 0 ? '#FF6B6B' : 'rgba(255,255,255,0.15)');
+}
+
+function initMiniRadar() {
+    const hasData = _radarData.some(v => v > 0);
+    document.getElementById('miniRadarChart').style.display       = hasData ? '' : 'none';
+    document.getElementById('miniRadarPlaceholder').style.display = hasData ? 'none' : '';
+    if (!hasData) return;
+    // Start at zero so the radar visibly animates in on page load
+    _miniChart = new Chart(document.getElementById('miniRadarChart'), {
+        type: 'radar',
+        data: {
+            labels: _RADAR_AXES,
+            datasets: [{
+                data: _RADAR_AXES.map(() => 0),
+                backgroundColor: 'rgba(52,211,153,0.08)',
+                borderColor: '#34D399',
+                borderWidth: 2,
+                pointRadius: 4,
+                pointBackgroundColor: _axisColors(_radarData),
+                pointBorderColor: 'rgba(9,9,15,0.6)',
+                pointBorderWidth: 1,
+            }]
+        },
+        options: {
+            responsive: true, animation: {duration: 400},
+            scales: { r: {
+                min: 0, max: 100,
+                ticks: { display: false },
+                grid:        { color: 'rgba(255,255,255,0.07)' },
+                angleLines:  { color: 'rgba(255,255,255,0.1)' },
+                pointLabels: { color: 'rgba(240,239,244,0.7)', font: { size: 9, weight: '900', family: "'Nunito',sans-serif" } }
+            }},
+            plugins: { legend: { display: false } }
+        }
+    });
+    // Animate in to the real saved values
+    setTimeout(() => pulseRadar(_miniChart, _radarData, _axisColors), 120);
+}
+
+function updateMiniRadar(radarObj) {
+    if (!radarObj) return;
+    const axIdx = {Passion:0, Energy:1, Gold:2, Influence:3, Knowledge:4, Target:5};
+    let changed = false; let boostedAxis = null;
+    Object.entries(radarObj).forEach(([k, v]) => {
+        const i = axIdx[k];
+        if (i !== undefined && v > _radarData[i]) { _radarData[i] = v; changed = true; boostedAxis = k; }
+    });
+    if (!changed) return;
+    if (!_miniChart) { initMiniRadar(); return; }
+    document.getElementById('miniRadarChart').style.display       = '';
+    document.getElementById('miniRadarPlaceholder').style.display = 'none';
+    _miniChart.data.datasets[0].data = [..._radarData];
+    _miniChart.data.datasets[0].pointBackgroundColor = _axisColors(_radarData);
+    _miniChart.update('active');
+    if (boostedAxis) {
+        const toast = document.getElementById('radarAxisToast');
+        if (toast) {
+            toast.textContent = '🎯 ' + boostedAxis + ' axis updated!';
+            toast.classList.add('show');
+            clearTimeout(toast._t);
+            toast._t = setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+    }
+}
+
+initMiniRadar();
+
+/* ── Live radar: set absolute values (allows decreasing) ── */
+function setLiveRadar(radarObj) {
+    if (!radarObj) return;
+    const axes = ['Passion','Energy','Gold','Influence','Knowledge','Target'];
+    const newData = axes.map(k => Math.max(0, Math.min(100, radarObj[k] || 0)));
+    _radarData = newData;
+    if (!_miniChart) { initMiniRadar(); return; }
+    document.getElementById('miniRadarChart').style.display = '';
+    document.getElementById('miniRadarPlaceholder').style.display = 'none';
+    _miniChart.data.datasets[0].data = [..._radarData];
+    _miniChart.data.datasets[0].pointBackgroundColor = _axisColors(_radarData);
+    _miniChart.update('active');
+}
+
+/* ── Ch3 live radar: boosts Influence as student fills customer fields ── */
+function computeLiveRadar() {
+    const persona   = (document.getElementById('customerPersona')     || {}).value || '';
+    const location  = (document.getElementById('f-customer_location') || {}).value || '';
+    const wtp       = (document.getElementById('f-willingness_to_pay')|| {}).value || '';
+    const channel   = (document.getElementById('f-how_to_reach')      || {}).value || '';
+    const diff      = (document.getElementById('f-differentiation')   || {}).value || '';
+    let influenceExtra = 0;
+    if (persona.length >= 20)   influenceExtra += 10;
+    if (persona.length >= 60)   influenceExtra += 8;
+    if (location && location !== 'Not selected') influenceExtra += 10;
+    if (wtp && wtp !== 'Not selected')           influenceExtra += 8;
+    if (channel && channel !== 'Not sure')        influenceExtra += 8;
+    if (diff && diff !== 'Cheaper' && diff !== 'Not selected') influenceExtra += 6;
+    return {
+        Passion:   RADAR.Passion   || 0,
+        Energy:    RADAR.Energy    || 0,
+        Gold:      RADAR.Gold      || 0,
+        Influence: Math.min(100, (RADAR.Influence || 0) + influenceExtra),
+        Knowledge: RADAR.Knowledge || 0,
+        Target:    RADAR.Target    || 0,
+    };
+}
+
+let _liveRadarTimer = null;
+function scheduleLiveRadarUpdate() {
+    clearTimeout(_liveRadarTimer);
+    _liveRadarTimer = setTimeout(() => setLiveRadar(computeLiveRadar()), 300);
+}
+
+// Wire live radar to persona textarea (pill clicks handled in pill click handler)
+(function() {
+    const ta = document.getElementById('customerPersona');
+    if (ta) ta.addEventListener('input', scheduleLiveRadarUpdate);
+    scheduleLiveRadarUpdate();
+})();
+
+// ── ITS panel helpers ─────────────────────────────────────────
+function _scoreBand(s) {
+    if (s >= 80) return {label:'🏆 Excellent', color:'#34D399'};
+    if (s >= 60) return {label:'👍 Good',      color:'#A78BFA'};
+    if (s >= 40) return {label:'📚 Developing',color:'#FFD93D'};
+    return {label:'🌱 Early Stage', color:'var(--muted)'};
+}
+
+function renderTruthBar(id, score) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (score === null || score === undefined) { el.innerHTML = ''; return; }
+    const cls = score >= 70 ? 'truth-fill--green' : score >= 40 ? 'truth-fill--yellow' : 'truth-fill--red';
+    el.setAttribute('role','progressbar');
+    el.setAttribute('aria-valuenow', score);
+    el.setAttribute('aria-valuemin','0');
+    el.setAttribute('aria-valuemax','100');
+    el.setAttribute('aria-label','Plan Strength: ' + score + ' out of 100');
+    el.innerHTML = `
+        <div class="truth-bar-label">📊 Plan Strength <span class="truth-val">${score}/100</span></div>
+        <div class="truth-track"><div class="truth-fill ${cls}" style="width:${score}%"></div></div>
+        <div class="truth-desc">${score >= 70 ? '💪 Strong plan — AI and rules agree!' : score >= 40 ? '🔧 Getting there — check the Rules tab for tips' : '📈 Needs work — Rules tab has your next steps'}</div>`;
+}
+
+function switchRsTab(btn, tabName) {
+    const rv = document.getElementById('researchView');
+    rv.querySelectorAll('.rs-tab').forEach(b => b.classList.remove('rs-tab--active'));
+    rv.querySelectorAll('.rs-pane').forEach(p => p.classList.add('rs-pane--hidden'));
+    btn.classList.add('rs-tab--active');
+    document.getElementById('rsPane-' + tabName).classList.remove('rs-pane--hidden');
+}
+
+function updateITSPanel(data) {
+    const violations = data.violations || [];
+    const totalRules = data.total_rules || violations.length;
+    const passCount  = Math.max(0, totalRules - violations.length);
+    const reds   = violations.map(v => `<span class="its-icon" title="${v.id}: ${v.message}">${v.severity==='error'?'📌':'🟡'}</span>`).join('');
+    const greens = violations.length === 0
+        ? '<span class="its-icon" style="color:#34D399;font-size:0.8rem">✅ No conflicts found!</span>'
+        : '✅'.repeat(Math.min(passCount, 8));
+    document.getElementById('rulesIcons').innerHTML = reds + (greens ? `<span class="its-icon">${greens}</span>` : '');
+
+    if (data.triple) {
+        // O10-10: Signal progress page that scores changed
+        localStorage.setItem('lrnbiz_scores_updated', Date.now());
+        localStorage.setItem('lrnbiz_customer_score', String(data.triple.hybrid_truth||0));
+        _analysisRunThisSession = true;
+        const ht = data.triple.hybrid_truth;
+        document.getElementById('hybridScoreIcon').innerHTML =
+            `<span class="its-icon" style="font-size:1.4rem">${ht >= 70 ? '🏆' : ht >= 40 ? '🎯' : '📈'}</span>
+             <span style="font-size:0.72rem;color:var(--muted);margin-left:4px">${ht}/100</span>`;
+        document.getElementById('rsSymScore').textContent    = data.triple.symbolic_score + '/100';
+        document.getElementById('rsPureTruth').textContent   = data.triple.pure_truth + '/100';
+        document.getElementById('rsHybridTruth').textContent = data.triple.hybrid_truth + '/100';
+
+        renderTruthBar('pureTruth',   data.triple.pure_truth   ?? null);
+        renderTruthBar('hybridTruth', data.triple.hybrid_truth ?? null);
+
+        const _hb = data.triple?.mentor_band || _scoreBand(ht);
+        const _hbEl = document.getElementById('rsBandHybrid');
+        if (_hbEl) { _hbEl.textContent = _hb.label; _hbEl.style.color = _hb.color; _hbEl.style.display = ''; }
+        const _pb = data.triple?.pure_band || _scoreBand(data.triple.pure_truth);
+        const _pbEl = document.getElementById('rsBandPure');
+        if (_pbEl) { _pbEl.textContent = _pb.label; _pbEl.style.color = _pb.color; _pbEl.style.display = ''; }
+
+        // Sycophancy gap
+        const _g = (data.triple.pure_truth||0) - (data.triple.hybrid_truth||0);
+        const _gEl = document.getElementById('rsGap');
+        if (_gEl) {
+            _gEl.innerHTML = _g > 10
+                ? `ℹ️ AI was ${_g} pts more generous than your Mentor. This is the sycophancy gap — AI wants you to feel good, Mentor wants your plan to succeed.`
+                : _g < -10 ? `Your plan is stronger than the AI thought — Mentor is ${Math.abs(_g)} pts higher!`
+                : '✅ AI and Mentor agree — scores are well-calibrated.';
+            _gEl.className = 'rs-gap ' + (_g > 10 ? 'rs-gap--warn' : 'rs-gap--ok');
+            _gEl.style.display = '';
+        }
+
+        // Score delta
+        const prevHT = window._lastCustScore;
+        if (prevHT !== undefined && prevHT !== ht) {
+            const delta = ht - prevHT;
+            const dEl = document.getElementById('rsScoreDelta');
+            if (dEl) { dEl.textContent = `${prevHT} → ${ht} (${delta>0?'+':''}${delta} pts)`; dEl.style.color = delta > 0 ? '#34D399' : '#F87171'; dEl.style.display = ''; }
+        }
+        window._lastCustScore = ht;
+
+        // O16-01: Score history strip
+        _renderScoreHistory(data.triple && data.triple.score_history);
+
+        // Next step CTA
+        const _ns = document.getElementById('rsNextStep');
+        if (_ns) {
+            if (ht >= 80) {
+                _ns.style.cssText = 'display:block;background:rgba(52,211,153,0.1);color:#34D399;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:0.75rem;line-height:1.6';
+                _ns.innerHTML = '🎉 <strong>Great Mentor score!</strong><br><a href="/money" style="display:inline-block;margin-top:6px;background:#34D399;color:#09090F;padding:4px 12px;border-radius:99px;text-decoration:none;font-weight:900;font-size:0.72rem">💰 Next: Money Math →</a>';
+            } else if (ht < 60) {
+                _ns.style.cssText = 'display:block;background:rgba(255,217,61,0.08);color:#FFD93D;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:0.75rem;line-height:1.6';
+                _ns.innerHTML = '💡 <strong>Here\'s what to improve:</strong> Check the 🐍 Rules Check tab for specific fixes, then re-validate!';
+            } else {
+                _ns.style.display = 'none';
+            }
+        }
+        document.getElementById('rsGrowthHint').style.display = '';
+
+        // Confetti for high scores
+        if (data.triple.hybrid_truth >= 90) {
+            if (typeof launchBigConfetti === 'function') launchBigConfetti(data.triple.hybrid_truth);
+        } else if (data.triple.hybrid_truth >= 70) {
+            if (typeof SoundFX !== 'undefined') SoundFX.win();
+        }
+        // Badges
+        if (typeof checkBadges === 'function') {
+            const _ac = (parseInt(localStorage.getItem('lrnbiz_cust_analyses')||'0') + 1);
+            localStorage.setItem('lrnbiz_cust_analyses', String(_ac));
+            checkBadges(data.triple.hybrid_truth, (data.triple.pure_truth - data.triple.hybrid_truth), 'customer', _ac);
+        }
+        // Share moment
+        if (typeof showShareMoment === 'function') showShareMoment('Target Customer', data.triple.hybrid_truth);
+        // Gap explainer
+        if (typeof renderGapExplainer === 'function') {
+            renderGapExplainer('customerGapExplainer', data.triple.pure_truth, data.triple.hybrid_truth, data.violations);
+        }
+    }
+
+    if (data.hybrid_llm) {
+        document.getElementById('hybridText').textContent = data.hybrid_llm;
+        document.getElementById('hybridLlmBox').innerHTML = `<p>${data.hybrid_llm}</p>`;
+    }
+    renderWhyScore(data.top_issues);
+    if (data.pure_llm) {
+        document.getElementById('pureLlmBox').innerHTML = `<p>${data.pure_llm}</p>`;
+    }
+
+    // Violations in rules tab (CC-aware)
+    const nrV = violations.filter(v => !v.id || !v.id.startsWith('CC'));
+    const ccV = violations.filter(v => v.id && v.id.startsWith('CC'));
+    let h = '';
+    if (violations.length === 0) { h = '<span style="color:#34D399;font-size:0.78rem">✅ All rules passed!</span>'; }
+    if (nrV.length) { h += '<div style="font-size:0.68rem;font-weight:900;text-transform:uppercase;color:var(--purple);letter-spacing:0.06em;margin-bottom:6px;margin-top:4px">📋 Structure Check</div>'; h += nrV.map(v => `<div style="margin-bottom:8px;padding:6px 8px;background:rgba(${v.severity==='error'?'248,113,113':'251,191,36'},0.07);border-left:3px solid ${v.severity==='error'?'#F87171':'#FBBF24'};border-radius:0 6px 6px 0;font-size:0.72rem;line-height:1.6;white-space:pre-wrap">${v.message}</div>`).join(''); }
+    if (ccV.length) { h += '<div style="font-size:0.68rem;font-weight:900;text-transform:uppercase;color:#34D399;letter-spacing:0.06em;margin-bottom:6px;margin-top:10px">⚡ Reality Check</div>'; h += ccV.map(v => `<div style="margin-bottom:8px;padding:6px 8px;background:rgba(52,211,153,0.06);border-left:3px solid #34D399;border-radius:0 6px 6px 0;font-size:0.72rem;line-height:1.6;white-space:pre-wrap">${v.message}</div>`).join(''); }
+    document.getElementById('rsViolations').innerHTML = h || '<span style="color:var(--muted);font-size:0.78rem">Run analysis to see results.</span>';
+}
+
+// ── Answers state ─────────────────────────────────────────────
+const answers = {};
+
+// ── Build dynamic pill rows ───────────────────────────────────
+function buildPills(container, opts, field) {
+    const savedVal = SAVED_FIELDS[field] || document.getElementById('f-' + field).value;
+    container.innerHTML = '';
+    opts.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'pill' + (opt.danger ? ' pill--danger' : '');
+        btn.dataset.val = opt.v;
+        btn.textContent = opt.l;
+        if (savedVal && savedVal === opt.v) {
+            btn.classList.add('active');
+            answers[field] = opt.v;
+            document.getElementById('f-' + field).value = opt.v;
+        }
+        container.appendChild(btn);
+    });
+}
+
+// Proximity pills (archetype-filtered)
+buildPills(document.getElementById('proximityPills'), PROXIMITY_MAP[ARCHETYPE] || _DEFAULT_PROXIMITY, 'customer_location');
+
+// Channel pills (archetype-filtered)
+buildPills(document.getElementById('channelPills'), CHANNEL_MAP[ARCHETYPE] || _DEFAULT_CHANNELS, 'how_to_reach');
+
+// ── Set archetype labels ──────────────────────────────────────
+const _ctxArch = document.getElementById('ctxArchetype');
+if (_ctxArch) _ctxArch.textContent = archetypeLabel;
+// archetypeBadge lives on idea.html — skip safely if absent
+const _archBadge = document.getElementById('archetypeBadge');
+if (_archBadge) _archBadge.textContent = archetypeLabel;
+const _proxLabel = document.getElementById('proximityArchetypeLabel');
+if (_proxLabel) _proxLabel.textContent = archetypeLabel;
+
+// ── Set persona placeholder & restore ────────────────────────
+const personaTA = document.getElementById('customerPersona');
+personaTA.placeholder = PERSONA_PLACEHOLDERS[ARCHETYPE] || 'e.g. My ideal customer is a [type of person] who [their situation] and needs [what you offer]';
+if (SAVED_FIELDS.customer_problem) {
+    personaTA.value = SAVED_FIELDS.customer_problem;
+    answers.customer_problem = SAVED_FIELDS.customer_problem;
+    document.getElementById('personaCount').textContent = SAVED_FIELDS.customer_problem.length;
+}
+
+// Restore static pill rows (willingness_to_pay, differentiation)
+['willingness_to_pay', 'differentiation'].forEach(field => {
+    const val = SAVED_FIELDS[field];
+    if (!val) return;
+    const row = document.querySelector('.pill-row[data-field="' + field + '"]');
+    if (!row) return;
+    const pill = Array.from(row.querySelectorAll('.pill')).find(p => p.dataset.val === val);
+    if (pill) { pill.classList.add('active'); answers[field] = val; }
+});
+
+// ── Persona character count ───────────────────────────────────
+personaTA.addEventListener('input', () => {
+    answers.customer_problem = personaTA.value;
+    document.getElementById('personaCount').textContent = personaTA.value.length;
+});
+
+// ── Generic pill click handler (event delegation) ─────────────
+document.querySelectorAll('.pill-row').forEach(row => {
+    const field = row.dataset.field;
+    row.addEventListener('click', e => {
+        const btn = e.target.closest('.pill');
+        if (!btn) return;
+        row.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        if (typeof setPillPressed === 'function') setPillPressed(btn);
+        const hiddenInput = document.getElementById('f-' + field);
+        if (hiddenInput) hiddenInput.value = btn.dataset.val;
+        answers[field] = btn.dataset.val;
+        if (typeof SoundFX !== 'undefined') SoundFX.pick();
+        scheduleLiveRadarUpdate();
+    });
+});
+
+// ── Research toggle ───────────────────────────────────────────
+document.getElementById('researchToggle').addEventListener('change', function() {
+    document.getElementById('kidView').style.display      = this.checked ? 'none' : '';
+    document.getElementById('researchView').style.display = this.checked ? '' : 'none';
+    localStorage.setItem('lrnbiz_customer_rs_open', this.checked ? '1' : '0');
+    if (this.checked) {
+        const _hybBtn = document.querySelector('.rs-tab[onclick*="hybrid"]');
+        if (_hybBtn) switchRsTab(_hybBtn, 'hybrid');
+    }
+});
+
+// Restore toggle state
+if (localStorage.getItem('lrnbiz_customer_rs_open') === '1') {
+    document.getElementById('researchToggle').checked = true;
+    document.getElementById('researchView').style.display = '';
+    document.getElementById('kidView').style.display = 'none';
+    const _hybBtnRestore = document.querySelector('.rs-tab[onclick*="hybrid"]');
+    if (_hybBtnRestore) switchRsTab(_hybBtnRestore, 'hybrid');
+}
+
+// ── Re-run button ─────────────────────────────────────────────
+document.getElementById('analyseLabBtn').addEventListener('click', () => {
+    document.getElementById('validateBtn').click();
+});
+
+// ── Validate button ───────────────────────────────────────────
+document.getElementById('validateBtn').addEventListener('click', async () => {
+    const btn = document.getElementById('validateBtn');
+    btn.textContent = '⏳ Validating…';
+    btn.disabled = true;
+
+    // Auto-expand Mentor tab on validate
+    const _rtIn = document.getElementById('researchToggle');
+    if (_rtIn && !_rtIn.checked) {
+        _rtIn.checked = true;
+        document.getElementById('researchView').style.display = '';
+        document.getElementById('kidView').style.display = 'none';
+    }
+    const _hybTab = document.querySelectorAll('.rs-tab')[2];
+    if (_hybTab) switchRsTab(_hybTab, 'hybrid');
+
+    // Loading state
+    const _hEl = document.getElementById('hybridLlmBox');
+    const _pEl = document.getElementById('pureLlmBox');
+    if (_hEl) _hEl.innerHTML = '<span style="color:var(--muted);font-size:0.78rem">⏳ Asking your AI mentor… (usually 5–10 seconds)</span>';
+    if (_pEl) _pEl.innerHTML = '<span style="color:var(--muted);font-size:0.78rem">⏳ Running AI Optimist check…</span>';
+
+    if (typeof showAnalysisProgress === 'function') showAnalysisProgress();
+
+    const _ctrl    = new AbortController();
+    const _timeout = setTimeout(() => _ctrl.abort(), 15000);
+
+    try {
+        const res  = await fetch('/api/validate_customer', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({answers}),
+            signal: _ctrl.signal,
+        });
+        clearTimeout(_timeout);
+        if (typeof clearAnalysisProgress === 'function') clearAnalysisProgress();
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+
+        if (document.getElementById('labPanel'))
+            document.getElementById('labPanel').scrollIntoView({behavior: 'smooth', block: 'nearest'});
+
+        updateITSPanel(data);
+        if (data.radar_scores) {
+            const _axes = ['Passion','Energy','Gold','Influence','Knowledge','Target'];
+            _radarData = _axes.map(k => data.radar_scores[k] || 0);
+            if (!_miniChart) { initMiniRadar(); }
+            else {
+                document.getElementById('miniRadarChart').style.display = '';
+                document.getElementById('miniRadarPlaceholder').style.display = 'none';
+                pulseRadar(_miniChart, _radarData, _axisColors);
+            }
+        }
+
+        // O12-02: Show first socratic_hint in Kid View if any violations
+        const _ksh = document.getElementById('kidSocraticHint');
+        const _ksht = document.getElementById('kidSocraticHintText');
+        const _firstHint = (data.violations || []).find(v => v.socratic_hint);
+        if (_ksh && _ksht && _firstHint) {
+            _ksht.textContent = _firstHint.socratic_hint;
+            _ksh.style.display = '';
+        } else if (_ksh) {
+            _ksh.style.display = 'none';
+        }
+
+        const _submitHint = document.getElementById('submitHint');
+        if (data.passed) {
+            document.getElementById('submitBtn').textContent = '✅ Validated! Next: Money Math 💰 →';
+            if (_submitHint) _submitHint.style.display = 'none';
+            if (typeof SoundFX !== 'undefined') SoundFX.win();
+            // O10-04: Completion card
+            const summEl = document.getElementById('customerModuleSummary');
+            const scoreEl = document.getElementById('customerMccScore');
+            const hintEl  = document.getElementById('customerMccHint');
+            if (summEl) summEl.style.display = '';
+            if (scoreEl && data.triple) scoreEl.textContent = (data.triple.hybrid_truth || '—') + '/100';
+            if (hintEl  && data.triple) {
+                const ht = data.triple.hybrid_truth || 0;
+                hintEl.textContent = ht >= 80 ? '🏆 Strong customer profile — great work!' :
+                    ht >= 60 ? '👍 Good customer definition. Revisit after talking to real people.' :
+                    '📚 Your mentor highlighted some gaps — review the feedback above.';
+            }
+        } else {
+            if (_submitHint) { _submitHint.textContent = '⚠️ Fix the issues above, then re-run Analysis for full marks'; _submitHint.style.display = ''; }
+        }
+
+    } catch(e) {
+        if (typeof clearAnalysisProgress === 'function') clearAnalysisProgress();
+        // O10-12: Show error in ALL three views (not just hybrid box)
+        const _hEl2 = document.getElementById('hybridLlmBox');
+        if (_hEl2) _hEl2.innerHTML = `<span style="color:#F87171">❌ ${e.message}</span>`;
+        const _vEl = document.getElementById('rsViolations');
+        if (_vEl) _vEl.innerHTML = `<div class="np-check np-check--error">❌ Analysis failed: ${e.message}</div>`;
+        const _rulesEl = document.getElementById('rulesIcons');
+        if (_rulesEl) _rulesEl.innerHTML = `<span class="its-icon--placeholder" style="color:#F87171">❌ Analysis failed — check your connection and try again.</span>`;
+    }
+    btn.textContent = '🔬 Run Analysis';
+    btn.disabled = false;
+    const _lbCust = document.getElementById('analyseLabBtn'); if (_lbCust) { _lbCust.textContent = '🔬 Run Analysis'; _lbCust.disabled = false; _lbCust.classList.remove('lab-btn-run--remind'); }
+});
+
+// O10-01: Dirty flag — warn before navigating away without saving
+window._customerDirty = false;
+let _analysisRunThisSession = parseInt(localStorage.getItem('lrnbiz_customer_score') || '0') > 0;
+
+/* ── Analysis Reminder Modal ── */
+let _reminderPendingUrl = null;
+function _showAnalysisReminder(continueUrl) {
+    _reminderPendingUrl = continueUrl;
+    document.getElementById('analysisReminderOverlay').style.display = 'flex';
+}
+document.getElementById('reminderRunBtn').addEventListener('click', () => {
+    document.getElementById('analysisReminderOverlay').style.display = 'none';
+    _reminderPendingUrl = null;
+    document.getElementById('validateBtn').click();
+    document.getElementById('validateBtn').scrollIntoView({behavior:'smooth', block:'center'});
+});
+document.getElementById('reminderContinueBtn').addEventListener('click', () => {
+    document.getElementById('analysisReminderOverlay').style.display = 'none';
+    _reminderPendingUrl = null;
+    // Submit the form so Ch3 answers are saved before navigating to Money Math
+    window._customerDirty = false;
+    _analysisRunThisSession = true; // prevent re-interception
+    document.getElementById('customerForm').submit();
+});
+document.addEventListener('click', function(e) {
+    const link = e.target.closest('a[href]');
+    if (!link) return;
+    const href = link.getAttribute('href');
+    if (!href || href.startsWith('javascript') || href.startsWith('#')) return;
+    if (window._customerDirty && !_analysisRunThisSession) {
+        e.preventDefault();
+        _showAnalysisReminder(href);
+    }
+});
+function _pulseAnalyseBtn() { const _lb = document.getElementById('analyseLabBtn'); if (_lb && !_lb.disabled) { _lb.classList.remove('lab-btn-run--remind'); void _lb.offsetWidth; _lb.classList.add('lab-btn-run--remind'); } }
+document.getElementById('customerPersona').addEventListener('input', () => { window._customerDirty = true; _pulseAnalyseBtn(); });
+document.querySelectorAll('.pill-row').forEach(r => r.addEventListener('click', () => { window._customerDirty = true; _pulseAnalyseBtn(); }));
+document.getElementById('customerForm').addEventListener('submit', function(e) {
+    if (!_analysisRunThisSession && typeof _showRunAnalysisNudge === 'function') {
+        e.preventDefault();
+        _showRunAnalysisNudge(() => { document.getElementById('customerForm').submit(); });
+        return;
+    }
+    window._customerDirty = false;
+});
+window.addEventListener('beforeunload', e => {
+    if (window._customerDirty) { e.preventDefault(); e.returnValue = ''; }
+});
+
+// O10-02: Persona strength meter
+(function() {
+    const ta = document.getElementById('customerPersona');
+    const dots = [document.getElementById('ps1'), document.getElementById('ps2'), document.getElementById('ps3')];
+    const hintEl = document.getElementById('personaStrengthHint');
+    const _PERSON_SIGNALS = ['who', 'student', 'parent', 'owner', 'driver', 'worker', 'runner',
+        'teacher', 'teen', 'adult', 'year', 'grade', 'near', 'local', 'suburb', 'city'];
+    const _NEED_SIGNALS   = ['need', 'want', 'problem', 'frustrat', 'can\'t', 'struggle', 'without',
+        'miss', 'lack', 'busy', 'hard', 'difficul', 'pain', 'slow', 'expensive'];
+    const _PLACE_SIGNALS  = ['at', 'in', 'near', 'suburb', 'city', 'school', 'online', 'local', 'area', 'region'];
+    function calcStrength(text) {
+        const t = text.toLowerCase();
+        const words = t.split(/\s+/);
+        const hasPerson = _PERSON_SIGNALS.some(s => t.includes(s));
+        const hasNeed   = _NEED_SIGNALS.some(s => t.includes(s));
+        const hasPlace  = _PLACE_SIGNALS.some(s => t.includes(s));
+        const longEnough = words.length >= 8;
+        const score = [hasPerson, hasNeed || longEnough, hasPlace].filter(Boolean).length;
+        return { score, hasPerson, hasNeed, hasPlace };
+    }
+    function updateMeter() {
+        if (!ta || !dots[0]) return;
+        const text = ta.value.trim();
+        if (text.length < 5) { dots.forEach(d => d.style.background = 'rgba(255,255,255,0.1)'); if(hintEl) hintEl.style.display='none'; return; }
+        const {score, hasPerson, hasNeed, hasPlace} = calcStrength(text);
+        const colors = ['rgba(255,255,255,0.1)', '#FF6B6B', '#FFD93D', '#34D399'];
+        dots.forEach((d, i) => d.style.background = i < score ? colors[score] : 'rgba(255,255,255,0.1)');
+        if (hintEl) {
+            hintEl.style.display = '';
+            if (score === 3) hintEl.textContent = '✅ Strong! Person type + need + location all present.';
+            else {
+                const missing = [];
+                if (!hasPerson) missing.push('a specific person type (e.g. "Year 10 students")');
+                if (!hasNeed)   missing.push('their problem or need');
+                if (!hasPlace)  missing.push('a location or context');
+                hintEl.textContent = '💡 Add: ' + missing.join(', ') + '.';
+            }
+        }
+    }
+    if (ta) { ta.addEventListener('input', updateMeter); updateMeter(); }
+})();
+
+// O10-03 / O13 CR005: Channel "Not sure" consequence message with archetype suggestion
+(function() {
+    // Pick the first real (non-"Not sure") channel option for this archetype as an example
+    const _channelOpts = CHANNEL_MAP[ARCHETYPE] || _DEFAULT_CHANNELS;
+    const _firstReal = _channelOpts.find(o => !o.danger && o.l !== 'Not sure');
+    const _suggestionEl = document.getElementById('channelSuggestion');
+    if (_suggestionEl && _firstReal) {
+        _suggestionEl.textContent = '💡 For a ' + archetypeLabel + ' business, try: "' + _firstReal.l + '" — even starting with one channel is enough.';
+    }
+    document.querySelectorAll('#channelPills .pill, [data-field="how_to_reach"] .pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const msg = document.getElementById('channelNotSureMsg');
+            if (msg) msg.style.display = btn.dataset.val === 'Not sure' ? '' : 'none';
+        });
+    });
+})();
+
+// O16-01: Render score history pills
+function _renderScoreHistory(history) {
+    const el = document.getElementById('rsScoreHistory');
+    if (!el || !history || history.length < 2) return;
+    const recent = history.slice(-5);
+    el.innerHTML = '<span style="font-weight:700;color:rgba(240,239,244,0.4)">History: </span>' +
+        recent.map((h, i) => {
+            const isLast = i === recent.length - 1;
+            const color = h.score >= 70 ? '#34D399' : h.score >= 40 ? '#FFD93D' : '#F87171';
+            const bg = isLast ? 'rgba(167,139,250,0.18)' : 'rgba(255,255,255,0.06)';
+            const fg = isLast ? '#A78BFA' : color;
+            return `<span title="${h.at || ('Attempt ' + (i+1))}" style="display:inline-block;padding:1px 7px;border-radius:99px;background:${bg};color:${fg};font-weight:800;margin:0 2px">${h.score}</span>`;
+        }).join('<span style="opacity:0.35;margin:0 1px">›</span>');
+    el.style.display = '';
+}
+(function() {
+    const saved = {{ session.get('audit_scores', {}).get('customer', {}) | tojson | safe }};
+    if (saved && saved.score_history) _renderScoreHistory(saved.score_history);
+})();
+
+// O15-02: Auto re-run validation on page load if prior analysis exists
+{% if audit_scores.get('customer') %}
+(function() {
+    const _isBfcache = window.performance && window.performance.getEntriesByType &&
+        window.performance.getEntriesByType('navigation').some(function(n){ return n.type === 'back_forward'; });
+    if (_isBfcache) return;
+    const _o15T = setTimeout(function() {
+        const btn = document.getElementById('validateBtn');
+        if (btn && !btn.disabled) btn.click();
+    }, 600);
+    window.addEventListener('pagehide', function() { clearTimeout(_o15T); }, { once: true });
+})();
+{% endif %}
+
+// Bfcache fix: reset overlay and button state when page is restored from cache.
+window.addEventListener('pageshow', function(_psEv) {
+    if (_psEv.persisted) {
+        const _ov = document.getElementById('analysisReminderOverlay');
+        if (_ov) _ov.style.display = 'none';
+        const _btn = document.getElementById('validateBtn');
+        if (_btn) { _btn.textContent = '🔬 Run Analysis'; _btn.disabled = false; }
+    }
+});
+</script>
+{% endblock %}

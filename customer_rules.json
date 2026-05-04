@@ -1,0 +1,62 @@
+{
+  "version": "2.0",
+  "module": "customer_validator",
+  "description": "Constraint-based customer validation — Chapter 3. Persona, proximity, spending power, differentiation, and channel.",
+  "rules": [
+    {
+      "id": "CR002",
+      "name": "No customer persona",
+      "type": "min_length_field",
+      "field": "customer_problem",
+      "threshold": 40,
+      "severity": "error",
+      "flag": "missing_pain",
+      "message": "👥 Describe your customer in at least one specific sentence — who are they, what is their situation, and what do they need from you?",
+      "socratic_hint": "The student hasn't described their customer clearly. Ask: who specifically would pay you? Name the type of person, their situation, and what they actually need."
+    },
+    {
+      "id": "CR006",
+      "name": "No proximity selected",
+      "type": "min_length_field",
+      "field": "customer_location",
+      "threshold": 1,
+      "severity": "error",
+      "flag": "no_proximity",
+      "message": "📍 Select how close your customer needs to be — proximity defines your entire reach and go-to-market strategy.",
+      "socratic_hint": "The student hasn't defined the proximity of their customer. Ask: how far away can your customer be and still buy from you? This determines where you need to be found and how you'll reach them."
+    },
+    {
+      "id": "CR007",
+      "name": "No spending power defined",
+      "type": "min_length_field",
+      "field": "willingness_to_pay",
+      "threshold": 1,
+      "severity": "error",
+      "flag": "no_spending_power",
+      "message": "💵 Define what your customer can actually spend — this tells you whether your price point is realistic for this person.",
+      "socratic_hint": "The student hasn't defined what their customer can spend. Ask: does your target customer have disposable income for this? Would they comfortably spend $10, $50, or $200 on this type of product or service?"
+    },
+    {
+      "id": "CR004",
+      "name": "Competing on price alone",
+      "type": "field_equals",
+      "field": "differentiation",
+      "blocked_values": ["Cheaper"],
+      "severity": "error",
+      "flag": "price_only_diff",
+      "message": "💡 Being cheaper is the weakest reason to buy — a bigger business can always undercut your price. Pick a stronger edge: faster, more personal, more local, or better quality.",
+      "socratic_hint": "The student's only differentiator is being cheaper. Ask: what can you do that a large competitor cannot — faster turnaround, more personal service, more local knowledge, or something specifically tailored to this exact customer?"
+    },
+    {
+      "id": "CR005",
+      "name": "No channel to reach customer",
+      "type": "field_equals",
+      "field": "how_to_reach",
+      "blocked_values": ["Not sure"],
+      "severity": "error",
+      "flag": "no_channel",
+      "message": "📣 Knowing who your customer is means nothing if you have no specific way to get in front of them — pick a concrete channel.",
+      "socratic_hint": "The student has no channel to reach their customer. Probe: where does your customer spend time physically or online? Is there a place — a local group, a platform, a street — where you can find them and make an offer?"
+    }
+  ]
+}

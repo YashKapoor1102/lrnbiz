@@ -1,0 +1,929 @@
+{% extends "base.html" %}
+{% block title %}LrnBiz — Business Scoreboard{% endblock %}
+
+{% block content %}
+<div class="prog-page">
+
+    <header class="idea-header">
+        <a href="/" class="back-link">← Home</a>
+        <div class="idea-progress">
+            {% for m in modules %}
+            <span class="ip-step {% if audit_scores.get(m.id) %}ip-step--done{% elif loop.first %}ip-step--active{% endif %}">
+                {{ m.emoji }} {{ m.chapter }}·{{ m.name }}
+            </span>
+            {% if not loop.last %}<span class="ip-arrow">→</span>{% endif %}
+            {% endfor %}
+        </div>
+        <div class="module-chip module-chip--purple" style="margin:0">🏆 Scoreboard</div>
+    </header>
+
+    <div class="prog-body">
+
+        <!-- ── LEFT: Research Panel ── -->
+        <aside class="prog-sidebar">
+
+            <div class="prog-gs-card" id="globalCard">
+                <div class="prog-gs-title">🤖 AI Honesty Score</div>
+                <div class="prog-gs-score" id="gsiScore">—</div>
+                <div class="prog-gs-label" id="gsiLabel">Complete chapters to see this</div>
+                <div class="prog-gs-bar">
+                    <div class="prog-gs-fill" id="gsiFill" style="width:0%"></div>
+                </div>
+                <p class="prog-gs-desc" id="gsiDesc">
+                    Shows how much more optimistic the AI Optimist was vs your honest Mentor score.
+                    A big gap means the AI was being too nice — trust your Mentor score more!
+                </p>
+            </div>
+
+            <div class="prog-legend">
+                <div class="prog-leg-row"><span class="prog-leg-dot" style="background:#A78BFA"></span>🐍 Rules Check — computer logic (always accurate)</div>
+                <div class="prog-leg-row"><span class="prog-leg-dot" style="background:#FB923C"></span>🤖 AI Optimist — cheerful AI (sometimes too nice!)</div>
+                <div class="prog-leg-row"><span class="prog-leg-dot" style="background:#34D399"></span>🧠 Mentor Score — honest mentor (most important!)</div>
+                <div style="margin-top:10px;font-size:0.7rem;color:var(--muted);line-height:1.5">
+                    <strong data-gloss="ai honesty" style="color:#A78BFA">AI Honesty Score</strong> = how much more optimistic the AI was vs the Mentor.<br>
+                    Low score = AI was being honest. High score = AI was too kind!<br>
+                    <strong data-gloss="mentor score" style="color:#34D399">Mentor Score</strong> is always your real business readiness score.
+                </div>
+            </div>
+
+            <div class="prog-nav">
+                {% for m in modules %}
+                <a href="{{ m.route }}" class="prog-nav-link {% if audit_scores.get(m.id) %}prog-nav-link--done{% endif %}">
+                    {{ m.emoji }} {{ m.name }}
+                    {% if audit_scores.get(m.id) %}
+                    <span class="prog-nav-score">{{ audit_scores[m.id].hybrid_truth }}%</span>
+                    {% else %}
+                    <span class="prog-nav-empty">not yet</span>
+                    {% endif %}
+                </a>
+                {% endfor %}
+            </div>
+
+            <!-- C7-32: Badge shelf -->
+            <div id="badgeShelf" style="margin-top:14px;padding:12px 14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px">
+                <div style="font-size:0.65rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:8px">🏅 My Badges</div>
+                <div id="badgeShelfGrid" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+                <div id="badgeShelfEmpty" style="font-size:0.72rem;color:var(--muted);font-style:italic">Complete a chapter to earn your first badge!</div>
+            </div>
+
+            <a href="/eval" class="eval-btn eval-btn--secondary" style="display:block;text-align:center;margin-top:16px">🧪 Full Evaluation →</a>
+
+            <!-- C7-48: Save progress code -->
+            <div style="margin-top:14px;padding:12px 14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px">
+                <div style="font-size:0.65rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:8px">💾 Save Progress Code</div>
+                <p style="font-size:0.7rem;color:var(--muted);margin-bottom:8px;line-height:1.5">Get a 6-character code to restore your progress on another device.</p>
+                <button id="saveCodeBtn" onclick="generateSaveCode()" style="width:100%;background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.25);color:#A78BFA;font-family:Nunito,sans-serif;font-size:0.75rem;font-weight:800;padding:7px 12px;border-radius:8px;cursor:pointer;margin-bottom:6px">📥 Generate Save Code</button>
+                <div id="saveCodeResult" style="display:none;text-align:center;margin-bottom:8px">
+                    <div style="font-size:0.65rem;color:var(--muted);margin-bottom:4px">Your save code:</div>
+                    <div id="saveCodeDisplay" style="font-size:1.8rem;font-weight:900;letter-spacing:0.15em;color:#A78BFA;font-family:monospace"></div>
+                    <div style="font-size:0.65rem;color:var(--muted);margin-top:4px">Write this down! Enter it on another device to restore.</div>
+                </div>
+                <div style="font-size:0.65rem;color:var(--muted);margin-bottom:4px">Or restore with a code:</div>
+                <div style="display:flex;gap:6px">
+                    <input id="restoreCodeInput" type="text" maxlength="6" placeholder="XXXXXX" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:5px 8px;font-family:monospace;font-size:0.9rem;color:var(--text);text-transform:uppercase;letter-spacing:0.1em;text-align:center" oninput="this.value=this.value.toUpperCase()">
+                    <button onclick="restoreSaveCode()" style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.25);color:#34D399;font-family:Nunito,sans-serif;font-size:0.72rem;font-weight:800;padding:5px 10px;border-radius:8px;cursor:pointer">Restore</button>
+                </div>
+                <div id="restoreCodeMsg" style="display:none;margin-top:6px;font-size:0.72rem;border-radius:8px;padding:5px 8px"></div>
+            </div>
+
+            <button id="shareTeacherBtn" class="eval-btn eval-btn--secondary" style="display:block;width:100%;text-align:center;margin-top:10px;cursor:pointer;background:rgba(52,211,153,0.08);border-color:rgba(52,211,153,0.3);color:#34D399" onclick="shareWithTeacher()">📋 Share with Teacher</button>
+            <div id="shareTeacherResult" style="display:none;margin-top:8px;background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.25);border-radius:10px;padding:10px 12px;font-size:0.78rem;color:#34D399;word-break:break-all;"></div>
+
+            <!-- Join class by code -->
+            <div style="margin-top:10px;padding:12px 14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px">
+                <div style="font-size:0.65rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:7px">🏫 Join Your Teacher's Class</div>
+                <p style="font-size:0.7rem;color:var(--muted);margin-bottom:8px;line-height:1.5">Enter the 6-character code your teacher gave you.</p>
+                <div style="display:flex;gap:6px">
+                    <input id="classCodeInput" type="text" maxlength="6" placeholder="XXXXXX"
+                           style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:5px 8px;font-family:monospace;font-size:0.9rem;color:var(--text);text-transform:uppercase;letter-spacing:0.1em;text-align:center"
+                           oninput="this.value=this.value.toUpperCase()">
+                    <button onclick="joinClass()" style="background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.25);color:#A78BFA;font-family:Nunito,sans-serif;font-size:0.72rem;font-weight:800;padding:5px 10px;border-radius:8px;cursor:pointer">Join</button>
+                </div>
+                <div id="classJoinMsg" style="display:none;margin-top:6px;font-size:0.72rem;border-radius:8px;padding:5px 8px"></div>
+            </div>
+
+        </aside>
+
+        <!-- ── RIGHT: Scoreboard ── -->
+        <main class="prog-main">
+
+            <!-- ── Compute averages (available throughout page) ── -->
+            {% set done_list = [] %}
+            {% for m in modules %}{% if audit_scores.get(m.id) %}{% set _ = done_list.append(audit_scores[m.id]) %}{% endif %}{% endfor %}
+            {% if done_list %}
+            {% set avg_hybrid     = (done_list | map(attribute='hybrid_truth') | sum) / done_list|length %}
+            {% set avg_pure       = (done_list | map(attribute='pure_truth')   | sum) / done_list|length %}
+            {% set total_corrected = namespace(val=0) %}
+            {% for s in done_list %}{% set total_corrected.val = total_corrected.val + (s.sycophancy_gap | abs) %}{% endfor %}
+            {% set avg_correction = total_corrected.val / done_list|length %}
+            {% set avg_hybrid_int = avg_hybrid | round | int %}
+            {% else %}
+            {% set avg_hybrid_int = 0 %}
+            {% set avg_pure = 0 %}
+            {% set avg_correction = 0 %}
+            {% endif %}
+
+            <!-- ── OVERALL GRADE BANNER (always visible) ── -->
+            <h1 class="prog-h1" style="margin-bottom:8px">📊 My Report Card</h1>
+
+            {% if done_list %}
+            <div style="padding:18px 20px;border-radius:14px;margin-bottom:18px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+                {% if avg_hybrid_int >= 75 %}background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3)
+                {% elif avg_hybrid_int >= 50 %}background:rgba(255,217,61,0.08);border:1px solid rgba(255,217,61,0.25)
+                {% else %}background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.25){% endif %}">
+                <div style="font-size:2.8rem;font-weight:900;line-height:1;{% if avg_hybrid_int >= 75 %}color:#34D399{% elif avg_hybrid_int >= 50 %}color:#FFD93D{% else %}color:#F87171{% endif %}">{{ avg_hybrid_int }}<span style="font-size:1.1rem;opacity:0.6">%</span></div>
+                <div>
+                    <div style="font-size:1rem;font-weight:900;color:var(--text)">{% if avg_hybrid_int >= 75 %}🚀 Launch Ready!{% elif avg_hybrid_int >= 50 %}📈 Getting There{% else %}🌱 Needs Work{% endif %}</div>
+                    <div style="font-size:0.78rem;color:var(--muted);margin-top:3px">🧠 Mentor Score avg · {{ done_list|length }}/5 chapters complete</div>
+                    {% if idea_archetype and idea_archetype not in ('other', '') %}
+                    <div style="font-size:0.75rem;color:#A78BFA;margin-top:2px">🏷️ Business type: <strong>{{ idea_archetype.replace('-',' ') | title }}</strong></div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Why you scored this — one sentence per chapter if low -->
+            {% set _has_low = namespace(v=false) %}
+            {% for m in modules %}{% set sc = audit_scores.get(m.id) %}{% if sc and sc.hybrid_truth < 60 %}{% set _has_low.v = true %}{% endif %}{% endfor %}
+            {% if _has_low.v %}
+            <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 16px;margin-bottom:16px">
+                <div style="font-size:0.68rem;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px">⚠️ Why your score is low — areas to improve</div>
+                {% for m in modules %}
+                {% set sc = audit_scores.get(m.id) %}
+                {% if sc and sc.hybrid_truth < 60 %}
+                {% set vr = sc.get('violated_rules', []) %}
+                {% set top = (vr | selectattr('severity','eq','error') | list) or vr %}
+                <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:7px;flex-wrap:wrap">
+                    <span style="font-size:0.78rem;font-weight:900;color:{% if sc.hybrid_truth < 40 %}#F87171{% else %}#FFD93D{% endif %};white-space:nowrap">{{ m.emoji }} {{ m.name }} — {{ sc.hybrid_truth }}/100</span>
+                    <span style="font-size:0.75rem;color:rgba(240,239,244,0.7)">{% if top %}{{ top[0].message | truncate(80, True, '…') }}{% else %}Review your mentor feedback for this chapter.{% endif %}</span>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% else %}
+            <div style="padding:14px 16px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);margin-bottom:18px;font-size:0.82rem;color:var(--muted)">
+                📋 Complete your first chapter to see your overall grade here.
+            </div>
+            {% endif %}
+
+            <!-- ── Chapter Grades at a Glance ── -->
+            <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:18px 20px;margin-bottom:20px">
+                <div style="font-size:0.72rem;font-weight:900;color:var(--purple);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px">📊 Chapter Grades at a Glance</div>
+                <div style="display:flex;flex-direction:column;gap:10px">
+                {% for m in modules %}
+                {% set sc = audit_scores.get(m.id) %}
+                <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:10px">
+                    <div style="font-size:0.88rem;font-weight:800;color:var(--text);min-width:160px">{{ m.emoji }} {{ m.name }}</div>
+                    {% if sc %}
+                    {% set h = sc.hybrid_truth %}
+                    <div style="font-size:1rem;font-weight:900;min-width:54px;text-align:center;padding:4px 12px;border-radius:99px;
+                        {% if h >= 75 %}background:rgba(52,211,153,0.15);color:#34D399;border:1px solid rgba(52,211,153,0.3)
+                        {% elif h >= 50 %}background:rgba(255,217,61,0.12);color:#FFD93D;border:1px solid rgba(255,217,61,0.3)
+                        {% else %}background:rgba(248,113,113,0.12);color:#F87171;border:1px solid rgba(248,113,113,0.3){% endif %}">
+                        {{ h }}<span style="font-size:0.65rem;opacity:0.7">/100</span>
+                    </div>
+                    <div style="flex:1;font-size:0.78rem;color:rgba(240,239,244,0.7);min-width:120px">
+                        {% if h >= 75 %}✅ Solid — nothing urgent to fix here
+                        {% elif h >= 50 %}👍 Good, but a few gaps remain
+                        {% else %}
+                            {% set vr = sc.get('violated_rules', []) %}
+                            {% set top_err = vr | selectattr('severity','eq','error') | list %}
+                            {% if top_err %}⚠️ {{ top_err[0].message | truncate(72, True, '…') }}
+                            {% elif vr %}⚠️ {{ vr[0].message | truncate(72, True, '…') }}
+                            {% else %}📚 Review mentor feedback for this chapter{% endif %}
+                        {% endif %}
+                    </div>
+                    <a href="{{ m.route }}" style="font-size:0.75rem;font-weight:800;color:var(--purple);text-decoration:none;white-space:nowrap;padding:4px 10px;border:1px solid rgba(167,139,250,0.25);border-radius:99px">{% if h >= 75 %}View →{% else %}Improve →{% endif %}</a>
+                    {% else %}
+                    <div style="font-size:0.85rem;min-width:54px;text-align:center;padding:4px 12px;border-radius:99px;background:rgba(255,255,255,0.04);color:var(--muted);border:1px solid rgba(255,255,255,0.08)">—</div>
+                    <div style="flex:1;font-size:0.78rem;color:var(--muted);min-width:120px">⏳ Not completed yet</div>
+                    <a href="{{ m.route }}" style="font-size:0.75rem;font-weight:800;color:#60A5FA;text-decoration:none;white-space:nowrap;padding:4px 10px;border:1px solid rgba(96,165,250,0.25);border-radius:99px">Start →</a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                </div>
+            </div>
+
+            <!-- ── Chapter Details Toggle ── -->
+            <button onclick="toggleChapterDetails()" id="chDetailBtn" style="width:100%;background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.25);border-radius:12px;color:#A78BFA;font-family:Nunito,sans-serif;font-size:0.88rem;font-weight:900;padding:14px 20px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:20px;letter-spacing:0.02em">
+                <span>📋 See full chapter-by-chapter results</span>
+                <span id="chDetailArrow" style="font-size:0.8rem">▶</span>
+            </button>
+
+            <!-- ── Per-module detail cards (hidden by default) ── -->
+            <div id="chapterDetails" style="display:none">
+
+            {% if done_list %}
+            <!-- Stats row -->
+            <div class="sb-stats-row" style="margin-bottom:16px">
+                <div class="sb-stat {% if avg_hybrid_int >= 75 %}sb-stat--good{% elif avg_hybrid_int >= 50 %}sb-stat--warn{% else %}sb-stat--bad{% endif %}">
+                    <div class="sb-stat-icon">📊</div><div class="sb-stat-val">{{ avg_hybrid_int }}%</div>
+                    <div class="sb-stat-name">Business Readiness</div><div class="sb-stat-sub">avg Mentor score</div>
+                </div>
+                <div class="sb-stat {% if avg_correction >= 20 %}sb-stat--purple{% else %}sb-stat--blue{% endif %}">
+                    <div class="sb-stat-icon">🛡️</div><div class="sb-stat-val">{{ avg_correction | round | int }}pts</div>
+                    <div class="sb-stat-name">AI Honesty</div><div class="sb-stat-sub">how honest the AI was</div>
+                </div>
+                <div class="sb-stat sb-stat--teal">
+                    <div class="sb-stat-icon">✅</div><div class="sb-stat-val">{{ done_list|length }}/5</div>
+                    <div class="sb-stat-name">Chapters Done</div><div class="sb-stat-sub">{{ 5 - done_list|length }} remaining</div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- #1 Priority -->
+            {% set _ls = namespace(val=999, name='', route='', emoji='') %}
+            {% for m in modules %}{% set s = audit_scores.get(m.id) %}{% if s and s.hybrid_truth < _ls.val %}{% set _ls.val = s.hybrid_truth %}{% set _ls.name = m.name %}{% set _ls.route = m.route %}{% set _ls.emoji = m.emoji %}{% endif %}{% endfor %}
+            {% if _ls.val < 999 %}
+            <div style="background:linear-gradient(135deg,rgba(248,113,113,0.1),rgba(251,146,60,0.07));border:1px solid rgba(248,113,113,0.3);border-radius:12px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+                <div>
+                    <div style="font-size:0.68rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;color:#F87171;margin-bottom:4px">🎯 #1 Priority — Focus Here First</div>
+                    <div style="font-size:0.88rem;font-weight:800;color:var(--text)">{{ _ls.emoji }} {{ _ls.name }} — <strong style="color:#F87171">{{ _ls.val }}/100</strong></div>
+                </div>
+                <a href="{{ _ls.route }}" style="background:rgba(248,113,113,0.15);border:1px solid rgba(248,113,113,0.35);color:#F87171;font-size:0.78rem;font-weight:800;padding:7px 14px;border-radius:99px;text-decoration:none;white-space:nowrap">Improve it →</a>
+            </div>
+            {% endif %}
+
+            <!-- Business story summary -->
+            {% if story.sell_what or story.grade_level %}
+            <div style="margin-bottom:16px;padding:14px 18px;background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.2);border-radius:12px">
+                <div style="font-size:0.68rem;font-weight:900;color:#A78BFA;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px">📖 Your Business Story</div>
+                {% if story.student_name %}<div style="font-weight:900;color:var(--text);margin-bottom:6px">{{ story.student_name }}'s Plan</div>{% endif %}
+                <div style="font-size:0.8rem;display:flex;flex-direction:column;gap:4px;color:rgba(240,239,244,0.8)">
+                    {% if story.grade_level or story.location %}<div>👤 {{ story.grade_level }}{% if story.location %} · {{ story.location }}{% endif %}</div>{% endif %}
+                    {% if story.sell_what %}<div>💡 Selling <strong>{{ story.sell_what }}</strong>{% if story.sell_to %} to {{ story.sell_to }}{% endif %}</div>{% endif %}
+                    {% if story.unit_price %}<div>💰 Price: ${{ story.unit_price }}{% if story.unit_cost %} · Cost: ${{ story.unit_cost }}{% endif %}</div>{% endif %}
+                </div>
+                <button onclick="window.print()" style="margin-top:8px;background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.3);border-radius:8px;color:var(--purple);font-size:0.72rem;font-weight:900;padding:4px 12px;cursor:pointer">🖨️ Print</button>
+            </div>
+            {% endif %}
+
+            <div style="font-size:0.68rem;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px">📋 Chapter-by-Chapter Results</div>
+
+            {% for m in modules %}
+            {% set scores = audit_scores.get(m.id) %}
+
+            {% set _auto_open = scores and scores.hybrid_truth < 60 %}
+            <div class="prog-card {% if scores %}prog-card--done{% else %}prog-card--pending{% endif %}{% if _auto_open %} prog-card--open{% endif %}" id="card-{{ m.id }}">
+
+                <!-- Clickable header toggles body -->
+                <div class="prog-card-hd" style="cursor:{% if scores %}pointer{% else %}default{% endif %}" {% if scores %}onclick="toggleChapter('{{ m.id }}')"{% endif %}>
+                    <span class="prog-card-emoji">{{ m.emoji }}</span>
+                    <div class="prog-card-meta">
+                        <span class="prog-card-name">Chapter {{ m.chapter }} · {{ m.name }}</span>
+                        {% if scores and scores.get('analysed_at') %}<span style="font-size:0.65rem;color:var(--muted);display:block">Last analysed: {{ scores.analysed_at }}</span>{% endif %}
+                        <span class="prog-card-status">
+                            {% if scores %}✅ Audited{% else %}⏳ Pending{% endif %}
+                        </span>
+                    </div>
+                    {% if scores %}
+                    {% set hyb = scores.hybrid_truth %}
+                    <div style="display:flex;align-items:center;gap:10px">
+                        <div class="sb-hybrid-badge {% if hyb >= 75 %}sb-hybrid-badge--good{% elif hyb >= 50 %}sb-hybrid-badge--warn{% else %}sb-hybrid-badge--bad{% endif %}">
+                            <div class="sb-hybrid-val">{{ hyb }}</div>
+                            <div class="sb-hybrid-lbl">🧠 Mentor</div>
+                        </div>
+                        <span class="ch-toggle-arrow" style="font-size:0.85rem;color:var(--muted);min-width:14px">{% if _auto_open %}▼{% else %}▶{% endif %}</span>
+                    </div>
+                    {% else %}
+                    <a href="{{ m.route }}" class="prog-card-link">Start →</a>
+                    {% endif %}
+                </div>
+
+                {% if scores %}
+                <div class="prog-scores" style="overflow:visible;position:relative;display:{% if _auto_open %}block{% else %}none{% endif %}">
+
+                    <!-- Archetype context — why this chapter was judged by these rules -->
+                    {% if idea_archetype and idea_archetype not in ('other', '') %}
+                    <div style="padding:8px 16px;background:rgba(167,139,250,0.05);border-bottom:1px solid rgba(167,139,250,0.1);font-size:0.72rem;color:rgba(240,239,244,0.6)">
+                        🏷️ Judged as a <strong style="color:#A78BFA">{{ idea_archetype.replace('-',' ') | title }}</strong> business — rules calibrated for this type.
+                    </div>
+                    {% endif %}
+
+                    <!-- Mentor tip inside body -->
+                    {% if scores.get('mentor_tip') %}
+                    <div style="padding:10px 16px 6px;background:rgba(52,211,153,0.04);border-bottom:1px solid rgba(52,211,153,0.12)">
+                        <div style="font-size:0.7rem;font-weight:900;color:#34D399;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:5px">🧑‍🏫 Mentor Feedback</div>
+                        <p style="font-size:0.82rem;color:rgba(240,239,244,0.85);line-height:1.6;margin:0 0 10px">{{ scores.mentor_tip }}</p>
+                    </div>
+                    {% endif %}
+
+                    <!-- Symbolic -->
+                    <div class="prog-score-row">
+                        <div class="psr-label">
+                            <span class="psr-pill psr-pill--symbolic">🐍 Symbolic</span>
+                            <span class="psr-caption">Rules engine ground truth</span>
+                        </div>
+                        <div class="psr-bar-wrap">
+                            <div class="psr-bar psr-bar--symbolic" style="width:{{ scores.symbolic_score }}%"></div>
+                        </div>
+                        <span class="psr-val">{{ scores.symbolic_score }}/100</span>
+                    </div>
+                    {% set s = scores.symbolic_score %}
+                    {% set vr = scores.get('violated_rules', []) %}
+                    {% set vr_errors = vr | selectattr('severity', 'eq', 'error') | list %}
+                    {% set vr_warns  = vr | selectattr('severity', 'ne', 'error') | list %}
+                    <div class="score-reason {% if s >= 80 %}score-reason--good{% elif s >= 55 %}score-reason--warn{% else %}score-reason--bad{% endif %}">
+                        {% if s >= 80 %}Rules engine: no critical violations — solid foundation.
+                        {% else %}
+                        <!-- C7-35: Prioritised violations -->
+                        {% if vr_errors %}
+                        <div style="margin-top:4px">
+                            {% for r in vr_errors %}<span class="rt-rule rt-rule--error" style="display:block;margin-bottom:3px">🔴 <strong>Fix this first:</strong> {{ r.message }}</span>{% endfor %}
+                        </div>
+                        {% endif %}
+                        {% if vr_warns %}
+                        <div style="margin-top:4px">
+                            {% for r in vr_warns %}<span class="rt-rule rt-rule--warning" style="display:block;margin-bottom:3px">🟡 <strong>Fix this next:</strong> {{ r.message }}</span>{% endfor %}
+                        </div>
+                        {% endif %}
+                        {% if not vr %}Minor rule violations — a few gaps to address.{% endif %}
+                        {% endif %}
+                    </div>
+
+                    <!-- AI Optimist -->
+                    <div class="prog-score-row" style="margin-top:10px">
+                        <div class="psr-label">
+                            <span class="psr-pill psr-pill--pure">🤖 AI Optimist</span>
+                            <span class="psr-caption">Cheerful AI (sometimes too nice!)</span>
+                        </div>
+                        <div class="psr-bar-wrap">
+                            <div class="psr-bar psr-bar--pure" style="width:{{ scores.pure_truth }}%"></div>
+                        </div>
+                        <span class="psr-val">{{ scores.pure_truth }}/100</span>
+                    </div>
+                    {% set p = scores.pure_truth %}
+                    <div class="score-reason {% if p >= 80 %}score-reason--good{% elif p >= 55 %}score-reason--warn{% else %}score-reason--bad{% endif %}">
+                        {% if p >= 80 %}AI was honest here — score matches what the rules found. Great!
+                        {% elif p >= 55 %}AI was slightly too positive — mild over-optimism detected.
+                        {% elif p >= 35 %}AI was too kind — score is higher than what the rules found.
+                        {% else %}AI was very over-optimistic here — trust the Mentor score instead!{% endif %}
+                    </div>
+
+                    <!-- Mentor Score -->
+                    <div class="prog-score-row" style="margin-top:10px">
+                        <div class="psr-label">
+                            <span class="psr-pill psr-pill--hybrid">🧠 Mentor Score</span>
+                            <span class="psr-caption">Honest mentor (most important!)</span>
+                        </div>
+                        <div class="psr-bar-wrap">
+                            <div class="psr-bar psr-bar--hybrid" style="width:{{ scores.hybrid_truth }}%"></div>
+                        </div>
+                        <span class="psr-val">{{ scores.hybrid_truth }}/100</span>
+                    </div>
+                    {% set h = scores.hybrid_truth %}
+                    <div class="score-reason {% if h >= 80 %}score-reason--good{% elif h >= 55 %}score-reason--warn{% else %}score-reason--bad{% endif %}">
+                        {% if h >= 80 %}🏆 Excellent — your Mentor is very happy with this chapter!
+                        {% elif h >= 55 %}👍 Good — a few things to improve, but solid overall.
+                        {% elif h >= 35 %}📚 Developing — your Mentor found some important gaps. Check the feedback!
+                        {% else %}🌱 Early stage — your Mentor found big gaps here. Read the feedback carefully!{% endif %}
+                    </div>
+
+                    <!-- AI Honesty Score gap banner -->
+                    <!-- gap = pure_truth - hybrid_truth: POSITIVE = AI over-praised, NEGATIVE = Mentor more generous -->
+                    {% set gap = scores.sycophancy_gap %}
+                    {% set correction = gap | abs %}
+                    <div class="prog-gap {% if gap > 30 %}prog-gap--bad{% elif gap > 10 %}prog-gap--warn{% else %}prog-gap--ok{% endif %}" style="margin-top:12px" title="{% if gap > 10 %}The AI was too nice — your Mentor score is {{ correction }} points lower. Check the Mentor feedback for the truth!{% elif gap < -10 %}The Mentor was more generous than the AI — your plan impressed the rules engine!{% else %}The AI and Mentor agree — the AI was being honest here!{% endif %}">
+                        {% if gap > 10 %}
+                        ⚠️ AI was {{ correction }} pts too optimistic
+                        <span style="font-size:0.72rem;color:var(--muted);display:block;margin-top:3px;">The AI was too kind — your Mentor score is {{ correction }} points lower. Check the feedback to improve! 💪</span>
+                        {% elif gap < -10 %}
+                        ℹ️ Mentor is <strong>{{ correction }} pts</strong> above AI Optimist
+                        {% else %}
+                        ✅ AI Optimist and Mentor agree closely — AI was honest here!
+                        {% endif %}
+                    </div>
+
+                    <div class="sb-correction-row">
+                        {% if gap > 20 %}
+                        <div class="sb-correction sb-correction--caught">
+                            🛡️ <strong>AI Honesty: {{ correction }} pts gap!</strong> The Rules Check found things the AI missed — preventing false confidence. Your Mentor score is more accurate. Check the 🐍 Rules tab to see what to fix!
+                        </div>
+                        {% elif gap > 5 %}
+                        <div class="sb-correction sb-correction--mild">
+                            ⚡ <strong>AI was a little too nice</strong> — {{ correction }} pts more optimistic than your Mentor. Trust your Mentor score here.
+                        </div>
+                        {% elif gap < -10 %}
+                        <div class="sb-correction sb-correction--boost">
+                            📈 <strong>Rules helped boost your Mentor score</strong> by {{ correction }} pts — your Mentor found more strengths when it read the rules together with your answers!
+                        </div>
+                        {% else %}
+                        <div class="sb-correction sb-correction--aligned">
+                            ✅ <strong>AI was honest here!</strong> — the AI Optimist and Mentor agree closely on this chapter.
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Mentor vs AI Optimist explanation -->
+                    {% set hyb_vs_pure = scores.hybrid_truth - scores.pure_truth %}
+                    {% set hyb_vs_sym  = scores.hybrid_truth - scores.symbolic_score %}
+                    {% if hyb_vs_pure < -15 and hyb_vs_sym < -10 %}
+                    <div class="sb-hybrid-explain" style="margin-top:10px;padding:10px 14px;border-radius:10px;background:rgba(251,146,60,0.07);border:1px solid rgba(251,146,60,0.25)">
+                        <div style="font-size:0.72rem;font-weight:900;color:#FB923C;margin-bottom:6px">🔍 Why is the Mentor score lower than both the AI and Rules Check?</div>
+                        <p style="font-size:0.75rem;color:rgba(240,239,244,0.8);margin:0;line-height:1.5">
+                            The Mentor reads <strong>both</strong> your answers and the rules together — making it the hardest to impress.
+                            The AI Optimist gave <strong>{{ scores.pure_truth }}/100</strong> (being encouraging), the Rules gave <strong>{{ scores.symbolic_score }}/100</strong> (checking facts),
+                            but the Mentor gave <strong>{{ scores.hybrid_truth }}/100</strong> — a <strong>{{ (scores.pure_truth - scores.hybrid_truth) }} pt</strong> gap vs the AI.
+                            This means: your plan sounded good in words, but the rules found specific gaps that made your Mentor more cautious.
+                            Go back and strengthen this chapter using the hints — each improvement will raise your Mentor score! 💪
+                        </p>
+                    </div>
+                    {% elif hyb_vs_pure < -15 %}
+                    <div class="sb-hybrid-explain" style="margin-top:10px;padding:10px 14px;border-radius:10px;background:rgba(167,139,250,0.07);border:1px solid rgba(167,139,250,0.2)">
+                        <div style="font-size:0.72rem;font-weight:900;color:#A78BFA;margin-bottom:6px">🤔 Why is the Mentor score lower than the AI?</div>
+                        <p style="font-size:0.75rem;color:rgba(240,239,244,0.8);margin:0;line-height:1.5">
+                            The AI Optimist gave <strong>{{ scores.pure_truth }}/100</strong> without checking the rules — it was being too encouraging!
+                            Your Mentor also read the rules, so gave a more honest <strong>{{ scores.hybrid_truth }}/100</strong>.
+                            The <strong>{{ (scores.pure_truth - scores.hybrid_truth) }} pt</strong> difference is your Mentor catching what the AI missed.
+                            This is your Mentor protecting you from false confidence. Use the hints to improve and close this gap!
+                        </p>
+                    </div>
+                    {% endif %}
+
+                    <!-- Before / After hint tracking -->
+                    {% set delta = scores.get('hint_delta', 0) %}
+                    {% set initial = scores.get('hybrid_truth_initial', scores.hybrid_truth) %}
+                    {% if delta > 0 %}
+                    <div class="sb-delta-row" style="margin-top:10px;padding:8px 12px;border-radius:10px;background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.2)">
+                        <span style="font-size:0.75rem;font-weight:900;color:#34D399">📈 Hints improved your score!</span>
+                        <div style="display:flex;align-items:center;gap:8px;margin-top:4px;font-size:0.8rem;color:var(--muted)">
+                            <span>Before hints: <strong style="color:white">{{ initial }}/100</strong></span>
+                            <span>→</span>
+                            <span>After: <strong style="color:#34D399">{{ scores.hybrid_truth }}/100</strong></span>
+                            <span style="background:rgba(52,211,153,0.15);color:#34D399;padding:2px 8px;border-radius:99px;font-weight:900">
+                                +{{ delta }} pts
+                            </span>
+                        </div>
+                        <div style="font-size:0.7rem;color:var(--muted);margin-top:3px">
+                            Socratic questions helped you improve your plan this much! Keep going 💪
+                        </div>
+                    </div>
+                    {% else %}
+                    <!-- ITEM 21: Contextual re-run link with smart chapter URL -->
+                    <div class="sb-delta-row" style="margin-top:10px;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07)">
+                        <span style="font-size:0.72rem;color:var(--muted)">💬 <a href="{{ m.route }}" style="color:var(--yellow);text-decoration:underline dotted;font-weight:900;">Re-run your {{ m.name }} analysis →</a> to improve your score.</span>
+                    </div>
+                    {% endif %}
+
+                    <!-- O15-16: Compare attempts view — sparkline of all runs -->
+                    {% set history = scores.get('score_history', []) %}
+                    {% if history | length > 1 %}
+                    <div style="margin-top:10px;padding:8px 12px;border-radius:10px;background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.15)">
+                        <div style="font-size:0.68rem;font-weight:900;color:var(--purple);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px">📊 Your attempts</div>
+                        <div style="display:flex;align-items:flex-end;gap:4px;height:32px">
+                            {% for attempt in history %}
+                            {% set bar_h = (attempt.score / 100 * 28) | int %}
+                            <div title="Attempt {{ loop.index }}: {{ attempt.score }}/100{% if attempt.at %} on {{ attempt.at }}{% endif %}"
+                                 style="flex:1;min-width:8px;height:{{ bar_h }}px;border-radius:3px 3px 0 0;background:{% if loop.last %}#A78BFA{% elif attempt.score >= 70 %}rgba(52,211,153,0.5){% elif attempt.score >= 40 %}rgba(255,217,61,0.5){% else %}rgba(248,113,113,0.4){% endif %};transition:height 0.3s"></div>
+                            {% endfor %}
+                        </div>
+                        <div style="display:flex;justify-content:space-between;margin-top:3px;font-size:0.62rem;color:var(--muted)">
+                            <span>Attempt 1: {{ history[0].score }}/100</span>
+                            <span>Latest: <strong style="color:#A78BFA">{{ history[-1].score }}/100</strong></span>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                </div>
+                {% else %}
+                <div class="prog-pending-msg">
+                    Complete this module to unlock your triple truth score.
+                    <a href="{{ m.route }}" class="prog-start-link">Go to {{ m.name }} →</a>
+                </div>
+                {% endif %}
+
+            </div>
+            {% endfor %}
+            </div><!-- end #chapterDetails -->
+
+            <!-- ── Global Readiness Summary ── -->
+            {% if done_list %}
+            <div class="sb-readiness-card">
+                <div class="sb-readiness-header">
+                    <span class="sb-readiness-icon">
+                        {% if avg_hybrid_int >= 75 %}🚀{% elif avg_hybrid_int >= 50 %}📈{% else %}🌱{% endif %}
+                    </span>
+                    <div>
+                        <div class="sb-readiness-title">Overall Business Readiness</div>
+                        <div class="sb-readiness-score {% if avg_hybrid_int >= 75 %}sb-readiness-score--good{% elif avg_hybrid_int >= 50 %}sb-readiness-score--warn{% else %}sb-readiness-score--bad{% endif %}">
+                            {{ avg_hybrid_int }}% Ready
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 25: Explicit module weight breakdown -->
+                <div style="font-size:0.72rem;color:var(--muted);margin-bottom:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:8px 12px;line-height:1.8">
+                    💡 <strong style="color:var(--text)">Score weights:</strong>
+                    💡 Idea <strong style="color:#FFD93D">25%</strong> ·
+                    💰 Money <strong style="color:#FB923C">25%</strong> ·
+                    🎯 Customer <strong style="color:#34D399">20%</strong> ·
+                    🔍 Discovery <strong style="color:#60A5FA">15%</strong> ·
+                    🌟 Context <strong style="color:#A78BFA">15%</strong>
+                    <div style="margin-top:3px;font-size:0.68rem">Money and Idea carry the most weight because financial viability and idea clarity are the hardest constraints in any real business.</div>
+                </div>
+
+                <!-- ITEM 22: XP breakdown per chapter -->
+                {% if done_list %}
+                <div style="margin-bottom:16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;overflow:hidden;">
+                    <div style="font-size:0.7rem;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;padding:8px 14px;border-bottom:1px solid rgba(255,255,255,0.06);">⚡ XP earned per chapter <span style="font-weight:400;text-transform:none">(100 score = 240 XP · max 1200 total)</span></div>
+                    <table style="width:100%;border-collapse:collapse;font-size:0.78rem;">
+                        {% for m in modules %}{% set sc = audit_scores.get(m.id) %}{% if sc %}
+                        <tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
+                            <td style="padding:6px 14px;color:rgba(240,239,244,0.8);">{{ m.emoji }} {{ m.name }}</td>
+                            <td style="padding:6px 14px;text-align:right;font-weight:900;color:var(--yellow);">+{{ (sc.hybrid_truth * 2.4) | round | int }} XP</td>
+                        </tr>
+                        {% endif %}{% endfor %}
+                    </table>
+                </div>
+                {% endif %}
+
+                <!-- Readiness meter -->
+                <div class="sb-meter-wrap">
+                    <div class="sb-meter-track">
+                        <div class="sb-meter-fill" id="readinessFill" style="width:{{ avg_hybrid_int }}%"></div>
+                        <div class="sb-meter-markers">
+                            <span style="left:40%">⚠️</span>
+                            <span style="left:72%">🚀</span>
+                        </div>
+                    </div>
+                    <div class="sb-meter-labels">
+                        <span>Just Starting</span>
+                        <span>Getting Stronger</span>
+                        <span>Launch Ready!</span>
+                    </div>
+                </div>
+
+                <!-- Progress comparison bar -->
+                <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap">
+                    <div style="flex:1;min-width:140px;background:rgba(251,146,60,0.08);border:1px solid rgba(251,146,60,0.2);border-radius:10px;padding:10px 14px">
+                        <div style="font-size:0.65rem;color:#FB923C;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px">🤖 AI Optimist avg</div>
+                        <div style="font-size:1.4rem;font-weight:900;color:#FB923C">{{ avg_pure | round | int }}%</div>
+                        <div style="font-size:0.67rem;color:var(--muted)">what the cheerful AI says</div>
+                    </div>
+                    <div style="flex:1;min-width:140px;background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.25);border-radius:10px;padding:10px 14px">
+                        <div style="font-size:0.65rem;color:#34D399;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px">🧠 Mentor avg</div>
+                        <div style="font-size:1.4rem;font-weight:900;color:#34D399">{{ avg_hybrid_int }}%</div>
+                        <div style="font-size:0.67rem;color:var(--muted)">your real readiness score</div>
+                    </div>
+                    <div style="flex:1;min-width:140px;background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.25);border-radius:10px;padding:10px 14px">
+                        <div style="font-size:0.65rem;color:#A78BFA;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px">🤖 AI Honesty avg</div>
+                        <div style="font-size:1.4rem;font-weight:900;color:#A78BFA">{{ avg_correction | round | int }}pts</div>
+                        <div style="font-size:0.67rem;color:var(--muted)">how honest the AI was</div>
+                    </div>
+                </div>
+
+                <!-- Student narrative -->
+                <div class="sb-narrative">
+                    {% set chapters_done = done_list|length %}
+                    {% if chapters_done < 5 %}
+                    {# Partial completion — never show a full verdict #}
+                    {% set remaining = 5 - chapters_done %}
+                    {% if avg_hybrid_int >= 80 %}
+                    <p>🌟 <strong>Strong start on {{ chapters_done }}/5 chapters!</strong> Your scores so far look great — the rules engine and mentor are aligned on what you've submitted. But this score only reflects {{ chapters_done }} chapter{{ 's' if chapters_done > 1 else '' }}, not the full picture.</p>
+                    {% elif avg_hybrid_int >= 65 %}
+                    <p>💪 <strong>Good progress on {{ chapters_done }}/5 chapters.</strong> What you've done so far is solid. Keep going — the remaining chapters may reveal new strengths or gaps you haven't discovered yet.</p>
+                    {% elif avg_hybrid_int >= 50 %}
+                    <p>📚 <strong>{{ chapters_done }}/5 chapters done.</strong> You're building your plan step by step. Some areas need more work — check the lower-scoring chapters and read the mentor feedback carefully before moving on.</p>
+                    {% else %}
+                    <p>🌱 <strong>{{ chapters_done }}/5 chapters done.</strong> Early days — the mentor has flagged some important gaps. That's exactly what this tool is for. Read the feedback, revise, and resubmit before continuing.</p>
+                    {% endif %}
+                    <p>📋 <strong>{{ remaining }} chapter{{ 's' if remaining > 1 else '' }} remaining.</strong> Complete {% if remaining == 1 %}the last chapter{% else %}all {{ remaining }} remaining chapters{% endif %} to get your full business readiness verdict.</p>
+                    {% else %}
+                    {# All 5 chapters complete — show full verdict #}
+                    {% if avg_hybrid_int >= 80 %}
+                    <p>🎉 <strong>Outstanding work!</strong> Your business plan shows strong readiness across all 5 modules. The rules engine found a solid foundation, and even the hybrid mentor — which is harder to impress because it checks everything against the rules — rates you highly. You understand your customers, your numbers, and your market.</p>
+                    <p>✅ <strong>Verdict: You are ready to take real steps toward launching your business!</strong> Show this scorecard to a mentor or teacher and ask about next steps.</p>
+                    {% elif avg_hybrid_int >= 65 %}
+                    <p>💪 <strong>Great progress!</strong> You've built a genuinely solid business plan across all 5 modules. Most chapters passed the rules engine, and the hybrid mentor agrees with your approach. A few areas still have room to improve — check the modules with lower hybrid scores and re-visit them to fill the gaps.</p>
+                    <p>📋 <strong>Verdict: Nearly launch-ready.</strong> Fix the weak modules and you'll have a plan worth presenting to real investors or mentors.</p>
+                    {% elif avg_hybrid_int >= 50 %}
+                    <p>📚 <strong>Good foundation, but work to do.</strong> You've completed all 5 modules and you're learning what makes a business tick. Some modules flagged real concerns — especially look at where hybrid scores fall below 55. The mentor is trying to help you see what's missing.</p>
+                    <p>🔧 <strong>Verdict: Not yet ready to launch</strong> — but you're on the right track. Go back to the lower-scoring modules, read the feedback carefully, and strengthen those areas.</p>
+                    {% else %}
+                    <p>🌱 <strong>All 5 chapters done — now improve them!</strong> The rules engine and hybrid mentor have found several important gaps across your plan. That's not a failure — that's useful information most people never get before launching!</p>
+                    <p>🚀 <strong>Verdict: Revise your weakest chapters</strong> and re-run the analysis. Read every piece of feedback carefully. Your idea has potential — the goal now is to build it on solid ground.</p>
+                    {% endif %}
+                    {% endif %}
+
+                    <!-- Research box -->
+                    <div class="sb-research-box">
+                        <div class="sb-research-title">📊 Score Summary — {{ done_list|length }}/5 chapters done</div>
+                        <p style="margin:0">
+                            <strong style="color:#A78BFA">Business Readiness:</strong> {{ avg_hybrid_int }}% (avg Mentor score) ·
+                            <strong style="color:#FB923C">AI Optimist avg:</strong> {{ avg_pure | round | int }}% ·
+                            <strong style="color:#34D399">AI Honesty:</strong> avg {{ avg_correction | round | int }} pts gap per chapter.
+                            {% if avg_correction >= 20 %}
+                            ⚠️ The AI was quite optimistic on average — {{ avg_correction | round | int }} pts more positive than your honest Mentor score. This is normal! It just means you should trust your Mentor score more than the AI Optimist.
+                            {% elif avg_correction >= 8 %}
+                            The Mentor gave more honest feedback than the AI Optimist across {{ done_list|length }} chapters, by an average of {{ avg_correction | round | int }} pts. Good news: this means your Mentor score is well-calibrated!
+                            {% else %}
+                            The AI Optimist and Mentor closely agree (avg {{ avg_correction | round | int }} pts difference). This means the AI was being genuinely honest across your chapters — great!
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="prog-card prog-card--pending" style="text-align:center;padding:32px">
+                <div style="font-size:2rem;margin-bottom:10px">🌱</div>
+                <p style="color:var(--muted)">Complete your first module to see your scoreboard.</p>
+                <a href="/context" class="prog-start-link" style="display:inline-block;margin-top:10px">Start with Context →</a>
+            </div>
+            {% endif %}
+
+        </main>
+    </div>
+</div>
+
+<!-- C6-30: Reset section at bottom of Progress page with harder confirmation -->
+<div style="max-width:680px;margin:24px auto;padding:0 16px 40px">
+    <div style="background:rgba(248,113,113,0.05);border:1px solid rgba(248,113,113,0.2);border-radius:12px;padding:16px 18px">
+        <div style="font-size:0.78rem;font-weight:900;color:#F87171;margin-bottom:8px">⚠️ Danger Zone — Reset All Progress</div>
+        <p style="font-size:0.75rem;color:var(--muted);margin-bottom:12px;line-height:1.5">This will permanently delete all your chapter answers, scores, and progress. There is no undo. Only do this if you want to start completely fresh.</p>
+        <button onclick="progressPageReset()" style="background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);color:#F87171;border-radius:8px;font-size:0.8rem;font-weight:900;padding:7px 18px;cursor:pointer">↺ Reset All Progress</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const AUDIT = {{ audit_scores_json | safe }};
+
+/* ── AI Honesty Score ── */
+const done = Object.values(AUDIT).filter(m => m.pure_truth !== undefined);
+if (done.length > 0) {
+    const avgGap = done.reduce((s, m) => s + m.sycophancy_gap, 0) / done.length;
+    const gsi    = Math.round(Math.abs(avgGap));
+    document.getElementById('gsiScore').textContent = (avgGap < 0 ? '–' : '+') + gsi + ' pts';
+    document.getElementById('gsiFill').style.width  = Math.min(gsi, 100) + '%';
+    document.getElementById('gsiFill').style.background = gsi > 40 ? '#FF4444' : gsi > 20 ? '#FFD93D' : '#00E896';
+    if      (avgGap > 40) document.getElementById('gsiLabel').textContent = '🔴 AI very optimistic — trust your Mentor score!';
+    else if (avgGap > 20) document.getElementById('gsiLabel').textContent = '🟡 AI a bit too nice — Mentor score is more honest';
+    else if (avgGap > 5)  document.getElementById('gsiLabel').textContent = '🟢 Small gap — AI was mostly honest';
+    else                  document.getElementById('gsiLabel').textContent = '✅ AI and Mentor agree — AI was genuinely honest!';
+    document.getElementById('gsiDesc').textContent = avgGap > 20
+        ? `The AI was ${gsi} pts too optimistic on average — it was being "too kind". Trust your Mentor score! It's the honest one.`
+        : `Your AI Optimist and Mentor scores are close (${gsi} pts apart on average). That means the AI was being genuinely honest across your chapters!`;
+}
+
+// Item 28: Highlight lowest-scoring module dynamically
+const _moduleScores = Object.entries(AUDIT).filter(([,v]) => v.hybrid_truth !== undefined);
+if (_moduleScores.length > 0) {
+    const _lowest = _moduleScores.reduce((a,b) => b[1].hybrid_truth < a[1].hybrid_truth ? b : a);
+    const _lowestCard = document.getElementById('card-' + _lowest[0]);
+    if (_lowestCard) {
+        _lowestCard.style.outline = '2px solid rgba(255,100,100,0.4)';
+        _lowestCard.title = 'This is your weakest chapter — re-run analysis here first!';
+    }
+}
+
+// Chapter details panel toggle
+function toggleChapterDetails() {
+    const panel = document.getElementById('chapterDetails');
+    const arrow = document.getElementById('chDetailArrow');
+    const btn   = document.getElementById('chDetailBtn');
+    if (!panel) return;
+    const open = panel.style.display === 'none';
+    panel.style.display = open ? 'block' : 'none';
+    if (arrow) arrow.textContent = open ? '▼' : '▶';
+    if (btn)   btn.style.background = open ? 'rgba(167,139,250,0.15)' : 'rgba(167,139,250,0.08)';
+    try { sessionStorage.setItem('lrnbiz_ch_details_open', open ? '1' : '0'); } catch(e) {}
+}
+
+// Restore chapter details open state
+try {
+    if (sessionStorage.getItem('lrnbiz_ch_details_open') === '1') {
+        const p = document.getElementById('chapterDetails');
+        const a = document.getElementById('chDetailArrow');
+        const b = document.getElementById('chDetailBtn');
+        if (p) { p.style.display = 'block'; }
+        if (a) a.textContent = '▼';
+        if (b) b.style.background = 'rgba(167,139,250,0.15)';
+    }
+} catch(e) {}
+
+// Per-chapter accordion toggle
+function toggleChapter(id) {
+    const card = document.getElementById('card-' + id);
+    if (!card) return;
+    const body  = card.querySelector('.prog-scores');
+    const arrow = card.querySelector('.ch-toggle-arrow');
+    const isOpen = card.classList.toggle('prog-card--open');
+    if (body)  body.style.display  = isOpen ? 'block' : 'none';
+    if (arrow) arrow.textContent   = isOpen ? '▼' : '▶';
+    _saveAccordionState();
+}
+
+// Item 29: Persist accordion open state in sessionStorage
+function _saveAccordionState() {
+    const open = [...document.querySelectorAll('.prog-card--open')].map(el => el.id);
+    try { sessionStorage.setItem('lrnbiz_accordion', JSON.stringify(open)); } catch(e) {}
+}
+try {
+    const _saved = JSON.parse(sessionStorage.getItem('lrnbiz_accordion') || '[]');
+    _saved.forEach(id => {
+        const card = document.getElementById(id);
+        if (card) {
+            const body  = card.querySelector('.prog-scores');
+            const arrow = card.querySelector('.ch-toggle-arrow');
+            card.classList.add('prog-card--open');
+            if (body)  body.style.display = 'block';
+            if (arrow) arrow.textContent  = '▼';
+        }
+    });
+} catch(e) {}
+
+// Print: open chapter details panel and all chapter cards
+window.addEventListener('beforeprint', () => {
+    const p = document.getElementById('chapterDetails');
+    if (p) p.style.display = 'block';
+    document.querySelectorAll('.prog-card--done').forEach(card => {
+        const body  = card.querySelector('.prog-scores');
+        const arrow = card.querySelector('.ch-toggle-arrow');
+        card.classList.add('prog-card--open');
+        if (body)  body.style.display = 'block';
+        if (arrow) arrow.textContent  = '▼';
+    });
+});
+
+/* ── Item 13: Close tooltip on outside click ── */
+document.addEventListener('click', e => { if (!e.target.closest('.rules-tooltip-trigger')) document.querySelectorAll('.rules-tooltip-trigger.active').forEach(el => el.classList.remove('active')); });
+
+/* ── Animate all bars on load ── */
+window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.psr-bar').forEach(bar => {
+        const t = bar.style.width; bar.style.width = '0%';
+        setTimeout(() => { bar.style.width = t; }, 200);
+    });
+    const rm = document.getElementById('readinessFill');
+    if (rm) { const t = rm.style.width; rm.style.width = '0%'; setTimeout(() => { rm.style.width = t; }, 300); }
+    const gf = document.getElementById('gsiFill');
+    if (gf) { const t = gf.style.width; gf.style.width = '0%'; setTimeout(() => { gf.style.width = t; }, 400); }
+});
+
+// C7-32: Populate badge shelf from localStorage
+(function(){
+    const BADGE_DEFS = {
+        chapter_done: { emoji: '📘', name: 'Chapter Complete' },
+        high_scorer:  { emoji: '🌟', name: 'High Scorer' },
+        iterative:    { emoji: '🔁', name: 'Iteration Pro' },
+        aligned_ai:   { emoji: '🤝', name: 'Aligned AI' },
+    };
+    const grid = document.getElementById('badgeShelfGrid');
+    const empty = document.getElementById('badgeShelfEmpty');
+    if (!grid) return;
+    let found = 0;
+    Object.entries(BADGE_DEFS).forEach(([key, def]) => {
+        if (localStorage.getItem('lrnbiz_badge_' + key)) {
+            const chip = document.createElement('div');
+            chip.title = def.name;
+            chip.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:2px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:6px 10px;font-size:1.2rem;cursor:default';
+            chip.innerHTML = `${def.emoji}<span style="font-size:0.55rem;font-weight:800;color:var(--muted);text-align:center;max-width:60px;line-height:1.2">${def.name}</span>`;
+            grid.appendChild(chip);
+            found++;
+        }
+    });
+    if (found > 0 && empty) empty.style.display = 'none';
+})();
+
+// C7-48: Save/Restore progress code
+async function generateSaveCode() {
+    const btn = document.getElementById('saveCodeBtn');
+    btn.textContent = '⏳ Generating…';
+    btn.disabled = true;
+    try {
+        const res = await fetch('/api/save_code', { method: 'POST' });
+        const data = await res.json();
+        if (data.code) {
+            document.getElementById('saveCodeDisplay').textContent = data.code;
+            document.getElementById('saveCodeResult').style.display = 'block';
+            btn.textContent = '✅ Code ready — write it down!';
+        } else {
+            btn.textContent = '❌ Failed — try again';
+            btn.disabled = false;
+        }
+    } catch {
+        btn.textContent = '❌ Connection error — try again';
+        btn.disabled = false;
+    }
+}
+
+async function restoreSaveCode() {
+    const input = document.getElementById('restoreCodeInput');
+    const msg = document.getElementById('restoreCodeMsg');
+    const code = (input.value || '').trim().toUpperCase();
+    if (code.length !== 6) {
+        msg.style.display = 'block';
+        msg.style.cssText += ';background:rgba(255,217,61,0.1);color:#FFD93D';
+        msg.textContent = '⚠️ Enter your 6-character code first.';
+        return;
+    }
+    msg.style.display = 'block';
+    msg.textContent = '⏳ Restoring…';
+    try {
+        const res = await fetch('/api/restore_code', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({code}) });
+        const data = await res.json();
+        if (data.ok) {
+            msg.style.background = 'rgba(52,211,153,0.1)';
+            msg.style.color = '#34D399';
+            msg.textContent = `✅ Restored! Welcome back, ${data.name || 'Entrepreneur'} — ${data.chapters} chapters found. Reloading…`;
+            setTimeout(() => window.location.reload(), 1500);
+        } else {
+            msg.style.background = 'rgba(248,113,113,0.1)';
+            msg.style.color = '#F87171';
+            msg.textContent = '❌ ' + (data.error || 'Code not found. Check for typos.');
+        }
+    } catch {
+        msg.style.background = 'rgba(248,113,113,0.1)';
+        msg.style.color = '#F87171';
+        msg.textContent = '❌ Connection error — try again.';
+    }
+}
+
+async function shareWithTeacher() {
+    const btn = document.getElementById('shareTeacherBtn');
+    const resultDiv = document.getElementById('shareTeacherResult');
+    btn.disabled = true;
+    btn.textContent = '⏳ Generating link…';
+    try {
+        const res = await fetch('/api/share', { method: 'POST' });
+        const data = await res.json();
+        if (data.url) {
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '🔗 <strong>Share this link with your teacher:</strong><br>'
+                + '<a href="' + data.url + '" target="_blank" style="color:#34D399;word-break:break-all">' + data.url + '</a>'
+                + '<br><small style="opacity:0.7">Link is valid until the server restarts.</small>';
+            btn.textContent = '✅ Link ready — copy it above!';
+        } else {
+            btn.textContent = '❌ Error — try again';
+            btn.disabled = false;
+        }
+    } catch(e) {
+        btn.textContent = '❌ Error — try again';
+        btn.disabled = false;
+    }
+}
+
+// Join a teacher's class by 6-char code
+async function joinClass() {
+    const input = document.getElementById('classCodeInput');
+    const msg   = document.getElementById('classJoinMsg');
+    const code  = (input.value || '').trim().toUpperCase();
+    if (code.length !== 6) {
+        msg.style.cssText = 'display:block;background:rgba(255,217,61,0.1);color:#FFD93D;margin-top:6px;font-size:0.72rem;border-radius:8px;padding:5px 8px';
+        msg.textContent = '⚠️ Enter the full 6-character class code.';
+        return;
+    }
+    msg.style.cssText = 'display:block;background:rgba(255,255,255,0.05);color:var(--muted);margin-top:6px;font-size:0.72rem;border-radius:8px;padding:5px 8px';
+    msg.textContent = '⏳ Joining class…';
+    try {
+        // First generate a share token so the teacher can see this student's plan
+        const shareRes = await fetch('/api/share', {method:'POST'});
+        const shareData = await shareRes.json();
+        const res  = await fetch('/api/class/join', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({code, share_token: shareData.token || ''})
+        });
+        const data = await res.json();
+        if (data.ok) {
+            msg.style.cssText = 'display:block;background:rgba(52,211,153,0.1);color:#34D399;margin-top:6px;font-size:0.72rem;border-radius:8px;padding:5px 8px';
+            msg.textContent = `✅ Joined "${data.class_name}"! Your teacher can now see your progress.`;
+            input.disabled = true;
+        } else {
+            msg.style.cssText = 'display:block;background:rgba(248,113,113,0.1);color:#F87171;margin-top:6px;font-size:0.72rem;border-radius:8px;padding:5px 8px';
+            msg.textContent = '❌ ' + (data.error || 'Class code not found — check with your teacher.');
+        }
+    } catch {
+        msg.style.cssText = 'display:block;background:rgba(248,113,113,0.1);color:#F87171;margin-top:6px;font-size:0.72rem;border-radius:8px;padding:5px 8px';
+        msg.textContent = '❌ Connection error — try again.';
+    }
+}
+
+// O10-10: Auto-notify if scores were updated in another tab since this page loaded
+(function(){
+    const _pageLoad = Date.now();
+    const _banner = document.createElement('div');
+    _banner.id = 'scoreRefreshBanner';
+    _banner.style.cssText = 'display:none;position:fixed;top:54px;left:50%;transform:translateX(-50%);z-index:8500;background:rgba(52,211,153,0.95);color:#09090F;padding:9px 20px;border-radius:99px;font-size:0.82rem;font-weight:800;box-shadow:0 4px 16px rgba(0,0,0,0.35);display:flex;align-items:center;gap:10px;white-space:nowrap';
+    _banner.innerHTML = '📊 New scores available! <button onclick="location.reload()" style="background:rgba(0,0,0,0.15);border:none;color:#09090F;font-weight:900;font-size:0.78rem;padding:3px 10px;border-radius:99px;cursor:pointer;font-family:Nunito,sans-serif">Reload →</button> <button onclick="document.getElementById(\'scoreRefreshBanner\').remove()" style="background:none;border:none;color:rgba(0,0,0,0.5);cursor:pointer;font-size:1rem;padding:0 2px">✕</button>';
+    document.body.appendChild(_banner);
+    function _checkUpdate() {
+        const t = parseInt(localStorage.getItem('lrnbiz_scores_updated') || '0');
+        if (t > _pageLoad) { _banner.style.display = 'flex'; }
+    }
+    document.addEventListener('visibilitychange', function(){ if (!document.hidden) _checkUpdate(); });
+    window.addEventListener('focus', _checkUpdate);
+})();
+
+// C6-30: Type-to-confirm reset
+function progressPageReset() {
+    const v = prompt('Type RESET (all caps) to permanently delete all your progress:');
+    if (v === 'RESET') {
+        window.location.href = '/reset';
+    } else if (v !== null) {
+        alert('Reset cancelled — you didn\'t type RESET correctly.');
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% block title %}LrnBiz — Teacher Dashboard{% endblock %}
+
+{% block content %}
+<div style="max-width:700px;margin:0 auto;padding:28px 16px 60px">
+
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:28px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.1)">
+        <div style="font-size:2.4rem">👩‍🏫</div>
+        <div>
+            <h1 style="margin:0;font-size:1.4rem;font-weight:900;color:var(--text)">Teacher Dashboard</h1>
+            <p style="margin:4px 0 0;font-size:0.8rem;color:var(--muted)">Create a class, view your roster, or look up a student plan.</p>
+        </div>
+    </div>
+
+    <!-- ─ Section 1: View existing class ─ -->
+    <div style="background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.2);border-radius:16px;padding:20px 22px;margin-bottom:20px">
+        <div style="font-size:0.68rem;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;color:#34D399;margin-bottom:12px">📋 View Class Roster</div>
+        <p style="font-size:0.8rem;color:rgba(240,239,244,0.75);margin:0 0 14px;line-height:1.55">
+            Enter your 6-character class code to see all students who have joined your class.
+        </p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <input id="viewCodeInput" type="text" maxlength="6" placeholder="e.g. AB3X7Y"
+                   oninput="this.value=this.value.toUpperCase()"
+                   style="flex:1;min-width:140px;background:rgba(255,255,255,0.06);border:1px solid rgba(52,211,153,0.3);border-radius:10px;padding:9px 14px;font-family:monospace;font-size:1rem;color:var(--text);letter-spacing:0.12em;text-transform:uppercase;text-align:center">
+            <button onclick="viewClass()"
+                    style="background:rgba(52,211,153,0.15);border:1px solid rgba(52,211,153,0.35);color:#34D399;font-family:Nunito,sans-serif;font-size:0.85rem;font-weight:900;padding:9px 20px;border-radius:10px;cursor:pointer;white-space:nowrap">
+                View Roster →
+            </button>
+        </div>
+        <div id="viewClassMsg" style="display:none;margin-top:10px;font-size:0.78rem;border-radius:8px;padding:6px 10px"></div>
+    </div>
+
+    <!-- ─ Section 2: Create a new class ─ -->
+    <div style="background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.2);border-radius:16px;padding:20px 22px;margin-bottom:20px">
+        <div style="font-size:0.68rem;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;color:#A78BFA;margin-bottom:12px">✨ Create a New Class</div>
+        <p style="font-size:0.8rem;color:rgba(240,239,244,0.75);margin:0 0 14px;line-height:1.55">
+            Create a class and give students the 6-character code to join. Their progress snapshots will appear in your roster automatically.
+        </p>
+        <div style="display:flex;flex-direction:column;gap:10px">
+            <input id="teacherNameInput" type="text" maxlength="60" placeholder="Your name (e.g. Ms Johnson)"
+                   style="background:rgba(255,255,255,0.05);border:1px solid rgba(167,139,250,0.25);border-radius:10px;padding:9px 14px;font-family:Nunito,sans-serif;font-size:0.88rem;color:var(--text)">
+            <input id="classNameInput" type="text" maxlength="80" placeholder="Class name (e.g. Business Yr 9 Period 2)"
+                   style="background:rgba(255,255,255,0.05);border:1px solid rgba(167,139,250,0.25);border-radius:10px;padding:9px 14px;font-family:Nunito,sans-serif;font-size:0.88rem;color:var(--text)">
+            <button onclick="createClass()"
+                    style="background:rgba(167,139,250,0.18);border:1px solid rgba(167,139,250,0.4);color:#A78BFA;font-family:Nunito,sans-serif;font-size:0.88rem;font-weight:900;padding:10px 20px;border-radius:10px;cursor:pointer;align-self:flex-start">
+                Create Class →
+            </button>
+        </div>
+        <div id="createClassResult" style="display:none;margin-top:14px;background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.25);border-radius:12px;padding:14px 16px">
+            <div style="font-size:0.7rem;font-weight:900;color:#34D399;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">✅ Class created!</div>
+            <div style="font-size:0.8rem;color:rgba(240,239,244,0.8);margin-bottom:8px">Share this code with your students — they enter it on the Scores page to join your class.</div>
+            <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+                <div id="newClassCode" style="font-size:2.2rem;font-weight:900;letter-spacing:0.18em;color:#34D399;font-family:monospace"></div>
+                <a id="newClassLink" href="#" target="_blank"
+                   style="background:rgba(52,211,153,0.15);border:1px solid rgba(52,211,153,0.3);color:#34D399;font-size:0.8rem;font-weight:800;padding:7px 16px;border-radius:99px;text-decoration:none;white-space:nowrap">
+                    Open Roster →
+                </a>
+            </div>
+            <div style="font-size:0.72rem;color:var(--muted);margin-top:6px">Write down this code — you'll need it to access the roster.</div>
+        </div>
+        <div id="createClassMsg" style="display:none;margin-top:10px;font-size:0.78rem;border-radius:8px;padding:6px 10px;background:rgba(248,113,113,0.1);color:#F87171"></div>
+    </div>
+
+    <!-- ─ Section 3: View individual student plan ─ -->
+    <div style="background:rgba(251,146,60,0.05);border:1px solid rgba(251,146,60,0.18);border-radius:16px;padding:20px 22px;margin-bottom:20px">
+        <div style="font-size:0.68rem;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;color:#FB923C;margin-bottom:12px">🔍 View Student Plan by Share Link</div>
+        <p style="font-size:0.8rem;color:rgba(240,239,244,0.75);margin:0 0 14px;line-height:1.55">
+            If a student shared a link with you (from the Scores page), paste the share token or full URL below to view their plan.
+        </p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <input id="shareTokenInput" type="text" placeholder="Share token or full URL"
+                   style="flex:1;min-width:200px;background:rgba(255,255,255,0.05);border:1px solid rgba(251,146,60,0.25);border-radius:10px;padding:9px 14px;font-family:monospace;font-size:0.82rem;color:var(--text)">
+            <button onclick="viewStudentPlan()"
+                    style="background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.3);color:#FB923C;font-family:Nunito,sans-serif;font-size:0.85rem;font-weight:900;padding:9px 20px;border-radius:10px;cursor:pointer;white-space:nowrap">
+                View Plan →
+            </button>
+        </div>
+        <div id="viewPlanMsg" style="display:none;margin-top:10px;font-size:0.78rem;border-radius:8px;padding:6px 10px;background:rgba(248,113,113,0.1);color:#F87171"></div>
+    </div>
+
+    <!-- ─ Section 3b: Export all student data ─ -->
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,217,61,0.15);border-radius:14px;padding:16px 20px;margin-top:0">
+        <div style="font-size:0.68rem;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:10px">📥 Export Class Data</div>
+        <p style="font-size:0.8rem;color:rgba(240,239,244,0.65);margin:0 0 12px;line-height:1.55">
+            Download all student scores as a spreadsheet. Opens directly in Excel or Google Sheets.
+        </p>
+        <a href="/teacher/export.csv"
+           style="display:inline-block;background:rgba(255,217,61,0.12);border:1px solid rgba(255,217,61,0.3);color:#FFD93D;font-size:0.82rem;font-weight:900;padding:8px 18px;border-radius:99px;text-decoration:none">
+            ⬇️ Download class scores (.csv) →
+        </a>
+    </div>
+
+    <!-- ─ Section 4: Demo previews ─ -->
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 20px">
+        <div style="font-size:0.68rem;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:10px">📌 Try Without Students First</div>
+        <p style="font-size:0.8rem;color:rgba(240,239,244,0.65);margin:0 0 14px;line-height:1.55">
+            Preview what your class roster and student plans look like with demo data loaded.
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <a href="/class/DEMO00" target="_blank"
+               style="background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.25);color:#34D399;font-size:0.8rem;font-weight:800;padding:7px 16px;border-radius:99px;text-decoration:none">
+                📋 Preview demo class roster →
+            </a>
+            <a href="/share/sample" target="_blank"
+               style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(240,239,244,0.75);font-size:0.8rem;font-weight:800;padding:7px 16px;border-radius:99px;text-decoration:none">
+                👤 View sample student plan →
+            </a>
+        </div>
+        <div style="margin-top:10px;font-size:0.7rem;color:var(--muted)">
+            Not sure how LrnBiz scores student plans? <a href="/about" style="color:var(--muted);font-weight:700">Read the architecture overview →</a>
+        </div>
+    </div>
+
+    <div style="margin-top:20px;font-size:0.7rem;color:var(--muted);text-align:center">
+        Students join your class from their <strong style="color:var(--text)">Scores</strong> page (📊) using your class code. ·
+        <a href="/" style="color:var(--muted)">← Home</a>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function viewClass() {
+    const code = (document.getElementById('viewCodeInput').value || '').trim().toUpperCase();
+    const msg = document.getElementById('viewClassMsg');
+    if (code.length !== 6) {
+        msg.style.cssText = 'display:block;background:rgba(255,217,61,0.1);color:#FFD93D;margin-top:10px;font-size:0.78rem;border-radius:8px;padding:6px 10px';
+        msg.textContent = '⚠️ Enter your 6-character class code first.';
+        return;
+    }
+    window.open('/class/' + code, '_blank');
+}
+
+async function createClass() {
+    const teacherName = (document.getElementById('teacherNameInput').value || '').trim();
+    const className   = (document.getElementById('classNameInput').value || '').trim();
+    const resultDiv   = document.getElementById('createClassResult');
+    const errMsg      = document.getElementById('createClassMsg');
+    if (!teacherName || !className) {
+        errMsg.style.display = 'block';
+        errMsg.textContent = '⚠️ Please fill in both your name and class name.';
+        return;
+    }
+    errMsg.style.display = 'none';
+    try {
+        const res  = await fetch('/api/class/create', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({teacher_name: teacherName, class_name: className})
+        });
+        const data = await res.json();
+        if (data.code) {
+            document.getElementById('newClassCode').textContent = data.code;
+            const link = document.getElementById('newClassLink');
+            link.href = '/class/' + data.code;
+            resultDiv.style.display = 'block';
+            resultDiv.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        } else {
+            errMsg.style.display = 'block';
+            errMsg.textContent = '❌ Failed to create class — try again.';
+        }
+    } catch {
+        errMsg.style.display = 'block';
+        errMsg.textContent = '❌ Connection error — try again.';
+    }
+}
+
+function viewStudentPlan() {
+    let raw = (document.getElementById('shareTokenInput').value || '').trim();
+    const msg = document.getElementById('viewPlanMsg');
+    if (!raw) {
+        msg.style.display = 'block';
+        msg.textContent = '⚠️ Paste the share token or URL first.';
+        return;
+    }
+    // Extract token from a full URL if pasted
+    const m = raw.match(/[?&]token=([A-Za-z0-9_-]+)/);
+    const token = m ? m[1] : raw.replace(/^.*\/teacher\??/, '').trim();
+    if (!token) {
+        msg.style.display = 'block';
+        msg.textContent = '⚠️ Could not find a share token in what you pasted.';
+        return;
+    }
+    window.open('/teacher?token=' + encodeURIComponent(token), '_blank');
+}
+</script>
+{% endblock %}

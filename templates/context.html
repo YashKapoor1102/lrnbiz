@@ -1,0 +1,2365 @@
+{% extends "base.html" %}
+{% block title %}LrnBiz — About You{% endblock %}
+
+{% block story_banner %}
+<div class="story-banner" id="storyBanner">
+    <div class="story-banner-icon">🌟</div>
+    <div class="story-banner-body">
+        <div class="story-banner-quest">Quest 1 of 5 · Your Origin Story</div>
+        <div class="story-banner-text">
+            Every great entrepreneur starts by knowing themselves! Fill in your profile — your budget, energy, and passion will shape your <strong>Business DNA</strong>. The more you share, the smarter your advice gets. 🧬
+        </div>
+    </div>
+    <button class="story-banner-close" onclick="this.closest('.story-banner').style.display='none'" title="Close">✕</button>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="chapter-back-row">
+    <a href="javascript:void(0)" class="chapter-back-link"
+       onclick="if(!window._ctxDirty || confirm('⚠️ Leave this page? Unsaved changes may be lost.')) window.history.back()">← Back</a>
+</div>
+<details class="why-matters-box" id="whyMatters">
+    <summary>💭 Why does this chapter matter?</summary>
+    <div class="why-matters-body">
+        Your background shapes everything your mentor says. Knowing your grade, budget, location, and experience helps the AI give advice that actually fits your situation — not generic advice for adults with big budgets! 🌟
+        <!-- C7-44: What you'll learn -->
+        <div style="margin-top:10px;border-top:1px solid rgba(255,255,255,0.07);padding-top:10px">
+            <div style="font-size:0.65rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;color:var(--purple);margin-bottom:6px">📚 What you'll learn in this chapter:</div>
+            <ul style="font-size:0.75rem;color:rgba(240,239,244,0.8);padding-left:16px;line-height:1.8;margin:0">
+                <li>How to describe yourself as an entrepreneur</li>
+                <li>What your Entrepreneur Stats (Radar) look like</li>
+                <li>How your background affects your business strategy</li>
+                <li>Why your motivation matters to your business idea</li>
+            </ul>
+        </div>
+    </div>
+</details>
+<div class="dashboard-page">
+
+<!-- ══ HUD ═══════════════════════════════════════════════ -->
+<nav class="game-hud">
+    <a href="/" class="logo logo--sm" style="text-decoration:none; flex-shrink:0">
+        <span class="logo-mark">🧠</span>
+        <span class="logo-text">LrnBiz</span>
+    </a>
+    <div class="hud-rank" id="hudRank">🌱 Rookie</div>
+    <div class="hud-xp">
+        <div class="hud-xp-top">
+            <span class="hud-xp-label">XP</span>
+            <span class="hud-xp-val" id="xpVal">0 / 1200</span>
+        </div>
+        <div class="xp-track"><div class="xp-fill" id="xpFill"></div></div>
+    </div>
+    <div class="hud-q" id="hudProgress">0 / 12 filled</div>
+</nav>
+
+<!-- ══ BODY ══════════════════════════════════════════════ -->
+<div class="dash-body">
+
+    <!-- ── LEFT COLUMN: Radar + Char + Conflicts ── -->
+    <aside class="dash-right" id="dashRight">
+
+        <div class="dash-char">
+            <div class="char-avatar-wrap">
+                <div class="char-aura char-aura--rookie" id="charAura"></div>
+                <div class="char-inner" id="charFace">🚀</div>
+            </div>
+            <div class="char-msg-bubble">
+                <p id="charMsg">Fill in your profile and watch your Business DNA take shape! 🧬</p>
+            </div>
+        </div>
+
+        <!-- Neon Radar -->
+        <div class="radar-block">
+            <div class="radar-title">🧬 Business DNA — Live</div>
+            <svg viewBox="0 0 180 28" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" style="width:100%;height:28px;display:block;margin-bottom:4px;opacity:0.85">
+                <line x1="15" y1="5" x2="15" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                <line x1="45" y1="5" x2="45" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                <line x1="75" y1="5" x2="75" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                <line x1="105" y1="5" x2="105" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                <line x1="135" y1="5" x2="135" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                <line x1="165" y1="5" x2="165" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                <path d="M 0,14 C 4,23 11,23 15,23 C 19,23 26,14 30,14 C 34,5 41,5 45,5 C 49,5 56,14 60,14 C 64,23 71,23 75,23 C 79,23 86,14 90,14 C 94,5 101,5 105,5 C 109,5 116,14 120,14 C 124,23 131,23 135,23 C 139,23 146,14 150,14 C 154,5 161,5 165,5 C 169,5 176,14 180,14" fill="none" stroke="#A78BFA" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M 0,14 C 4,5 11,5 15,5 C 19,5 26,14 30,14 C 34,23 41,23 45,23 C 49,23 56,14 60,14 C 64,5 71,5 75,5 C 79,5 86,14 90,14 C 94,23 101,23 105,23 C 109,23 116,14 120,14 C 124,5 131,5 135,5 C 139,5 146,14 150,14 C 154,23 161,23 165,23 C 169,23 176,14 180,14" fill="none" stroke="#34D399" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+            <div class="radar-wrap">
+                <canvas id="radarChart"></canvas>
+                <div class="radar-hint" id="radarHint">Start filling in your<br>profile to see your DNA →</div>
+            </div>
+            <!-- ITEM 3: Radar zoom button -->
+            <button type="button" id="radarZoomBtn" style="display:block;margin:6px auto 0;background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.4);border-radius:99px;color:var(--purple);font-size:0.72rem;font-weight:900;padding:4px 14px;cursor:pointer;" onclick="document.getElementById('radarModal').style.display='flex'">🔍 Zoom</button>
+            <!-- Item 1: Radar axis interpretation band -->
+            <div style="margin-top:6px;font-size:0.65rem;color:var(--muted);line-height:1.6;text-align:center">
+                🔥 90–100 Superpower &nbsp;|&nbsp; 💪 70–89 Strong &nbsp;|&nbsp; 📚 40–69 Learning &nbsp;|&nbsp; 🌱 0–39 Starting
+            </div>
+            <!-- C6-05: Biggest opportunity hint (populated after analysis) -->
+            <div id="radarOpportunity"></div>
+            <!-- C7-05: Inline radar axes explainer -->
+            <details style="margin-top:8px">
+                <summary style="font-size:0.7rem;font-weight:900;color:var(--purple);cursor:pointer;list-style:none;padding:4px 0">🧬 What does each axis mean? ▾</summary>
+                <div style="margin-top:8px;display:grid;gap:5px">
+                    <div style="font-size:0.68rem;line-height:1.4;padding:5px 8px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#FFD93D">🔥 Passion</strong> — How excited are you about your idea? High passion = more resilience when things get hard.</div>
+                    <div style="font-size:0.68rem;line-height:1.4;padding:5px 8px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#34D399">⚡ Energy</strong> — Time &amp; commitment. More hours/week = bigger energy score.</div>
+                    <div style="font-size:0.68rem;line-height:1.4;padding:5px 8px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#FFD93D">💰 Gold</strong> — Financial readiness. Having a budget and knowing your numbers lifts this score.</div>
+                    <div style="font-size:0.68rem;line-height:1.4;padding:5px 8px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#A78BFA">🗣️ Influence</strong> — Have you talked to potential customers? Testing your idea raises this axis.</div>
+                    <div style="font-size:0.68rem;line-height:1.4;padding:5px 8px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#60A5FA">📚 Knowledge</strong> — Do you understand your industry? Experience and research boost this.</div>
+                    <div style="font-size:0.68rem;line-height:1.4;padding:5px 8px;background:rgba(255,255,255,0.03);border-radius:6px"><strong style="color:#F472B6">🎯 Target</strong> — How clearly defined is your customer? Knowing WHO you sell to = high Target score.</div>
+                </div>
+            </details>
+        </div>
+
+        <!-- ITEM 3: Radar modal -->
+        <div id="radarModal" style="display:none;position:fixed;inset:0;background:rgba(9,9,15,0.85);z-index:9999;align-items:center;justify-content:center;" onclick="if(event.target===this)this.style.display='none'">
+            <div style="background:var(--s2);border:1px solid rgba(167,139,250,0.3);border-radius:20px;padding:24px;max-width:420px;width:90%;position:relative;">
+                <button type="button" onclick="document.getElementById('radarModal').style.display='none'" style="position:absolute;top:12px;right:16px;background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;">✕</button>
+                <div style="font-size:0.78rem;font-weight:900;color:var(--purple);text-align:center;margin-bottom:8px;">🧬 Your Business DNA — Full View</div>
+                <svg viewBox="0 0 180 28" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" style="width:100%;height:28px;display:block;margin-bottom:10px;opacity:0.85">
+                    <line x1="15" y1="5" x2="15" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="45" y1="5" x2="45" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="75" y1="5" x2="75" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="105" y1="5" x2="105" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="135" y1="5" x2="135" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <line x1="165" y1="5" x2="165" y2="23" stroke="rgba(255,217,61,0.45)" stroke-width="1"/>
+                    <path d="M 0,14 C 4,23 11,23 15,23 C 19,23 26,14 30,14 C 34,5 41,5 45,5 C 49,5 56,14 60,14 C 64,23 71,23 75,23 C 79,23 86,14 90,14 C 94,5 101,5 105,5 C 109,5 116,14 120,14 C 124,23 131,23 135,23 C 139,23 146,14 150,14 C 154,5 161,5 165,5 C 169,5 176,14 180,14" fill="none" stroke="#A78BFA" stroke-width="1.8" stroke-linecap="round"/>
+                    <path d="M 0,14 C 4,5 11,5 15,5 C 19,5 26,14 30,14 C 34,23 41,23 45,23 C 49,23 56,14 60,14 C 64,5 71,5 75,5 C 79,5 86,14 90,14 C 94,23 101,23 105,23 C 109,23 116,14 120,14 C 124,5 131,5 135,5 C 139,5 146,14 150,14 C 154,23 161,23 165,23 C 169,23 176,14 180,14" fill="none" stroke="#34D399" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+                <canvas id="radarModalChart" height="300"></canvas>
+            </div>
+        </div>
+
+        <div class="conflict-feed" id="conflictFeed"></div>
+
+    </aside>
+
+    <!-- ── CENTER COLUMN: Dashboard widgets ── -->
+    <main class="dash-left">
+        <div class="module-chip module-chip--purple">👤 About You — Chapter 1</div>
+
+        <!-- ITEM 5: Returning user greeting -->
+        {% if session.get('student_name', '') %}
+        <div style="background:linear-gradient(135deg,rgba(52,211,153,0.12),rgba(167,139,250,0.08));border:1px solid rgba(52,211,153,0.3);border-radius:14px;padding:12px 18px;margin-bottom:14px;font-size:0.88rem;font-weight:700;color:#6EE7B7;">
+            👋 Welcome back, {{ session.get('student_name') }}! Your DNA is already unlocked 🔓
+        </div>
+        {% endif %}
+
+        <!-- ITEM 1: Welcome narrative hero paragraph -->
+        <div style="background:linear-gradient(135deg,rgba(255,217,61,0.10),rgba(167,139,250,0.08));border:1px solid rgba(255,217,61,0.25);border-radius:16px;padding:18px 20px;margin-bottom:14px;">
+            <p style="font-size:0.97rem;font-weight:800;color:var(--text);margin-bottom:6px;line-height:1.55">Before we build your business, let's learn who YOU are! 🌟 Your answers shape your <strong style="color:var(--yellow)">Business DNA</strong> — the 6 superpowers every entrepreneur has.</p>
+
+            <!-- C18-03: Business DNA plain-English explainer always visible -->
+            <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:5px;font-size:0.72rem;line-height:1.5">
+                <div style="padding:5px 8px;background:rgba(255,255,255,0.03);border-radius:7px">🔥 <strong style="color:#FFD93D">Passion</strong> — how excited you are about your idea</div>
+                <div style="padding:5px 8px;background:rgba(255,255,255,0.03);border-radius:7px">⚡ <strong style="color:#34D399">Energy</strong> — how many hours/week you can work</div>
+                <div style="padding:5px 8px;background:rgba(255,255,255,0.03);border-radius:7px">💰 <strong style="color:#FFD93D">Gold</strong> — your starting budget</div>
+                <div style="padding:5px 8px;background:rgba(255,255,255,0.03);border-radius:7px">🗣️ <strong style="color:#A78BFA">Influence</strong> — have you talked to real customers yet?</div>
+                <div style="padding:5px 8px;background:rgba(255,255,255,0.03);border-radius:7px">📚 <strong style="color:#60A5FA">Knowledge</strong> — what you know about your field</div>
+                <div style="padding:5px 8px;background:rgba(255,255,255,0.03);border-radius:7px">🎯 <strong style="color:#F472B6">Target</strong> — how specific your business idea is</div>
+            </div>
+            <p style="font-size:0.72rem;color:rgba(240,239,244,0.6);margin-top:8px;margin-bottom:0">Your answers fill up each axis — answer honestly for the most useful feedback! 🎯</p>
+        </div>
+
+        <!-- ITEM 2: Profile completion bar -->
+        <div style="background:var(--s2);border:1px solid rgba(167,139,250,0.2);border-radius:12px;padding:12px 16px;margin-bottom:14px;" id="dnaProgressBar">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                <span style="font-size:0.78rem;font-weight:900;color:var(--purple);">🧬 Business DNA Progress</span>
+                <span style="font-size:0.78rem;font-weight:900;color:var(--yellow);" id="dnaProgressText">0 of 12 answered</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.07);border-radius:99px;height:8px;overflow:hidden;">
+                <div id="dnaProgressFill" style="height:100%;width:0%;background:linear-gradient(90deg,var(--purple),var(--yellow));border-radius:99px;transition:width 0.4s ease;"></div>
+            </div>
+        </div>
+
+        <div class="dots-row" id="dotsRow">
+            {% for i in range(12) %}<div class="dot" id="dot-{{i}}"></div>{% endfor %}
+        </div>
+        <div id="autoSaveIndicator" style="display:none;font-size:0.68rem;color:#34D399;font-weight:700;margin-bottom:6px;padding:3px 8px;background:rgba(52,211,153,0.1);border-radius:6px;width:fit-content">💾 Draft saved</div>
+
+        <form id="ctxForm" method="POST" action="/context" novalidate>
+
+            <!-- W1: Grade -->
+            <div class="widget" data-wid="0" data-field="grade_level">
+                <div class="widget-hd">
+                    <span class="widget-n">01</span>
+                    <span class="widget-q">What grade are you in?</span>
+                    <span class="widget-tick" id="tick-0">○</span>
+                </div>
+                <div class="vcard-grid" data-field="grade_level" data-cols="3">
+                    <button type="button" class="vcard" data-val="Grade 6-8">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">🎒</span>
+                        <span class="vcard-name">Grade 6–8</span>
+                        <span class="vcard-hint">Low-cost ideas work best 🛍️</span>
+                    </button>
+                    <button type="button" class="vcard" data-val="Grade 9-10">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">📖</span>
+                        <span class="vcard-name">Grade 9–10</span>
+                        <span class="vcard-hint">Local or online biz 🚀</span>
+                    </button>
+                    <button type="button" class="vcard" data-val="Grade 11-12">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">🎓</span>
+                        <span class="vcard-name">Grade 11–12</span>
+                        <span class="vcard-hint">Multi-step businesses 🎓</span>
+                    </button>
+                    <button type="button" class="vcard" data-val="Adult/Teacher">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">👩‍💼</span>
+                        <span class="vcard-name">Adult / Teacher</span>
+                        <span class="vcard-hint">Real-world experience 👩‍💼</span>
+                    </button>
+                </div>
+                <input type="hidden" name="grade_level" id="f-grade_level">
+                <!-- C7-03: Real student example -->
+                <div class="widget-example">💡 <em>Asha (Grade 7) sold handmade bookmarks at her school library and made $60 in one week!</em></div>
+            </div>
+
+            <!-- W2: Location -->
+            <div class="widget" data-wid="1" data-field="location">
+                <div class="widget-hd">
+                    <span class="widget-n">02</span>
+                    <span class="widget-q">Where do you live? <span title="Where you live matters — a food stall works near people, but online tutoring works anywhere. This helps us give you relevant advice." style="display:inline-block;width:16px;height:16px;background:rgba(167,139,250,0.2);border:1px solid rgba(167,139,250,0.4);border-radius:50%;font-size:0.65rem;font-weight:900;color:var(--purple);text-align:center;line-height:16px;cursor:help;margin-left:4px;">?</span></span>
+                    <span class="widget-tick" id="tick-1">○</span>
+                </div>
+                <div class="vcard-grid" data-field="location" data-cols="3">
+                    <button type="button" class="vcard" data-val="City">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">🏙️</span>
+                        <span class="vcard-name">City</span>
+                        <span class="vcard-hint">Big market pool</span>
+                    </button>
+                    <button type="button" class="vcard" data-val="Suburb">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">🏘️</span>
+                        <span class="vcard-name">Suburb</span>
+                        <span class="vcard-hint">Great local community</span>
+                    </button>
+                    <button type="button" class="vcard" data-val="Rural">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">🌾</span>
+                        <span class="vcard-name">Rural</span>
+                        <span class="vcard-hint">Tight-knit loyal base</span>
+                    </button>
+                </div>
+                <input type="hidden" name="location" id="f-location">
+                <!-- C7-03: Real student example -->
+                <div class="widget-example">💡 <em>Priya (suburb, Grade 9) ran a neighbourhood dog-walking service and had 8 regular customers within a month.</em></div>
+            </div>
+
+            <!-- W3: Delivery -->
+            <div class="widget" data-wid="2" data-field="delivery_model">
+                <div class="widget-hd">
+                    <span class="widget-n">03</span>
+                    <span class="widget-q">How would you reach customers?</span>
+                    <span class="widget-tick" id="tick-2">○</span>
+                </div>
+                <div class="vcard-grid" data-field="delivery_model" data-cols="4">
+                    <button type="button" class="vcard" data-val="School">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">🏫</span>
+                        <span class="vcard-name">School</span>
+                        <span class="vcard-hint">Built-in market</span>
+                    </button>
+                    <button type="button" class="vcard" data-val="Neighbourhood">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">🏘️</span>
+                        <span class="vcard-name">Local</span>
+                        <span class="vcard-hint">Neighbourhood regulars</span>
+                    </button>
+                    <button type="button" class="vcard" data-val="Online">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">📱</span>
+                        <span class="vcard-name">Online</span>
+                        <span class="vcard-hint">Anyone, anywhere</span>
+                    </button>
+                    <button type="button" class="vcard" data-val="Requires Travel">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">🚗</span>
+                        <span class="vcard-name">Travel</span>
+                        <span class="vcard-hint">Bring it to them</span>
+                    </button>
+                </div>
+                <input type="hidden" name="delivery_model" id="f-delivery_model">
+            </div>
+
+            <!-- W4: Budget slider -->
+            <div class="widget" data-wid="3" data-field="budget">
+                <div class="widget-hd">
+                    <span class="widget-n">04</span>
+                    <span class="widget-q">Starting budget</span>
+                    <span class="widget-tick" id="tick-3">✓</span>
+                </div>
+                <div class="slider-hero"><span id="budgetDisplay">$0</span></div>
+                <div class="slider-wrap">
+                    <input type="range" class="lrn-slider" id="budgetSlider" min="0" max="200000" step="500" value="0" aria-label="Starting budget slider">
+                    <small style="display:block;margin-top:4px;color:var(--muted);font-size:0.7rem;">(← → arrow keys to adjust)</small>
+                    <div class="budget-zones">
+                        <div class="bz bz--red">$0–1k<br><small>Risky</small></div>
+                        <div class="bz bz--orange">$1k–15k<br><small>Low</small></div>
+                        <div class="bz bz--yellow">$15k–100k<br><small>Fair</small></div>
+                        <div class="bz bz--green">$100k+<br><small>Good</small></div>
+                    </div>
+                </div>
+                <div class="slider-live-label" id="budgetLabel">⚡ Set your budget to get started!</div>
+                <input type="hidden" name="budget" id="f-budget" value="0">
+            </div>
+
+            <!-- W5: Hours slider -->
+            <div class="widget" data-wid="4" data-field="hours_per_week">
+                <div class="widget-hd">
+                    <span class="widget-n">05</span>
+                    <span class="widget-q">Hours per week you can commit</span>
+                    <span class="widget-tick" id="tick-4">✓</span>
+                </div>
+                <div class="slider-hero"><span id="hoursDisplay">3</span> hrs / week</div>
+                <div class="slider-wrap">
+                    <input type="range" class="lrn-slider" id="hoursSlider" min="1" max="15" step="1" value="3" aria-label="Hours per week slider">
+                    <small style="display:block;margin-top:4px;color:var(--muted);font-size:0.7rem;">(← → arrow keys to adjust)</small>
+                    <div class="hours-marks">
+                        <span>⚡ 1–3<br><small>Casual</small></span>
+                        <span>🔥 4–6<br><small>Solid</small></span>
+                        <span>💪 7–10<br><small>Serious</small></span>
+                        <span>🚀 10+<br><small>All-in</small></span>
+                    </div>
+                </div>
+                <div class="slider-live-label" id="hoursLabel">⚡ 3 hrs/week — solid start!</div>
+                <!-- C7-01: Hours commitment translation -->
+                <div id="hoursContextNote" style="margin-top:6px;font-size:0.72rem;color:rgba(240,239,244,0.65);background:rgba(255,255,255,0.03);border-radius:8px;padding:6px 10px;line-height:1.5">
+                    💡 <span id="hoursContextText">At 3 hrs/week you can run a simple product or service business — great for a first venture!</span>
+                </div>
+                <input type="hidden" name="hours_per_week" id="f-hours_per_week" value="3">
+            </div>
+
+            <!-- W6: Experience -->
+            <div class="widget" data-wid="5" data-field="prior_experience">
+                <div class="widget-hd">
+                    <span class="widget-n">06</span>
+                    <span class="widget-q">Sold anything before?</span>
+                    <span class="widget-tick" id="tick-5">○</span>
+                </div>
+                <div class="vcard-grid" data-field="prior_experience" data-cols="3">
+                    <button type="button" class="vcard" data-val="Never sold">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">🌱</span>
+                        <span class="vcard-name">Never</span>
+                        <span class="vcard-hint">Starting fresh</span>
+                    </button>
+                    <button type="button" class="vcard" data-val="Once or twice">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">🌿</span>
+                        <span class="vcard-name">Once or twice</span>
+                        <span class="vcard-hint">Got the feel for it</span>
+                    </button>
+                    <button type="button" class="vcard" data-val="Sell regularly">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">🌳</span>
+                        <span class="vcard-name">Regularly</span>
+                        <span class="vcard-hint">Natural at sales</span>
+                    </button>
+                </div>
+                <input type="hidden" name="prior_experience" id="f-prior_experience">
+            </div>
+
+            <!-- W7: Why -->
+            <div class="widget" data-wid="6" data-field="why_this_idea">
+                <div class="widget-hd">
+                    <span class="widget-n">07</span>
+                    <span class="widget-q">Why this idea?</span>
+                    <span class="widget-tick" id="tick-6">○</span>
+                </div>
+                <div class="vcard-grid" data-field="why_this_idea" data-cols="2">
+                    <button type="button" class="vcard" data-val="Spotted a problem">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">🔍</span>
+                        <span class="vcard-name">Spotted a problem</span>
+                        <span class="vcard-hint">Problem-first thinking</span>
+                    </button>
+                    <button type="button" class="vcard" data-val="I love this topic">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">❤️</span>
+                        <span class="vcard-name">I love this topic</span>
+                        <span class="vcard-hint">Passion-driven</span>
+                    </button>
+                    <button type="button" class="vcard" data-val="Want to make money">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">💰</span>
+                        <span class="vcard-name">Want to make money</span>
+                        <span class="vcard-hint">Profit-focused</span>
+                    </button>
+                    <button type="button" class="vcard" data-val="Not sure">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">🤷</span>
+                        <span class="vcard-name">Not sure yet</span>
+                        <span class="vcard-hint">Still figuring it out</span>
+                    </button>
+                </div>
+                <input type="hidden" name="why_this_idea" id="f-why_this_idea">
+                <!-- C7-03: Real student example -->
+                <div class="widget-example">💡 <em>Jaylen (Grade 10) spotted that kids had nowhere to charge phones at school — he rented out a portable charger for $1/day.</em></div>
+            </div>
+
+            <!-- W8: Business type (archetype) -->
+            <div class="widget" data-wid="7" data-field="business_type">
+                <div class="widget-hd">
+                    <span class="widget-n">08</span>
+                    <span class="widget-q">What type of business is it?</span>
+                    <span class="widget-tick" id="tick-7">○</span>
+                </div>
+                <div class="vcard-grid" data-field="business_type" data-cols="2">
+                    <button type="button" class="vcard" data-val="food-beverage">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">🍕</span>
+                        <span class="vcard-name">Food &amp; Drink</span>
+                        <span class="vcard-hint">Baking, cooking, drinks</span>
+                    </button>
+                    <button type="button" class="vcard" data-val="service">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">🔧</span>
+                        <span class="vcard-name">Service</span>
+                        <span class="vcard-hint">Tasks done for customers</span>
+                    </button>
+                    <button type="button" class="vcard" data-val="skills-for-hire">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">📚</span>
+                        <span class="vcard-name">Skills &amp; Tutoring</span>
+                        <span class="vcard-hint">Teach or use your expertise</span>
+                    </button>
+                    <button type="button" class="vcard" data-val="digital-product">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">💻</span>
+                        <span class="vcard-name">Digital Product</span>
+                        <span class="vcard-hint">Apps, games, tools, templates</span>
+                    </button>
+                    <button type="button" class="vcard" data-val="physical-product">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">🛍️</span>
+                        <span class="vcard-name">Physical Product</span>
+                        <span class="vcard-hint">Handmade or manufactured goods</span>
+                    </button>
+                    <button type="button" class="vcard" data-val="resale-retail">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">🏷️</span>
+                        <span class="vcard-name">Resale</span>
+                        <span class="vcard-hint">Buy existing items, sell at markup</span>
+                    </button>
+                    <button type="button" class="vcard" data-val="maker">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">✂️</span>
+                        <span class="vcard-name">Custom / Maker</span>
+                        <span class="vcard-hint">Made-to-order, bespoke items</span>
+                    </button>
+                    <button type="button" class="vcard" data-val="content-media">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">🎥</span>
+                        <span class="vcard-name">Content &amp; Media</span>
+                        <span class="vcard-hint">Videos, newsletters, podcasts</span>
+                    </button>
+                </div>
+                <input type="hidden" name="business_type" id="f-business_type">
+                <!-- C7-03: Real student example -->
+                <div class="widget-example">💡 <em>Maria (Grade 8) chose Skills &amp; Tutoring — taught maths after school, no startup cost, £15/session, 4 students in week one!</em></div>
+            </div>
+
+            <!-- W9: Who talked to — Journey selector -->
+            <div class="widget" data-wid="8" data-field="who_talked_to">
+                <div class="widget-hd">
+                    <span class="widget-n">09</span>
+                    <span class="widget-q">Who have you tested your idea with?</span>
+                    <span class="widget-tick" id="tick-8">○</span>
+                </div>
+                <div class="journey" data-field="who_talked_to">
+                    <div class="journey-node" data-val="Nobody yet">
+                        <div class="jn-dot"></div>
+                        <div class="jn-label">🤫<br>Nobody</div>
+                    </div>
+                    <div class="journey-line"></div>
+                    <div class="journey-node" data-val="Friends">
+                        <div class="jn-dot"></div>
+                        <div class="jn-label">👫<br>Friends</div>
+                    </div>
+                    <div class="journey-line"></div>
+                    <div class="journey-node" data-val="People I don't know">
+                        <div class="jn-dot"></div>
+                        <div class="jn-label">🌍<br>Strangers</div>
+                    </div>
+                    <div class="journey-line"></div>
+                    <div class="journey-node" data-val="A mentor">
+                        <div class="jn-dot"></div>
+                        <div class="jn-label">🧑‍🏫<br>Mentor</div>
+                    </div>
+                </div>
+                <input type="hidden" name="who_talked_to" id="f-who_talked_to">
+            </div>
+
+            <!-- W10: Challenge -->
+            <div class="widget" data-wid="9" data-field="biggest_challenge">
+                <div class="widget-hd">
+                    <span class="widget-n">10</span>
+                    <span class="widget-q">Biggest challenge right now?</span>
+                    <span class="widget-tick" id="tick-9">○</span>
+                </div>
+                <div class="vcard-grid" data-field="biggest_challenge" data-cols="2">
+                    <button type="button" class="vcard" data-val="Finding customers">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">🔍</span>
+                        <span class="vcard-name">Finding customers</span>
+                        <span class="vcard-hint">Marketing challenge</span>
+                    </button>
+                    <button type="button" class="vcard" data-val="Affording costs">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">💸</span>
+                        <span class="vcard-name">Affording costs</span>
+                        <span class="vcard-hint">Budget challenge</span>
+                    </button>
+                    <button type="button" class="vcard" data-val="Not enough time">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">⏰</span>
+                        <span class="vcard-name">Not enough time</span>
+                        <span class="vcard-hint">Time management</span>
+                    </button>
+                    <button type="button" class="vcard" data-val="Not sure">
+                        <div class="vcard-lock-overlay"><span class="vcard-lock-icon">🔒</span><p class="vcard-lock-tip"></p></div>
+                        <span class="vcard-audit"></span>
+                        <span class="vcard-emoji">🤔</span>
+                        <span class="vcard-name">Not sure yet</span>
+                        <span class="vcard-hint">Identify it first</span>
+                    </button>
+                </div>
+                <input type="hidden" name="biggest_challenge" id="f-biggest_challenge">
+            </div>
+
+            <!-- W11: Superpower (formerly "strongest part") -->
+            <div class="widget" data-wid="10" data-field="strongest_part">
+                <div class="widget-hd">
+                    <span class="widget-n">11</span>
+                    <span class="widget-q">What's your superpower? ✨ <span style='font-size:0.65rem;color:var(--muted);font-weight:600'>(optional)</span></span>
+                    <span class="widget-tick" id="tick-10">○</span>
+                </div>
+                <p style="font-size:0.78rem;color:var(--muted);margin-bottom:8px">What are you best at? What gives you an edge over others?</p>
+                <div class="text-wrap">
+                    <textarea name="strongest_part" id="strongest_part" maxlength="100" rows="2"
+                        placeholder="e.g. lemonade stand, school project, YouTube channel, Etsy shop, tutoring, mowing lawns, chores for pocket money 💪"></textarea>
+                    <div class="char-ctr"><span id="sCount">0</span>/100</div>
+                </div>
+            </div>
+
+            <!-- W12: Mood slider -->
+            <div class="widget" data-wid="11" data-field="interest_level">
+                <div class="widget-hd">
+                    <span class="widget-n">12</span>
+                    <span class="widget-q">How excited are you about this idea?</span>
+                    <span class="widget-tick" id="tick-11">✓</span>
+                </div>
+                <div class="mood-display" id="moodDisplay">😐 It's okay</div>
+                <div class="mood-wrap">
+                    <input type="range" class="lrn-slider mood-slider" id="moodSlider" min="1" max="3" step="1" value="2" aria-label="Excitement level slider">
+                    <small style="display:block;margin-top:4px;color:var(--muted);font-size:0.7rem;">(← → arrow keys to adjust)</small>
+                    <div class="mood-labels">
+                        <span>😞<br><small>Not really</small></span>
+                        <span>😐<br><small>It's okay</small></span>
+                        <span>🔥<br><small>I love it!</small></span>
+                    </div>
+                </div>
+                <!-- C7-02: Motivation context note -->
+                <div id="moodContextNote" style="margin-top:8px;font-size:0.72rem;color:rgba(240,239,244,0.65);background:rgba(255,255,255,0.03);border-radius:8px;padding:6px 10px;line-height:1.5">
+                    💡 <span id="moodContextText">That's honest — most entrepreneurs have mixed feelings at the start. Your WHY will carry you through the tough days.</span>
+                </div>
+                <input type="hidden" name="interest_level" id="f-interest_level" value="It's okay">
+            </div>
+
+            <!-- C19-14: field completion count visible on main form -->
+            <div id="formProgressRow" style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:10px">
+                <div style="flex:1;height:6px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden">
+                    <div id="formProgressBar" style="height:100%;width:0%;background:linear-gradient(90deg,#A78BFA,#60A5FA);border-radius:3px;transition:width 0.4s"></div>
+                </div>
+                <div id="formProgressLabel" style="font-size:0.68rem;color:var(--muted);white-space:nowrap;font-weight:700">0 of 12 answered</div>
+            </div>
+
+            <a href="/context?reset=1" style="display:block;text-align:center;font-size:0.72rem;color:var(--muted);text-decoration:underline;margin-bottom:8px;cursor:pointer">Start fresh →</a>
+            <button type="submit" class="btn-analyse" id="analyseBtn" onclick="(function(btn){var name=document.getElementById('f-student_name')?document.getElementById('f-student_name').value||'Entrepreneur':'Entrepreneur';var t=document.getElementById('celebToast');if(t){var _AXIS_PRAISE={Passion:'passion for this idea',Energy:'high energy',Gold:'financial thinking',Influence:'influence skills',Knowledge:'business knowledge',Target:'clear customer focus'};var _topAxis=Object.entries(RADAR).reduce(function(a,b){return b[1]>a[1]?b:a},['',0])[0];t.textContent='Great '+name+'! Your strongest asset is your '+(_AXIS_PRAISE[_topAxis]||'profile')+' \u2014 let\u2019s build a business around it! \uD83D\uDE80';t.classList.remove('show');void t.offsetWidth;t.classList.add('show');}})(this)">Next: Business Idea →</button>
+            <p class="validate-sub-hint">⏳ Saves your background + runs Rules Check + AI Mentor — about 5–10 secs</p>
+            <p class="submit-hint" id="submitHint"></p>
+
+        </form>
+    </main>
+
+    <!-- ── RIGHT COLUMN: ITS Lab Panel ── -->
+    <aside class="research-panel" id="labPanel">
+
+        <div class="rp-header" style="display:flex;align-items:center;justify-content:space-between;">
+            <span>🔬 ITS Lab</span>
+            <a href="/progress" style="font-size:0.68rem;font-weight:900;color:var(--muted);text-decoration:none;padding:3px 8px;border:1px solid rgba(255,255,255,0.1);border-radius:99px;" title="View full journey audit">📊 Audit</a>
+        </div>
+
+        <!-- Run Analysis — always visible, not hidden in research mode -->
+        <div class="lab-run-row" style="margin:8px 0">
+            <button id="analyseLabBtn" class="lab-btn-run" disabled title="Fill in your background first ✏️">🔬 Run Analysis</button>
+            <p class="validate-sub-hint">⏳ Saves your background + runs Rules Check + AI Mentor — about 5–10 secs</p>
+        </div>
+
+        <!-- Research toggle -->
+        <div class="rt-wrap">
+            <span class="rt-label">Kid View</span>
+            <label class="rt-toggle">
+                <input type="checkbox" id="researchToggle" class="rt-input">
+                <span class="rt-slider"></span>
+            </label>
+            <span class="rt-label rt-label--research">Mentor Feedback</span>
+            <span class="rt-info" data-tip="Shows the 3-way AI scoring: Rules Check (logic), AI Optimist (cheerful AI), and Mentor Feedback (honest mentor). Great for understanding how AI feedback works!">i</span>
+        </div>
+
+        <!-- Kid View (default) -->
+        <div id="kidView">
+            <div class="its-pillar">
+                <div class="its-p-head">🐍 Rules Check</div>
+                <div class="its-p-icons" id="rulesIcons">
+                    <span class="its-icon--placeholder">Answer the questions to see your check results! ✅</span>
+                </div>
+            </div>
+            <div class="its-pillar">
+                <div class="its-p-head">📊 Mentor Score</div>
+                <div class="its-p-icons" id="hybridScoreIcon">
+                    <span class="its-icon--placeholder">—</span>
+                </div>
+            </div>
+            <div class="its-pillar its-pillar--hybrid">
+                <div class="its-p-head">🧑‍🏫 Mentor Says</div>
+                <!-- S21-23: Why this score? summary — hidden until analysis runs -->
+                <div id="whyScoreBox" style="display:none;background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 10px;margin-bottom:8px;border-left:2px solid rgba(167,139,250,0.4)"></div>
+                <div class="its-p-text" id="hybridText">
+                    <span class="np-placeholder">Fill in your answers, then tap <strong>Run Analysis</strong> to get tips from your AI mentor! 🤖</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Research View (toggle ON) — horizontal tabs -->
+        <div id="researchView" style="display:none">
+            <div class="rs-tabs">
+                <button class="rs-tab rs-tab--active" onclick="switchRsTab(this,'rules')">
+                    🐍 Rules<span class="rs-tab-score" id="rsSymScore">—</span>
+                </button>
+                <button class="rs-tab" onclick="switchRsTab(this,'pure')">
+                    🤖 AI Optimist<span class="rs-tab-score" id="rsPureTruth">—</span>
+                </button>
+                <button class="rs-tab" onclick="switchRsTab(this,'hybrid')">
+                    🧠 Mentor Feedback<span class="rs-tab-score" id="rsHybridTruth">—</span>
+                </button>
+            </div>
+            <div class="rs-pane" id="rsPane-rules">
+                <div id="rpVerdict"></div>
+                <div class="lab-bar-wrap"><canvas id="labBarChart"></canvas></div>
+                <div id="rpConflicts"></div>
+            </div>
+            <div class="rs-pane rs-pane--hidden" id="rsPane-pure">
+                <div class="rs-text" id="pureLlmBox" style="color:var(--muted);font-size:0.78rem">Waiting for analysis…</div>
+                <div class="truth-bar-wrap" id="pureTruth"></div>
+                <div id="rsBandPure" style="display:none;font-size:0.72rem;font-weight:800;margin-top:4px;padding:3px 0"></div>
+            </div>
+            <div class="rs-pane rs-pane--hidden" id="rsPane-hybrid">
+                <div class="rs-text" id="hybridLlmBox" style="color:var(--muted);font-size:0.78rem">Waiting for analysis…</div>
+                <div class="truth-bar-wrap" id="hybridTruth"></div>
+                <div id="rsBandHybrid" style="display:none;font-size:0.72rem;font-weight:800;margin-top:6px;padding:3px 0"></div>
+                <div id="rsNextStep" style="display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:0.75rem;line-height:1.6"></div>
+                <div id="rsGrowthHint" style="display:none;margin-top:6px;font-size:0.7rem;color:var(--muted);padding:6px 8px;border-top:1px solid rgba(255,255,255,0.07)">
+                    📝 Update your answers and re-validate — your best score is always saved! 💪
+                </div>
+            </div>
+            <div class="rs-gap rs-gap--ok" id="rsGap" style="display:none"></div>
+            <div id="contextGapExplainer" style="display:none"></div>
+        </div><!-- end #researchView -->
+    </aside>
+
+</div><!-- .dash-body -->
+
+<!-- Run Analysis reminder modal -->
+<div id="analysisReminderOverlay" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(9,9,15,0.75);align-items:center;justify-content:center;padding:20px">
+    <div style="background:#16161E;border:1px solid rgba(167,139,250,0.35);border-radius:16px;padding:24px 28px;max-width:420px;width:100%;font-family:Nunito,sans-serif;box-shadow:0 8px 40px rgba(0,0,0,0.6)">
+        <div style="font-size:1.6rem;text-align:center;margin-bottom:10px">🔬</div>
+        <div style="font-size:1rem;font-weight:900;color:var(--text);text-align:center;margin-bottom:8px">Don't forget to Run Analysis!</div>
+        <div style="font-size:0.82rem;color:rgba(240,239,244,0.75);line-height:1.6;text-align:center;margin-bottom:20px">
+            You've filled in your background but haven't checked it yet.<br>
+            <strong style="color:#A78BFA">Running Analysis</strong> gives you AI feedback and a score — it only takes 10 seconds! 🚀
+        </div>
+        <div style="display:flex;gap:10px;flex-direction:column">
+            <button id="reminderRunBtn" style="background:linear-gradient(135deg,#A78BFA,#60A5FA);color:#09090F;font-weight:900;font-size:0.9rem;border:none;border-radius:99px;padding:12px 20px;cursor:pointer;font-family:Nunito,sans-serif">🔬 Run Analysis Now</button>
+            <button id="reminderContinueBtn" style="background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(240,239,244,0.6);font-size:0.8rem;font-weight:700;border-radius:99px;padding:9px 20px;cursor:pointer;font-family:Nunito,sans-serif">Continue without analysing →</button>
+        </div>
+    </div>
+</div>
+<div class="celeb-toast" id="celebToast"></div>
+<div class="achieve-banner" id="achieveBanner">
+    <span class="achieve-icon" id="achieveIcon"></span>
+    <span id="achieveText"></span>
+</div>
+
+</div><!-- .dashboard-page -->
+{% endblock %}
+
+{% block scripts %}
+<script>
+/* ═══════════════════════════════════════════════════════════
+   CONFIG — injected from Python
+═══════════════════════════════════════════════════════════ */
+const CONFLICT_RULES  = {{ conflict_rules_json | safe }};
+const CARD_LOCK_RULES = {{ card_lock_rules_json | safe }};
+const RADAR           = {{ radar_scores_json | safe }};
+const SAVED_ANSWERS   = {{ saved_answers_json | safe }};
+
+
+/* ═══════════════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════════════ */
+const answers = {};
+const filled  = new Set();
+const MAX_XP  = 1200;
+let xp        = 0;
+// Item 7: Optional widget IDs — excluded from the required count display
+const OPTIONAL_WIDS = new Set([8, 10]); // who_talked_to (8), strongest_part (10)
+
+// Axis order: 0=Passion, 1=Energy, 2=Gold, 3=Influence, 4=Knowledge, 5=Target
+const MAX_SCR  = [8, 8, 5, 10, 6, 4];
+const AXIS_INFO = [
+    {label:'Passion',   tip:'How excited and motivated you are'},
+    {label:'Energy',    tip:'Time + experience you bring'},
+    {label:'Gold',      tip:'Money available to start'},
+    {label:'Influence', tip:'How visible your business will be'},
+    {label:'Knowledge', tip:'What you know that gives you an edge'},
+    {label:'Target',    tip:'How clear and specific your plan is'},
+];
+
+/* ═══════════════════════════════════════════════════════════
+   NEON RADAR CHART
+═══════════════════════════════════════════════════════════ */
+let conflictedAxes = new Set();
+
+const radarChart = new Chart(document.getElementById('radarChart'), {
+    type: 'radar',
+    data: {
+        labels: AXIS_INFO.map(a => a.label),
+        datasets: [{
+            data: [0,0,0,0,0,0],
+            backgroundColor:      'rgba(255,217,61,0.12)',
+            borderColor:          '#FFD93D',
+            borderWidth:          3,
+            pointBackgroundColor: Array(6).fill('rgba(255,255,255,0.15)'),
+            pointBorderColor:     '#09090F',
+            pointBorderWidth:     2,
+            pointRadius:          7,
+            pointHoverRadius:     10,
+        }]
+    },
+    options: {
+        responsive: true,
+        animation: { duration: 500, easing: 'easeInOutQuart' },
+        scales: {
+            r: {
+                min: 0, max: 100,
+                ticks: { display: false },
+                grid:        { color: 'rgba(255,255,255,0.08)' },
+                angleLines:  { color: 'rgba(255,255,255,0.1)' },
+                pointLabels: {
+                    color: ctx => conflictedAxes.has(ctx.index) ? '#FF4444' : 'rgba(240,239,244,0.75)',
+                    font:  ctx => ({
+                        size:   conflictedAxes.has(ctx.index) ? 12 : 11,
+                        weight: '900',
+                        family: "'Nunito', sans-serif",
+                    }),
+                }
+            }
+        },
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                backgroundColor: 'rgba(9,9,15,0.9)',
+                callbacks: {
+                    title: ctx  => AXIS_INFO[ctx[0].dataIndex].label,
+                    label: ctx  => [`Score: ${ctx.raw}/100`, AXIS_INFO[ctx.dataIndex]?.tip || ''],
+                }
+            }
+        }
+    }
+});
+
+/* ═══════════════════════════════════════════════════════════
+   C6-01 — Mobile-friendly radar axis tap tooltip / popover
+═══════════════════════════════════════════════════════════ */
+(function() {
+    const canvas = document.getElementById('radarChart');
+    if (!canvas) return;
+    let _popover = null;
+    function _showAxisPopover(axisIdx, x, y) {
+        const info = AXIS_INFO[axisIdx];
+        if (!info) return;
+        if (!_popover) {
+            _popover = document.createElement('div');
+            _popover.id = 'radarAxisPopover';
+            _popover.style.cssText = 'position:fixed;z-index:9999;background:rgba(9,9,15,0.95);border:1px solid rgba(167,139,250,0.3);border-radius:10px;padding:10px 14px;max-width:220px;font-family:Nunito,sans-serif;font-size:0.78rem;line-height:1.5;color:rgba(240,239,244,0.9);pointer-events:none';
+            document.body.appendChild(_popover);
+        }
+        _popover.innerHTML = `<strong style="color:#A78BFA">${info.label}</strong><br>${info.tip || ''}`;
+        const vw = window.innerWidth, vh = window.innerHeight;
+        let px = x + 12, py = y - 40;
+        if (px + 230 > vw) px = x - 234;
+        if (py < 0) py = y + 10;
+        _popover.style.left = px + 'px';
+        _popover.style.top  = py + 'px';
+        _popover.style.display = '';
+    }
+    function _getClickedAxisIndex(chart, event) {
+        const { top, left, width, height } = chart.canvas.getBoundingClientRect();
+        const cx = left + width / 2, cy = top + height / 2;
+        const labels = chart.data.labels;
+        const n = labels.length;
+        const eventX = event.clientX || (event.touches && event.touches[0].clientX);
+        const eventY = event.clientY || (event.touches && event.touches[0].clientY);
+        if (!eventX) return -1;
+        const angle = Math.atan2(eventY - cy, eventX - cx);
+        const sector = (2 * Math.PI) / n;
+        const idx = Math.round((angle + Math.PI / 2 + Math.PI * 2) / sector) % n;
+        const dist = Math.hypot(eventX - cx, eventY - cy);
+        return dist > 20 && dist < Math.min(width, height) / 2 + 20 ? idx : -1;
+    }
+    function _handleTap(e) {
+        const idx = _getClickedAxisIndex(radarChart, e);
+        if (idx >= 0) {
+            const ex = e.clientX || (e.touches && e.touches[0].clientX);
+            const ey = e.clientY || (e.touches && e.touches[0].clientY);
+            _showAxisPopover(idx, ex, ey);
+            setTimeout(() => { if (_popover) _popover.style.display = 'none'; }, 3000);
+        } else {
+            if (_popover) _popover.style.display = 'none';
+        }
+    }
+    canvas.addEventListener('touchstart', _handleTap, { passive: true });
+    document.addEventListener('click', e => { if (_popover && e.target !== canvas) _popover.style.display = 'none'; });
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   SCORE COMPUTATION  (client-side, runs on every input)
+═══════════════════════════════════════════════════════════ */
+function computeScores() {
+    const s = [0,0,0,0,0,0];
+    const budget = parseFloat(answers.budget) || 0;
+    const hours  = parseFloat(answers.hours_per_week) || 0;
+
+    // Knowledge (axis 4)
+    s[4] += ({'Grade 6-8':1,'Grade 9-10':2,'Grade 11-12':3,'Adult/Teacher':4}[answers.grade_level] || 0);
+    if (answers.strongest_part && answers.strongest_part.trim().length > 10) s[4] += 3;
+
+    // Influence (axis 3)
+    s[3] += ({'City':3,'Suburb':2,'Rural':1}[answers.location] || 0);
+    s[3] += ({'Online':3,'School':2,'Neighbourhood':2,'Requires Travel':1}[answers.delivery_model] || 0);
+    s[3] += ({'Nobody yet':1,'Friends':2,"People I don't know":3,'A mentor':4}[answers.who_talked_to] || 0);
+
+    // Gold (axis 2)
+    s[2] += budget >= 100000 ? 5 : budget >= 15000 ? 4 : budget >= 1000 ? 3 : budget >= 500 ? 2 : budget > 0 ? 1 : 0;
+
+    // Energy (axis 1)
+    s[1] += hours >= 10 ? 4 : hours >= 7 ? 3 : hours >= 4 ? 2 : hours >= 1 ? 1 : 0;
+    s[1] += ({'Never sold':1,'Once or twice':2,'Sell regularly':4}[answers.prior_experience] || 0);
+
+    // Passion (axis 0)
+    s[0] += ({'Spotted a problem':4,'I love this topic':3,'Want to make money':2,'Not sure':1}[answers.why_this_idea] || 0);
+    s[0] += ({'I love it':4,"It's okay":2,'Not really':1}[answers.interest_level] || 0);
+
+    // Target (axis 5)
+    s[5] += answers.business_type     ? 2 : 0;
+    s[5] += answers.biggest_challenge ? 2 : 0;
+
+    return s.map((v, i) => Math.min(Math.round((v / MAX_SCR[i]) * 100), 100));
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CONFLICT EVALUATION  (shared by client-side and Lab pane)
+═══════════════════════════════════════════════════════════ */
+function evalCond(c) {
+    if (c.all) return c.all.every(evalCond);
+    if (c.any) return c.any.some(evalCond);
+    const v = answers[c.field];
+    if (c.eq  !== undefined) return v === c.eq;
+    if (c.neq !== undefined) return v !== c.neq && v !== undefined;
+    if (c.lt  !== undefined) return parseFloat(v || 0) <  c.lt;
+    if (c.gt  !== undefined) return parseFloat(v || 0) >  c.gt;
+    if (c.lte !== undefined) return parseFloat(v || 0) <= c.lte;
+    if (c.gte !== undefined) return parseFloat(v || 0) >= c.gte;
+    if (c.in  !== undefined) return c.in.includes(v);
+    if ('set' in c)          return c.set ? !!v : !v;
+    return false;
+}
+
+function getFields(c) {
+    if (c.all) return c.all.flatMap(getFields);
+    if (c.any) return c.any.flatMap(getFields);
+    return c.field ? [c.field] : [];
+}
+
+function evaluateConflicts() {
+    return CONFLICT_RULES.filter(rule => {
+        const fields = [...new Set(getFields(rule.condition))];
+        return fields.every(f => answers[f] !== undefined && answers[f] !== '') && evalCond(rule.condition);
+    });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RENDER CONFLICT CARDS  (left column feed)
+═══════════════════════════════════════════════════════════ */
+// ITEM 7: Kid-friendly conflict message overrides
+const KID_CONFLICT_MSGS = {
+    'budget_hours_mismatch': 'Your time and budget don\u2019t match yet \u2014 let\u2019s balance that! \u2696\uFE0F',
+    'budget_low': 'Your budget is really low \u2014 let\u2019s find ideas that start cheap! \uD83C\uDF31',
+    'no_experience_high_budget': 'Starting with a big budget and no experience can be risky \u2014 let\u2019s go step by step! \uD83D\uDEB6',
+    'travel_low_budget': 'Travelling to customers costs money \u2014 does your budget cover that? \uD83D\uDE97',
+    'online_no_time': 'Online businesses need regular attention \u2014 do you have enough hours? \u23F0',
+};
+
+function renderConflicts(active) {
+    active = [...active].sort((a,b) => (a.severity==='error'?0:1) - (b.severity==='error'?0:1));
+    const feed = document.getElementById('conflictFeed');
+    if (!active.length) { feed.innerHTML = ''; return; }
+    const errors   = active.filter(c => c.severity === 'error');
+    const warnings = active.filter(c => c.severity !== 'error');
+    const buildCard = c => {
+        const kidMsg  = KID_CONFLICT_MSGS[c.id] || c.message;
+        const sevLabel = c.severity === 'error' ? '⚠️ Heads up!' : '💡 Something to consider:';
+        return `<div class="conflict-card conflict-card--${c.severity}">
+            <div class="conflict-hd"><span class="conflict-dot conflict-dot--${c.severity}"></span><span>${c.emoji} ${c.title}</span></div>
+            <p class="conflict-msg"><strong>${sevLabel}</strong> ${kidMsg}</p>
+            <div class="conflict-q conflict-q--${c.severity}"><span>🤔</span> <em>${c.socratic}</em></div>
+        </div>`;
+    };
+    let html = errors.map(buildCard).join('');
+    if (warnings.length) {
+        html += `<details style="margin-top:6px"><summary style="cursor:pointer;font-size:0.75rem;font-weight:800;color:var(--yellow);padding:4px 0">⚠️ Show ${warnings.length} suggestion${warnings.length>1?'s':''}</summary>${warnings.map(buildCard).join('')}</details>`;
+    }
+    feed.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   NEON POINT COLOURS
+═══════════════════════════════════════════════════════════ */
+function getPointColors(normed) {
+    return normed.map((v, i) => {
+        if (conflictedAxes.has(i)) return '#FF4444';
+        if (v === 0)               return 'rgba(255,255,255,0.12)';
+        if (v < 40)                return '#FF7A30';
+        if (v < 70)                return '#FFE000';
+        return '#00E896';
+    });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CARD LOCK EVALUATION
+═══════════════════════════════════════════════════════════ */
+function evaluateCardLocks() {
+    document.querySelectorAll('.vcard').forEach(card => {
+        const grid  = card.closest('.vcard-grid');
+        if (!grid) return;
+        const field = grid.dataset.field;
+        const val   = card.dataset.val;
+        let locked = false, tip = '';
+
+        for (const rule of CARD_LOCK_RULES) {
+            for (const lock of rule.locks) {
+                if (lock.field === field && lock.value === val && evalCond(rule.condition)) {
+                    locked = true; tip = rule.tooltip; break;
+                }
+            }
+            if (locked) break;
+        }
+
+        const tipEl = card.querySelector('.vcard-lock-tip');
+        if (tipEl) tipEl.textContent = tip;
+
+        if (locked) {
+            card.classList.add('locked');
+            if (card.classList.contains('active')) {
+                card.classList.remove('active');
+                const inp = document.getElementById('f-' + field);
+                if (inp) inp.value = '';
+                delete answers[field];
+                const wid = parseInt(grid.closest('.widget').dataset.wid);
+                filled.delete(wid);
+                const tick = document.getElementById('tick-' + wid);
+                const dot  = document.getElementById('dot-'  + wid);
+                if (tick) tick.textContent = '○';
+                if (dot)  dot.className = 'dot';
+            }
+        } else {
+            card.classList.remove('locked');
+        }
+    });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   AUDIT BADGE  (per selected vcard)
+═══════════════════════════════════════════════════════════ */
+function getCardAuditStatus(field, val) {
+    const saved = answers[field];
+    answers[field] = val;
+    const conflicts = evaluateConflicts();
+    if (saved !== undefined) answers[field] = saved;
+    else delete answers[field];
+    if (conflicts.some(c => c.severity === 'error'))   return 'error';
+    if (conflicts.some(c => c.severity === 'warning')) return 'warning';
+    return 'clean';
+}
+
+function updateAuditBadges() {
+    document.querySelectorAll('.vcard-grid .vcard').forEach(card => {
+        const badge = card.querySelector('.vcard-audit');
+        if (!badge) return;
+        if (card.classList.contains('active')) {
+            const field  = card.closest('.vcard-grid').dataset.field;
+            const status = getCardAuditStatus(field, card.dataset.val);
+            badge.className   = 'vcard-audit vcard-audit--' + status;
+            badge.title       = status === 'error'   ? '📌 Auditor flagged an error with this choice'
+                              : status === 'warning' ? '🟡 Auditor found a warning'
+                              :                        '✅ Auditor verified — all good!';
+            badge.textContent = status === 'error' ? '📌' : status === 'warning' ? '🟡' : '✅';
+        } else {
+            badge.className = 'vcard-audit';
+            badge.textContent = badge.title = '';
+        }
+    });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ITS LAB — Symbolic pane (live, no API call needed)
+═══════════════════════════════════════════════════════════ */
+function updateSymbolicPane() {
+    const normed  = computeScores();
+    const activeC = evaluateConflicts();
+    const hasErr  = activeC.some(c => c.severity === 'error');
+    const hasWarn = activeC.some(c => c.severity === 'warning');
+
+    // Verdict
+    let verdict, vClass;
+    if (filled.size < 4)  { verdict = '⏳ Fill more fields…';         vClass = 'neutral'; }
+    else if (hasErr)       { verdict = '📌 High Risk — fix errors';    vClass = 'error';   }
+    else if (hasWarn)      { verdict = '🟡 Moderate — check warnings'; vClass = 'warning'; }
+    else                   { verdict = '🟢 Looking solid!';            vClass = 'clean';   }
+
+    document.getElementById('rpVerdict').innerHTML =
+        `<div class="rp-verdict rp-verdict--${vClass}">
+            <span>${verdict}</span><small>${filled.size}/12 fields</small>
+         </div>`;
+
+    // Bar chart (if lab chart exists — it does since canvas is in active tab)
+    updateLabChart({
+        Gold:      normed[2],
+        Energy:    normed[1],
+        Influence: normed[3],
+        Knowledge: normed[4],
+        Target:    normed[5],
+        Passion:   normed[0],
+    });
+
+    // Update rsSymScore live
+    const rsSymEl = document.getElementById('rsSymScore');
+    if (rsSymEl) rsSymEl.textContent = Math.round((filled.size/12)*100) + ' (live)';
+
+    // Conflicts list
+    const confHtml = activeC.length === 0
+        ? '<p class="rp-ok">✅ No conflicts detected</p>'
+        : activeC.map(c => `<div class="rp-cf rp-cf--${c.severity}">${c.emoji} ${c.title}</div>`).join('');
+    document.getElementById('rpConflicts').innerHTML =
+        `<div class="rp-section">⚡ Conflicts (${activeC.length})</div>${confHtml}`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ITS LAB — Health Score Bar Chart
+═══════════════════════════════════════════════════════════ */
+const SCORE_KEYS   = ['Gold','Energy','Influence','Knowledge','Target','Passion'];
+const SCORE_COLORS = {
+    Gold:      '#FFD93D',
+    Energy:    '#FB923C',
+    Influence: '#A78BFA',
+    Knowledge: '#34D399',
+    Target:    '#60A5FA',
+    Passion:   '#F472B6',
+};
+
+let labBarChart = null;
+
+function initLabChart() {
+    const ctx = document.getElementById('labBarChart');
+    if (!ctx || labBarChart) return;
+    labBarChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: SCORE_KEYS,
+            datasets: [{
+                data: SCORE_KEYS.map(() => 0),
+                backgroundColor: SCORE_KEYS.map(k => SCORE_COLORS[k]),
+                borderRadius: 5,
+                borderSkipped: false,
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 500 },
+            scales: {
+                x: {
+                    min: 0, max: 100,
+                    grid:  { color: 'rgba(255,255,255,0.05)' },
+                    ticks: { color: 'rgba(240,239,244,0.45)', font: { size: 10 } },
+                },
+                y: {
+                    grid:  { display: false },
+                    ticks: { color: 'rgba(240,239,244,0.7)', font: { size: 10, weight: '800' } },
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: 'rgba(9,9,15,0.9)',
+                    callbacks: { label: ctx => ` ${ctx.raw}/100` }
+                }
+            }
+        }
+    });
+}
+
+function updateLabChart(scores) {
+    if (!labBarChart) return;
+    const data   = SCORE_KEYS.map(k => scores[k] || 0);
+    const colors = SCORE_KEYS.map((k, i) => data[i] < 50 ? 'rgba(255,68,68,0.85)' : SCORE_COLORS[k]);
+    labBarChart.data.datasets[0].data            = data;
+    labBarChart.data.datasets[0].backgroundColor = colors;
+    labBarChart.update();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ITS LAB — Full Analysis (API call to Flask + Groq)
+═══════════════════════════════════════════════════════════ */
+let analysisRunning = false;
+
+function renderTruthBar(id, score) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (score === null || score === undefined) { el.innerHTML = ''; return; }
+    const cls = score >= 70 ? 'truth-fill--green' : score >= 40 ? 'truth-fill--yellow' : 'truth-fill--red';
+    el.innerHTML = `
+        <div class="truth-bar-label">📊 Plan Strength <span class="truth-val">${score}/100</span></div>
+        <div class="truth-track"><div class="truth-fill ${cls}" style="width:${score}%"></div></div>
+        <div class="truth-desc">${score >= 70 ? '💪 Strong plan — AI and rules agree!' : score >= 40 ? '🔧 Getting there — check the Rules tab for tips' : '📈 Needs work — Rules tab has your next steps'}</div>`;
+    el.setAttribute('role', 'progressbar');
+    el.setAttribute('aria-valuenow', score);
+    el.setAttribute('aria-valuemin', '0');
+    el.setAttribute('aria-valuemax', '100');
+    el.setAttribute('aria-label', 'Plan Strength: ' + score + ' out of 100');
+}
+
+async function runAnalysis() {
+    if (analysisRunning) return;
+    analysisRunning = true;
+
+    const btn      = document.getElementById('analyseLabBtn');
+    const purebox  = document.getElementById('pureLlmBox');
+    const hybridbox = document.getElementById('hybridLlmBox');
+
+    // Item 25 — capture previous score before fetch
+    const _prevCtxScore = parseInt(localStorage.getItem('lrnbiz_ctx_score') || '0');
+
+    btn.textContent = '⏳ Analysing…';
+    btn.disabled    = true;
+
+    // Item 45 — show loading state in Mentor panel
+    purebox.innerHTML   = '<p class="rp-loading">🤖 Thinking blindly…</p>';
+    hybridbox.innerHTML = '<p class="rp-loading">🧠 Mentor is reviewing your profile… ⏳</p>';
+    const _rtIn = document.querySelector('.rt-toggle input[type="checkbox"]');
+    // C6-09 — only auto-switch to Research View if student has previously opened it
+    if (_rtIn && !_rtIn.checked && localStorage.getItem('lrnbiz_ctx_rs_open') === '1') {
+        _rtIn.checked = true;
+        const _rvLoad = document.getElementById('researchView');
+        if (_rvLoad) _rvLoad.style.display = '';
+        document.getElementById('kidView').style.display = 'none';
+    }
+
+    // Item 45 — slow timeout warning (15s)
+    const _slowTimer = setTimeout(function() {
+        hybridbox.innerHTML = '<p class="rp-loading">🧠 Still thinking… this is taking a little longer than usual ⏳</p>';
+    }, 15000);
+
+    try {
+        // Send client-side merit scores as symbolic ground truth for truth score
+        const normedForTruth = computeScores();
+        const clientScores = {
+            Gold:      normedForTruth[2],
+            Energy:    normedForTruth[1],
+            Influence: normedForTruth[3],
+            Knowledge: normedForTruth[4],
+            Target:    normedForTruth[5],
+            Passion:   normedForTruth[0],
+        };
+        const res  = await fetch('/api/analyse', {
+            method:  'POST',
+            headers: {'Content-Type': 'application/json'},
+            body:    JSON.stringify({answers, client_scores: clientScores}),
+        });
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+
+        // Item 46 — graceful fallback for empty LLM responses
+        const _pureLlmText  = (data.pure_llm && data.pure_llm.trim()) ? data.pure_llm : '✨ The AI is thinking about your profile — try re-running if this stays empty!';
+        const _hybridLlmText = (data.hybrid_llm && data.hybrid_llm.trim()) ? data.hybrid_llm : '🧑‍🏫 Your Mentor couldn\'t generate feedback right now. Re-run Analysis to try again!';
+
+        // Update text boxes
+        purebox.innerHTML   = `<p>${_pureLlmText}</p>`;
+        hybridbox.innerHTML = `<p>${_hybridLlmText}</p>`;
+
+        // Update rs-block score spans
+        const rsSym = document.getElementById('rsSymScore');
+        const rsPure = document.getElementById('rsPureTruth');
+        const rsHyb = document.getElementById('rsHybridTruth');
+        if (rsSym)  rsSym.textContent  = (data.triple?.symbolic_score ?? '—') + '/100';
+        if (rsPure) rsPure.textContent = (data.pure_truth ?? '—') + '/100';
+        if (rsHyb)  rsHyb.textContent  = (data.hybrid_truth ?? '—') + '/100';
+
+        // Item 15 — gap element with kid-friendly language (no "sycophancy"/"hybrid" user text)
+        const gapEl = document.getElementById('rsGap');
+        if (gapEl && data.triple) {
+            const gap = data.triple.sycophancy_gap;
+            gapEl.style.display = '';
+            // Bad = AI way over-estimated; warn = moderate gap; ok = aligned or Mentor higher
+            gapEl.className = `rs-gap ${gap > 20 ? 'rs-gap--bad' : gap > 5 ? 'rs-gap--warn' : 'rs-gap--ok'}`;
+            // sycophancy_gap = pure_truth - hybrid_truth
+            // gap > 0 → AI Optimist higher (over-estimated); gap < 0 → Mentor higher
+            gapEl.textContent = gap > 10
+                ? `⚠️ AI over-estimated by ${gap} pts — check Rules tab for what to fix`
+                : gap < -10 ? `📈 Mentor score +${Math.abs(gap)} pts above AI Optimist` : '✅ Scores closely aligned';
+
+            // Item 18 — sub-message when AI over-estimated by >10
+            const _gEl2 = document.getElementById('rsGap');
+            if (_gEl2 && _gEl2.style.display !== 'none') {
+                if (gap > 10) {
+                    const _sub = document.createElement('small');
+                    _sub.style.cssText = 'display:block;font-size:0.62rem;opacity:0.8;margin-top:2px';
+                    _sub.textContent = 'Trust your Mentor score more. Check the 🐍 Rules Check tab to see what to improve.';
+                    if (!_gEl2.querySelector('small')) _gEl2.appendChild(_sub);
+                }
+            }
+        }
+
+        // Truth scores
+        renderTruthBar('pureTruth',   data.pure_truth   ?? null);
+        renderTruthBar('hybridTruth', data.hybrid_truth ?? null);
+
+        // Item 17 — grade bands
+        const _hybridScore = data.hybrid_truth ?? (data.triple?.hybrid_truth ?? 0);
+        const _pureScore   = data.pure_truth ?? 0;
+        const _hb = data.triple?.mentor_band || _scoreBand(_hybridScore);
+        const _hbEl = document.getElementById('rsBandHybrid');
+        if (_hbEl) { _hbEl.textContent = _hb.label; _hbEl.style.color = _hb.color; _hbEl.style.display = ''; }
+        const _pb = data.triple?.pure_band || _scoreBand(_pureScore);
+        const _pbEl = document.getElementById('rsBandPure');
+        if (_pbEl) { _pbEl.textContent = _pb.label; _pbEl.style.color = _pb.color; _pbEl.style.display = ''; }
+
+        // Item 25 — save score, check for drop
+        localStorage.setItem('lrnbiz_ctx_score', String(_hybridScore));
+        _analysisRunThisSession = true;
+
+        // C18-05: Chapter Complete banner in main page (non-sidebar)
+        if (!document.getElementById('ch1CompleteBanner')) {
+            const _cb = document.createElement('div');
+            _cb.id = 'ch1CompleteBanner';
+            _cb.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:9000;background:linear-gradient(90deg,#A78BFA,#34D399);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;font-family:Nunito,sans-serif;font-weight:900;font-size:0.9rem;color:#09090F;gap:10px';
+            _cb.innerHTML = '🎉 Chapter 1 complete! Your Business DNA is saved. <a href="/idea" style="background:#09090F;color:#A78BFA;padding:6px 16px;border-radius:99px;text-decoration:none;font-size:0.85rem;white-space:nowrap">💡 Chapter 2: Business Idea →</a><button onclick="document.getElementById(\'ch1CompleteBanner\').remove()" style="background:none;border:none;color:#09090F;opacity:0.6;cursor:pointer;font-size:1rem;margin-left:8px">✕</button>';
+            document.body.appendChild(_cb);
+        }
+
+        // Item 19 — next step CTA
+        const _ns = document.getElementById('rsNextStep');
+        if (_ns) {
+            if (_hybridScore >= 80) {
+                _ns.style.cssText = 'display:block;background:rgba(52,211,153,0.1);color:#34D399;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:0.75rem;line-height:1.6';
+                _ns.innerHTML = '🎉 <strong>Great Mentor score!</strong> Ready to define your business idea?<br><a href="/idea" style="display:inline-block;margin-top:6px;background:#34D399;color:#09090F;padding:4px 12px;border-radius:99px;text-decoration:none;font-weight:900;font-size:0.72rem">💡 Next: Idea →</a>';
+            } else if (_hybridScore < 60) {
+                // Item 25 — score drop check
+                if (_prevCtxScore > 0 && (_prevCtxScore - _hybridScore) > 2) {
+                    _ns.style.cssText = 'display:block;background:rgba(255,68,68,0.08);color:#F87171;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:0.75rem;line-height:1.6';
+                    _ns.innerHTML = '📉 <strong>Score dropped a bit</strong> — no worries! Check the 🐍 Rules Check tab to see what changed and re-validate to bounce back!';
+                } else {
+                    _ns.style.cssText = 'display:block;background:rgba(255,217,61,0.08);color:#FFD93D;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:0.75rem;line-height:1.6';
+                    _ns.innerHTML = '💡 <strong>Here\'s what to improve:</strong> Check the 🐍 Rules Check tab for specific things to fix, then re-validate!';
+                }
+            } else { _ns.style.display = 'none'; }
+        }
+
+        // Item 23 — growth mindset hint (show after every successful validate)
+        const _gh = document.getElementById('rsGrowthHint');
+        if (_gh) _gh.style.display = '';
+
+        // C6-09 — only auto-switch to Research View if student has previously opened it
+        const _rtIn2 = document.querySelector('.rt-toggle input[type="checkbox"]');
+        if (localStorage.getItem('lrnbiz_ctx_rs_open') === '1') {
+            if (_rtIn2 && !_rtIn2.checked) {
+                _rtIn2.checked = true;
+                const _rv = document.getElementById('researchView');
+                if (_rv) _rv.style.display = '';
+                document.getElementById('kidView').style.display = 'none';
+            }
+        }
+        const _hybTab = document.querySelectorAll('.rs-tab')[2];
+        if (_hybTab) switchRsTab(_hybTab, 'hybrid');
+
+        // Update kid view panel
+        updateKidView(data);
+
+        // Item 7 — show next chapter CTA if score >= 60
+        if (_hybridScore >= 60) {
+            _showNextCTA();
+        }
+
+        // Item 22 — confetti if score >= 70 (big celebration for 90+)
+        if (_hybridScore >= 90) {
+            if (typeof launchBigConfetti === 'function') launchBigConfetti(_hybridScore);
+        } else if (_hybridScore >= 70) {
+            _launchConfetti();
+        }
+
+        // Item 28 — XP float
+        _showXpFloat(_hybridScore * 2.4, btn);
+
+        // O10-10: Signal progress page that scores changed
+        localStorage.setItem('lrnbiz_scores_updated', Date.now());
+        // C6-38 / C6-39: Badges and improvement celebration
+        if (typeof checkBadges === 'function') {
+            const _ac = (parseInt(localStorage.getItem('lrnbiz_ctx_analyses')||'0') + 1);
+            localStorage.setItem('lrnbiz_ctx_analyses', String(_ac));
+            const pureScore = parseInt(document.getElementById('rsPureTruth')?.textContent) || _hybridScore;
+            checkBadges(_hybridScore, pureScore - _hybridScore, 'context', _ac);
+        }
+        if (typeof checkImprovementCelebration === 'function') checkImprovementCelebration('context', _hybridScore);
+        if (typeof showShareMoment === 'function') showShareMoment('My Background', _hybridScore);
+        // Gap explainer
+        // Priority 1: fired conflict rules (binary condition combinations)
+        // Priority 2: synthesised messages from lowest-scoring axes — these are what
+        //   actually caused a below-average symbolic score even when no specific
+        //   conflict rule combination fires (e.g. generally weak across all axes).
+        // Priority 3: server-side violations from data.violations
+        if (typeof renderGapExplainer === 'function') {
+            const _clientRules = typeof evaluateConflicts === 'function' ? evaluateConflicts() : [];
+            const _clientViolations = _clientRules.map(r => ({
+                id:       r.id,
+                message:  r.message || r.title || r.id,
+                severity: r.severity || 'warning'
+            }));
+
+            let _ctxViolations = _clientViolations;
+
+            if (!_ctxViolations.length) {
+                // Try top_issues from server response (top rules by score impact even if below threshold)
+                const _topIssues = (data.top_issues || []).map(r => ({
+                    id:       r.id || 'top',
+                    message:  r.message || r.title || '',
+                    severity: r.severity || 'warning'
+                })).filter(r => r.message);
+
+                if (_topIssues.length) {
+                    _ctxViolations = _topIssues;
+                } else {
+                    // Synthesise from weak axes — same axes that computeScores() penalised
+                    const _AXIS_NAMES = ['Passion', 'Energy', 'Gold', 'Influence', 'Knowledge', 'Target'];
+                    const _AXIS_MSGS  = {
+                        'Passion':   'Your motivation score is low — explaining why you chose this idea in detail scores higher.',
+                        'Energy':    'Your time and experience score is low — more hours per week or noting prior sales experience helps.',
+                        'Gold':      'Your budget score is low — a higher startup budget significantly improves your plan rating.',
+                        'Influence': 'Your reach score is low — being online, in a city, and talking to mentors or strangers all raise this.',
+                        'Knowledge': 'Your knowledge score is low — describing your strongest skill in detail shows the Mentor you understand your business.',
+                        'Target':    'Your clarity score is low — select a business type and describe your biggest challenge.',
+                    };
+                    const _axisScores = typeof computeScores === 'function' ? computeScores() : [];
+                    const _weakAxes = _AXIS_NAMES
+                        .map((name, i) => ({ name, score: _axisScores[i] || 0 }))
+                        .filter(a => a.score < 60)
+                        .sort((a, b) => a.score - b.score)
+                        .slice(0, 3)
+                        .map(a => ({ id: 'AXIS_' + a.name.toUpperCase(), message: _AXIS_MSGS[a.name], severity: 'warning' }));
+                    // No weak axes and no violations: leave _ctxViolations empty so the
+                    // "no violations" fallback message in renderGapExplainer shows instead.
+                    _ctxViolations = _weakAxes;
+                }
+            }
+
+            const _pureEl = document.getElementById('rsPureTruth');
+            const _pureVal = _pureEl ? parseInt(_pureEl.textContent) || _hybridScore : _hybridScore;
+            renderGapExplainer('contextGapExplainer', _pureVal, _hybridScore, _ctxViolations);
+        }
+
+        showCeleb('🔬 Analysis complete!');
+        SoundFX.win();
+
+    } catch (err) {
+        // Item 46 — friendly failure message
+        purebox.innerHTML   = `<p class="rp-error">😅 Couldn\'t get AI feedback right now — check your connection and try again!</p>`;
+        hybridbox.innerHTML = `<p class="rp-error">😅 Your Mentor couldn\'t connect right now. Try tapping Run Analysis again in a moment!</p>`;
+        showCeleb('⚠️ Analysis failed');
+    } finally {
+        clearTimeout(_slowTimer);
+        btn.textContent = '🔬 Run Analysis';
+        btn.disabled    = false;
+        analysisRunning = false;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   KID VIEW PANEL + RESEARCH TOGGLE
+═══════════════════════════════════════════════════════════ */
+let analysisRan = false;
+
+function updateKidView(data) {
+    analysisRan = true;
+
+    // Rules icons — only show real results once analysis has run
+    const violations = data.violations || [];
+    window._lastContextViolations = violations; // stored for gap explainer
+    const totalRules = data.total_rules || 10;
+    const passCount  = Math.max(0, totalRules - violations.length);
+    const reds   = violations.map(v => `<span class="its-icon" title="${v.id}: ${v.message}">${v.severity==='error'?'📌':'🟡'}</span>`).join('');
+    const greens = violations.length === 0
+        ? `<span class="its-icon" style="color:#34D399;font-size:0.8rem">✅ No conflicts found!</span>`
+        : '✅'.repeat(Math.min(passCount, 8));
+    document.getElementById('rulesIcons').innerHTML = reds + (greens ? `<span class="its-icon">${greens}</span>` : '');
+
+    // Hybrid score icon
+    if (data.triple) {
+        const ht = data.triple.hybrid_truth;
+        document.getElementById('hybridScoreIcon').innerHTML =
+            `<span class="its-icon" style="font-size:1.4rem">${ht >= 70 ? '🏆' : ht >= 40 ? '🎯' : '📈'}</span>
+             <span style="font-size:0.72rem;color:var(--muted);margin-left:4px">${ht}/100</span>`;
+    }
+
+    // Hybrid text — ITEM 8: prepend experience-adaptive prefix
+    if (data.hybrid_llm) {
+        const expEl = document.getElementById('hybridText');
+        const prefix = (expEl && expEl.dataset.expPrefix) ? expEl.dataset.expPrefix : '';
+        expEl.textContent = prefix + data.hybrid_llm;
+    }
+
+    // S21-23: "Why this score?" — top issues shown above mentor text
+    renderWhyScore(data.top_issues);
+
+    // C6-05 — biggest opportunity hint below radar
+    if (data.triple) {
+        const axisNames  = ['Passion','Energy','Gold','Influence','Knowledge','Target'];
+        const axisActions = {
+            Passion:   'share why this idea matters to you personally',
+            Energy:    'add more hours per week or narrow the scope',
+            Gold:      'add a specific budget to your plan',
+            Influence: 'describe how you will reach your customers',
+            Knowledge: 'mention what you already know about this area',
+            Target:    'get more specific about who you are selling to'
+        };
+        const scores = computeScores();
+        let minIdx = 0;
+        scores.forEach((v,i) => { if (v < scores[minIdx]) minIdx = i; });
+        const weakAxis   = axisNames[minIdx];
+        const weakAction = axisActions[weakAxis] || 'keep developing your plan';
+        const opp = document.getElementById('radarOpportunity');
+        if (opp) opp.innerHTML = `<div style="margin-top:8px;padding:8px 10px;background:rgba(255,217,61,0.07);border-radius:8px;font-size:0.75rem;line-height:1.5">💡 <strong>Biggest opportunity:</strong> ${weakAxis} — try to ${weakAction}!</div>`;
+    }
+}
+
+document.getElementById('researchToggle').addEventListener('change', function() {
+    document.getElementById('kidView').style.display      = this.checked ? 'none' : '';
+    document.getElementById('researchView').style.display = this.checked ? '' : 'none';
+    localStorage.setItem('lrnbiz_ctx_rs_open', this.checked ? '1' : '0');
+    if (this.checked) {
+        const _hybBtn = document.querySelector('.rs-tab[onclick*="hybrid"]');
+        if (_hybBtn) switchRsTab(_hybBtn, 'hybrid');
+    }
+});
+
+/* ═══════════════════════════════════════════════════════════
+   RESEARCH TAB SWITCHING
+═══════════════════════════════════════════════════════════ */
+function switchRsTab(btn, tabName) {
+    const rv = document.getElementById('researchView');
+    rv.querySelectorAll('.rs-tab').forEach(b => b.classList.remove('rs-tab--active'));
+    rv.querySelectorAll('.rs-pane').forEach(p => p.classList.add('rs-pane--hidden'));
+    btn.classList.add('rs-tab--active');
+    document.getElementById('rsPane-' + tabName).classList.remove('rs-pane--hidden');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RANK / CHARACTER
+═══════════════════════════════════════════════════════════ */
+// C6-35: Lower Builder threshold to 400 so struggling students can still reach mid-tier
+const RANKS = [
+    {min:0,   name:'🌱 Rookie',   aura:'rookie',   next:'Explorer (300 XP)', meaning:'You\'re just getting started — every expert began here!'},
+    {min:300, name:'🔍 Explorer', aura:'explorer', next:'Builder (400 XP)',   meaning:'You\'re exploring ideas and asking good questions!'},
+    {min:400, name:'🔨 Builder',  aura:'builder',  next:'Founder (900 XP)',   meaning:'You\'re building real plans with real thinking!'},
+    {min:900, name:'🏆 Founder',  aura:'founder',  next:null,                 meaning:'You think like a real entrepreneur — impressive!'},
+];
+let prevRankIdx = 0;
+
+const MSGS = {
+    grade_level:     {'Grade 6-8':"Starting young is the smartest move! 🌟",'Grade 9-10':"Great time to learn entrepreneurship! 🚀",'Grade 11-12':"Almost ready to launch for real! 🎓",'Adult/Teacher':"Real-world experience = huge advantage! 👩‍💼"},
+    location:        {'City':"Big city = big customer pool! 🏙️",'Suburb':"Suburbs love local businesses! 🏘️",'Rural':"Rural communities really support local! 🌾"},
+    delivery_model:  {'School':"School is a built-in market! 🏫",'Neighbourhood':"Local = loyalty built over time! 🏘️",'Online':"Online means anyone, anywhere! 📱",'Requires Travel':"Ambitious — worth it if the margins are there! 🚗"},
+    prior_experience:{'Never sold':"Every expert started as a beginner! 🌱",'Once or twice':"You already know the feeling! 🌿",'Sell regularly':"You're already a natural! 🌳"},
+    why_this_idea:   {'Spotted a problem':"That's the #1 founder mindset! 🧠",'I love this topic':"Passion = fuel for tough days! ❤️",'Want to make money':"Honest — profit keeps the lights on! 💰",'Not sure':"Let's figure out the 'why' together! 🤷"},
+    business_type:   {'food-beverage':"The stomach never lies — great market! 🍕",'service':"Selling your time is smart — low startup cost! 🔧",'skills-for-hire':"Teaching what you know — highly valuable! 📚",'digital-product':"Low costs, huge reach — love it! 💻",'physical-product':"Physical things people can hold — nice! 🛍️",'resale-retail':"Buy low, sell high — classic model! 🏷️",'maker':"Custom, bespoke, one-of-a-kind — premium appeal! ✂️",'content-media':"Build an audience, own the channel! 🎥"},
+    who_talked_to:   {'Nobody yet':"No worries — testing starts small! 🤫",'Friends':"Friendly feedback is a great start! 👫","People I don't know":"Talking to strangers = real research! 🌍",'A mentor':"A mentor is a cheat code for success! 🧑‍🏫"},
+    biggest_challenge:{'Finding customers':"Very solvable — we'll tackle it! 🔍",'Affording costs':"Starting lean is actually smarter! 💸",'Not enough time':"Time management is a superpower! ⏰",'Not sure':"Identifying the problem IS the progress! 🤔"},
+    interest_level:  {'I love it':"That energy is EVERYTHING! 🔥","It's okay":"Okay is a starting point — keep going! 😐",'Not really':"Honestly? Let's find what really sparks you! 😊"},
+};
+
+/* ═══════════════════════════════════════════════════════════
+   MASTER UPDATE
+═══════════════════════════════════════════════════════════ */
+function update(fieldChanged, newVal) {
+    const normed  = computeScores();
+    const activeC = evaluateConflicts();
+    conflictedAxes = new Set(activeC.flatMap(c => c.axes));
+
+    const hasErr = activeC.some(c => c.severity === 'error');
+    const ds     = radarChart.data.datasets[0];
+    ds.data                 = normed;
+    ds.pointBackgroundColor = getPointColors(normed);
+    ds.borderColor          = hasErr ? '#FF4444' : '#FFD93D';
+    ds.backgroundColor      = hasErr ? 'rgba(255,68,68,0.08)' : 'rgba(255,217,61,0.12)';
+    radarChart.update();
+
+    if (filled.size > 0) document.getElementById('radarHint').style.opacity = '0';
+    renderConflicts(activeC);
+
+    xp = filled.size * 100;
+    document.getElementById('xpFill').style.width     = (xp / MAX_XP * 100) + '%';
+    document.getElementById('xpVal').textContent       = xp + ' / ' + MAX_XP;
+    // Item 7: Exclude optional widgets from required count display
+    const requiredFilled = [...filled].filter(id => !OPTIONAL_WIDS.has(id)).length;
+    const requiredTotal  = 12 - OPTIONAL_WIDS.size; // 10 required
+    document.getElementById('hudProgress').textContent = requiredFilled + ' / ' + requiredTotal + ' filled';
+
+    // ITEM 2: Update DNA progress bar
+    const dnaFill = document.getElementById('dnaProgressFill');
+    const dnaText = document.getElementById('dnaProgressText');
+    if (dnaFill && dnaText) {
+        dnaFill.style.width = (requiredFilled / requiredTotal * 100) + '%';
+        dnaText.textContent = '🧬 Business DNA: ' + requiredFilled + ' of ' + requiredTotal + ' answered';
+    }
+
+    // C19-14: Update form progress bar near submit button
+    const _fpBar = document.getElementById('formProgressBar');
+    const _fpLabel = document.getElementById('formProgressLabel');
+    if (_fpBar && _fpLabel) {
+        const pct = Math.round(requiredFilled / requiredTotal * 100);
+        _fpBar.style.width = pct + '%';
+        _fpLabel.textContent = requiredFilled + ' of ' + requiredTotal + ' answered';
+        _fpLabel.style.color = requiredFilled >= requiredTotal ? '#34D399' : requiredFilled >= 6 ? '#FFD93D' : 'var(--muted)';
+    }
+
+    // ITEM 4: Completion celebration when all required fields filled
+    if (requiredFilled >= requiredTotal && !window._dnaCelebrated) {
+        if (sessionStorage.getItem('dnaCompleted')) return;
+        window._dnaCelebrated = true;
+        sessionStorage.setItem('dnaCompleted','1');
+        showCeleb('Your Business DNA is ready! 🎉');
+        const page = document.querySelector('.dashboard-page');
+        if (page) {
+            page.style.animation = 'none'; void page.offsetWidth;
+            page.style.animation = 'dnaFlash 0.8s ease';
+        }
+    }
+
+    // ITEM 8: Experience-adaptive mentor message prefix
+    const expEl = document.getElementById('hybridText');
+    if (expEl && answers.prior_experience) {
+        const isNewbie = answers.prior_experience === 'Never sold' || answers.prior_experience === 'Once or twice';
+        expEl.dataset.expPrefix = isNewbie
+            ? 'Since you\u2019re new to business, start small! \uD83D\uDCA1 '
+            : 'As someone with experience, let\u2019s aim higher! \uD83D\uDE80 ';
+    }
+
+    let ri = 0;
+    for (let i = RANKS.length - 1; i >= 0; i--) { if (xp >= RANKS[i].min) { ri = i; break; } }
+    const rank = RANKS[ri];
+    document.getElementById('hudRank').textContent  = rank.name;
+    document.getElementById('charAura').className   = 'char-aura char-aura--' + rank.aura;
+    if (ri > prevRankIdx) {
+        const prevR = RANKS[prevRankIdx];
+        prevRankIdx = ri;
+        SoundFX.level();
+        // C6-36: Full-screen rank-up modal
+        _showRankUpModal(rank);
+    }
+
+    const msg = (MSGS[fieldChanged] || {})[newVal];
+    if (msg) {
+        const el = document.getElementById('charMsg');
+        el.style.opacity = '0';
+        setTimeout(() => { el.textContent = msg; el.style.opacity = '1'; }, 200);
+    }
+
+    evaluateCardLocks();
+    updateAuditBadges();
+    updateSymbolicPane();
+
+    // Live rules icons — same circle style as all other chapter pages
+    if (!analysisRan) {
+        const activeC2 = evaluateConflicts();
+        // Rules whose required fields are all set (evaluated, either passing or failing)
+        const evaluated = CONFLICT_RULES.filter(rule => {
+            const fields = [...new Set(getFields(rule.condition))];
+            return fields.length > 0 && fields.every(f => answers[f] !== undefined && answers[f] !== '');
+        });
+        const passing = evaluated.filter(r => !activeC2.includes(r));
+        let iconsHtml = activeC2.map(c =>
+            `<span class="its-icon" title="${c.id}: ${c.message}">${c.severity==='error'?'📌':'🟡'}</span>`
+        ).join('');
+        if (passing.length > 0) {
+            iconsHtml += Array(Math.min(passing.length, 6)).fill(
+                '<span class="its-icon" title="Rule passed">✅</span>'
+            ).join('');
+        }
+        if (!iconsHtml) {
+            iconsHtml = '<span class="its-icon--placeholder">Fill the form and run analysis…</span>';
+        }
+        document.getElementById('rulesIcons').innerHTML = iconsHtml;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SET ANSWER
+═══════════════════════════════════════════════════════════ */
+function setAnswer(field, val, wid) {
+    const wasNew = !filled.has(wid);
+    answers[field] = val;
+    filled.add(wid);
+    const tick = document.getElementById('tick-' + wid);
+    const dot  = document.getElementById('dot-'  + wid);
+    if (tick) tick.textContent = '✓';
+    if (dot)  dot.className = 'dot dot--done';
+    if (wasNew) { showCeleb(['Nice one! 🌟','Got it! ✅','Great choice! 🎉','Awesome! 🚀','Smart! 🧠','Love it! ❤️'][Math.floor(Math.random()*6)]); SoundFX.tick(); }
+    // C6-04: Auto-save indicator with fade
+    (function(){
+        let _sv = document.getElementById('autoSaveIndicator');
+        if (!_sv) {
+            _sv = document.createElement('div');
+            _sv.id = 'autoSaveIndicator';
+            _sv.textContent = '💾 Auto-saved';
+            _sv.style.cssText = 'position:fixed;bottom:72px;right:16px;background:rgba(52,211,153,0.15);border:1px solid #34D399;color:#34D399;padding:4px 12px;border-radius:8px;font-size:0.72rem;font-weight:700;z-index:9999;pointer-events:none;transition:opacity 0.4s';
+            document.body.appendChild(_sv);
+        }
+        _sv.style.opacity = '1';
+        clearTimeout(_sv._t);
+        _sv._t = setTimeout(() => { _sv.style.opacity = '0'; }, 2000);
+    })();
+    checkAnalyseBtn();
+    update(field, val);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   VCARD GRID WIRING
+═══════════════════════════════════════════════════════════ */
+document.querySelectorAll('.vcard-grid').forEach(grid => {
+    const field = grid.dataset.field;
+    const wid   = parseInt(grid.closest('.widget').dataset.wid);
+    grid.querySelectorAll('.vcard').forEach(card => {
+        card.addEventListener('click', () => {
+            if (card.classList.contains('locked')) {
+                const tip = card.querySelector('.vcard-lock-tip');
+                if (tip?.textContent) showCeleb('🔒 ' + tip.textContent.slice(0, 55) + (tip.textContent.length > 55 ? '…' : ''));
+                return;
+            }
+            grid.querySelectorAll('.vcard').forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+            document.getElementById('f-' + field).value = card.dataset.val;
+            setAnswer(field, card.dataset.val, wid);
+        });
+    });
+});
+
+/* ═══════════════════════════════════════════════════════════
+   JOURNEY PATH
+═══════════════════════════════════════════════════════════ */
+document.querySelectorAll('.journey').forEach(journey => {
+    const field = journey.dataset.field;
+    const wid   = parseInt(journey.closest('.widget').dataset.wid);
+    const ORDER = ['Nobody yet','Friends',"People I don't know",'A mentor'];
+    journey.querySelectorAll('.journey-node').forEach(node => {
+        node.addEventListener('click', () => {
+            const val = node.dataset.val;
+            const idx = ORDER.indexOf(val);
+            journey.querySelectorAll('.journey-node').forEach((n, i) => n.classList.toggle('active', i <= idx));
+            journey.querySelectorAll('.journey-line').forEach((l, i) => l.classList.toggle('active', i < idx));
+            document.getElementById('f-' + field).value = val;
+            setAnswer(field, val, wid);
+        });
+    });
+});
+
+/* ═══════════════════════════════════════════════════════════
+   SLIDERS
+═══════════════════════════════════════════════════════════ */
+function formatBudget(v) {
+    if (v >= 100000) return '$' + Math.round(v / 1000) + 'k';
+    if (v >= 10000)  return '$' + (v / 1000).toFixed(0) + 'k';
+    if (v >= 1000)   return '$' + (v / 1000).toFixed(1) + 'k';
+    return '$' + v;
+}
+
+const budgetSlider = document.getElementById('budgetSlider');
+const BUDGET_LABELS = v => v === 0 ? '⚡ Set your budget to get started!' :
+    v < 1000  ? '🔴 Very low budget — start really lean!' :
+    v < 15000 ? '🟡 Low budget — focus on low-cost ideas!' :
+    v < 100000 ? '🟢 Fair budget — solid foundation!' :
+    '🚀 Great budget — lots of options!';
+budgetSlider.addEventListener('input', function() {
+    const v = parseInt(this.value);
+    document.getElementById('budgetDisplay').textContent = formatBudget(v);
+    document.getElementById('f-budget').value = v;
+    this.style.setProperty('--pct', ((v - +this.min) / (+this.max - +this.min) * 100).toFixed(1) + '%');
+    document.getElementById('budgetLabel').textContent = BUDGET_LABELS(v);
+    answers.budget = v;
+    filled.add(3);
+    document.getElementById('tick-3').textContent = '✓';
+    document.getElementById('dot-3').className = 'dot dot--done';
+    // Item 2: Budget $0 soft challenge
+    const _bw = document.querySelector('[data-field="budget"]') || document.querySelector('[data-wid="3"]');
+    let _hint = document.getElementById('budget0Hint');
+    if (v === 0) {
+        if (!_hint && _bw) {
+            _hint = document.createElement('div');
+            _hint.id = 'budget0Hint';
+            _hint.style.cssText = 'font-size:0.72rem;color:var(--yellow);margin-top:4px;';
+            _hint.textContent = '⚠️ Most businesses need some startup cost. Can you save up $5–20 or find free materials?';
+            _bw.appendChild(_hint);
+        } else if (_hint) {
+            _hint.style.display = '';
+        }
+    } else {
+        if (_hint) _hint.style.display = 'none';
+    }
+    // Item 4: Show brief save confirmation toast
+    const _st = document.createElement('div');
+    _st.textContent = '✅ Saved';
+    _st.style.cssText = 'position:fixed;bottom:72px;right:16px;background:rgba(52,211,153,0.15);border:1px solid #34D399;color:#34D399;padding:4px 12px;border-radius:8px;font-size:0.72rem;font-weight:700;z-index:9999;pointer-events:none';
+    document.body.appendChild(_st);
+    setTimeout(() => _st.remove(), 1500);
+    update('budget', v);
+});
+budgetSlider.style.setProperty('--pct', '0%');
+answers.budget = 0; filled.add(3);
+
+const hoursSlider = document.getElementById('hoursSlider');
+const HOUR_LABELS = ['','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15+'];
+const HOURS_MSG = v => v <= 2 ? '⚡ Casual — keep it simple!' : v <= 5 ? '🔥 Solid commitment!' : v <= 9 ? '💪 Serious entrepreneur!' : '🚀 All-in mode — impressive!';
+// C7-01: Contextual translation of hours commitment
+const HOURS_CONTEXT = v => v <= 2 ? 'At 1–2 hrs/week, focus on a very simple idea — like selling one thing at lunch break. Keep it easy!' : v <= 5 ? 'At 3–5 hrs/week you can run a simple product or service business — great for a first venture!' : v <= 9 ? 'At 6–9 hrs/week you can build something with multiple products or a growing customer base. Exciting!' : 'At 10+ hrs/week you could run a real mini-business with employees, events, or online sales. Go for it! 🚀';
+hoursSlider.addEventListener('input', function() {
+    const v = parseInt(this.value);
+    document.getElementById('hoursDisplay').textContent = HOUR_LABELS[v] || v;
+    document.getElementById('f-hours_per_week').value = v;
+    this.style.setProperty('--pct', ((v - +this.min) / (+this.max - +this.min) * 100).toFixed(1) + '%');
+    document.getElementById('hoursLabel').textContent = HOURS_MSG(v);
+    document.getElementById('hoursContextText').textContent = HOURS_CONTEXT(v); // C7-01
+    answers.hours_per_week = v;
+    filled.add(4);
+    document.getElementById('tick-4').textContent = '✓';
+    document.getElementById('dot-4').className = 'dot dot--done';
+    // Item 4: Show brief save confirmation toast
+    const _st = document.createElement('div');
+    _st.textContent = '✅ Saved';
+    _st.style.cssText = 'position:fixed;bottom:72px;right:16px;background:rgba(52,211,153,0.15);border:1px solid #34D399;color:#34D399;padding:4px 12px;border-radius:8px;font-size:0.72rem;font-weight:700;z-index:9999;pointer-events:none';
+    document.body.appendChild(_st);
+    setTimeout(() => _st.remove(), 1500);
+    update('hours_per_week', v);
+});
+hoursSlider.style.setProperty('--pct', ((3-1)/14*100).toFixed(1) + '%');
+answers.hours_per_week = 3; filled.add(4);
+
+const moodSlider   = document.getElementById('moodSlider');
+const MOOD_MAP     = ['','Not really',"It's okay",'I love it'];
+const MOOD_DISPLAY = ['','😞 Not really',"😐 It's okay",'🔥 I love it!'];
+const MOOD_AVATAR  = ['','😔','🚀','🔥'];
+moodSlider.addEventListener('input', function() {
+    const v = parseInt(this.value);
+    this.style.setProperty('--pct', ((v - 1) / 2 * 100).toFixed(1) + '%');
+    document.getElementById('moodDisplay').textContent = MOOD_DISPLAY[v];
+    document.getElementById('f-interest_level').value = MOOD_MAP[v];
+    // C7-02: Contextual note
+    const _moodNotes = ['', 'That\'s honest — passion can be built. Start with your WHY: what problem really bugs you? Work on that.', 'That\'s honest — most entrepreneurs have mixed feelings at the start. Your WHY will carry you through the tough days.', 'Amazing! High excitement is a superpower 🔥 — channel it into action and you\'re unstoppable!'];
+    document.getElementById('moodContextText').textContent = _moodNotes[v] || '';
+    localStorage.setItem('lrnbiz_motivation', MOOD_MAP[v]); // C7-02: persist for comeback message
+    // Avatar evolves with mood
+    document.getElementById('charFace').textContent = MOOD_AVATAR[v] || '🚀';
+    answers.interest_level = MOOD_MAP[v];
+    filled.add(11);
+    document.getElementById('tick-11').textContent = '✓';
+    document.getElementById('dot-11').className = 'dot dot--done';
+    // Item 4: Show brief save confirmation toast
+    const _st = document.createElement('div');
+    _st.textContent = '✅ Saved';
+    _st.style.cssText = 'position:fixed;bottom:72px;right:16px;background:rgba(52,211,153,0.15);border:1px solid #34D399;color:#34D399;padding:4px 12px;border-radius:8px;font-size:0.72rem;font-weight:700;z-index:9999;pointer-events:none';
+    document.body.appendChild(_st);
+    setTimeout(() => _st.remove(), 1500);
+    update('interest_level', MOOD_MAP[v]);
+});
+moodSlider.style.setProperty('--pct', '50%');
+answers.interest_level = "It's okay"; filled.add(11);
+
+/* ═══════════════════════════════════════════════════════════
+   TEXTAREA
+═══════════════════════════════════════════════════════════ */
+document.getElementById('strongest_part').addEventListener('input', function() {
+    document.getElementById('sCount').textContent = this.value.length;
+    answers.strongest_part = this.value;
+    if (this.value.trim().length > 0) {
+        filled.add(10);
+        document.getElementById('tick-10').textContent = '✓';
+        document.getElementById('dot-10').className = 'dot dot--done';
+    }
+    update('strongest_part', this.value);
+});
+
+/* ═══════════════════════════════════════════════════════════
+   LAB PANEL — tab switching
+═══════════════════════════════════════════════════════════ */
+document.querySelectorAll('.rp-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        document.querySelectorAll('.rp-tab').forEach(t => t.classList.remove('rp-tab--active'));
+        document.querySelectorAll('.rp-pane').forEach(p => p.classList.remove('rp-pane--active'));
+        tab.classList.add('rp-tab--active');
+        document.getElementById('rp-' + tab.dataset.tab).classList.add('rp-pane--active');
+    });
+});
+
+// C6-03 — enable Run Analysis only once 3+ fields are filled
+const _REQUIRED_FIELD_LABELS = {
+    grade_level: 'Grade / Year Level', location: 'Location', delivery_model: 'Business Format',
+    prior_experience: 'Prior Experience', why_this_idea: 'Why This Idea', business_type: 'Business Type',
+    who_talked_to: "Who You've Talked To", biggest_challenge: 'Biggest Challenge'
+};
+function checkAnalyseBtn() {
+    const btn = document.getElementById('analyseLabBtn');
+    if (!btn) return;
+    const filled = Object.values(answers).filter(v => v !== '' && v !== null && v !== undefined).length;
+    btn.disabled = filled < 3;
+    if (filled < 3) {
+        const missing = Object.entries(_REQUIRED_FIELD_LABELS)
+            .filter(([k]) => !answers[k])
+            .map(([, label]) => label);
+        btn.title = missing.length
+            ? 'Still needed: ' + missing.slice(0, 4).join(', ') + (missing.length > 4 ? ` (+${missing.length - 4} more)` : '')
+            : 'Fill in your background first ✏️';
+    } else {
+        btn.title = '🔬 Run your Triple Truth analysis';
+        // Pulse the button to remind the student to run analysis
+        btn.classList.remove('lab-btn-run--remind');
+        void btn.offsetWidth;
+        btn.classList.add('lab-btn-run--remind');
+    }
+}
+
+document.getElementById('analyseLabBtn').addEventListener('click', runAnalysis);
+
+/* ═══════════════════════════════════════════════════════════
+   SUBMIT — warn on missing, pass on 2nd click
+═══════════════════════════════════════════════════════════ */
+document.getElementById('ctxForm').addEventListener('submit', function(e) {
+    const REQUIRED = [0, 1, 2, 5, 6, 7, 8, 9];
+    const missing  = REQUIRED.filter(w => !filled.has(w));
+    if (missing.length > 0) {
+        // Highlight missing but DO NOT block — always allow submission
+        missing.forEach(wid => {
+            const w = document.querySelector(`.widget[data-wid="${wid}"]`);
+            if (!w) return;
+            w.style.borderColor = '#FF4444';
+            w.classList.add('widget--highlight');
+            setTimeout(() => { w.style.borderColor = ''; w.classList.remove('widget--highlight'); }, 2500);
+        });
+        const hint = document.getElementById('submitHint');
+        hint.textContent = `⚠️ ${missing.length} question${missing.length > 1 ? 's' : ''} unanswered — submitting anyway.`;
+        hint.style.color = '#FFD93D';
+    }
+});
+
+/* ═══════════════════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════════════════ */
+let celebTimeout;
+function showCeleb(msg) {
+    const t = document.getElementById('celebToast');
+    t.textContent = msg;
+    t.classList.remove('show'); void t.offsetWidth;
+    t.classList.add('show');
+    clearTimeout(celebTimeout);
+    celebTimeout = setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESTORE SAVED ANSWERS  (back-button / page reload)
+═══════════════════════════════════════════════════════════ */
+(function restoreSavedAnswers() {
+    if (!SAVED_ANSWERS || Object.keys(SAVED_ANSWERS).length === 0) return;
+    const sa = SAVED_ANSWERS;
+
+    // Restore vcard fields
+    ['grade_level','location','delivery_model','prior_experience',
+     'why_this_idea','business_type','who_talked_to','biggest_challenge'].forEach(field => {
+        const val = sa[field]; if (!val) return;
+        const grid = document.querySelector(`.vcard-grid[data-field="${field}"]`);
+        if (!grid) return;
+        const widget = grid.closest('.widget');
+        const wid = parseInt(widget?.dataset.wid ?? 0);
+        const card = Array.from(grid.querySelectorAll('.vcard')).find(c => c.dataset.val === val);
+        if (!card || card.classList.contains('vcard--locked')) return;
+        grid.querySelectorAll('.vcard').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        document.getElementById('f-' + field).value = val;
+        setAnswer(field, val, wid);
+    });
+
+    // Restore budget slider
+    if (sa.budget) {
+        const v = parseFloat(sa.budget);
+        const sl = document.getElementById('budgetSlider');
+        sl.value = v;
+        document.getElementById('budgetDisplay').textContent = formatBudget(v);
+        document.getElementById('f-budget').value = v;
+        sl.style.setProperty('--pct', ((v - +sl.min) / (+sl.max - +sl.min) * 100).toFixed(1) + '%');
+        answers.budget = v; filled.add(3);
+        document.getElementById('tick-3').textContent = '✓';
+        document.getElementById('dot-3').className = 'dot dot--done';
+    }
+
+    // Restore hours slider
+    if (sa.hours_per_week) {
+        const v = parseInt(sa.hours_per_week);
+        const sl = document.getElementById('hoursSlider');
+        sl.value = v;
+        document.getElementById('hoursDisplay').textContent = HOUR_LABELS[v] || v;
+        document.getElementById('f-hours_per_week').value = v;
+        sl.style.setProperty('--pct', ((v - +sl.min) / (+sl.max - +sl.min) * 100).toFixed(1) + '%');
+        answers.hours_per_week = v; filled.add(4);
+        document.getElementById('tick-4').textContent = '✓';
+        document.getElementById('dot-4').className = 'dot dot--done';
+    }
+
+    // Restore mood/interest slider
+    if (sa.interest_level) {
+        const idx = MOOD_MAP.indexOf(sa.interest_level);
+        if (idx > 0) {
+            const sl = document.getElementById('moodSlider');
+            sl.value = idx;
+            sl.style.setProperty('--pct', ((idx - 1) / 2 * 100).toFixed(1) + '%');
+            document.getElementById('moodDisplay').textContent = MOOD_DISPLAY[idx];
+            document.getElementById('f-interest_level').value = MOOD_MAP[idx];
+            answers.interest_level = MOOD_MAP[idx]; filled.add(11);
+            document.getElementById('tick-11').textContent = '✓';
+            document.getElementById('dot-11').className = 'dot dot--done';
+        }
+    }
+
+    // Restore textarea
+    if (sa.strongest_part) {
+        const ta = document.getElementById('strongest_part');
+        ta.value = sa.strongest_part;
+        document.getElementById('sCount').textContent = sa.strongest_part.length;
+        answers.strongest_part = sa.strongest_part; filled.add(10);
+        document.getElementById('tick-10').textContent = '✓';
+        document.getElementById('dot-10').className = 'dot dot--done';
+    }
+
+    // ITEM 3: Prevent re-firing celebration if already done this session
+    if (sessionStorage.getItem('dnaCompleted')) window._dnaCelebrated = true;
+
+    // Also restore mood avatar and slider labels
+    if (sa.interest_level) {
+        const idx = MOOD_MAP.indexOf(sa.interest_level);
+        if (idx > 0) document.getElementById('charFace').textContent = MOOD_AVATAR[idx] || '🚀';
+    }
+    if (sa.budget) document.getElementById('budgetLabel').textContent = BUDGET_LABELS(parseFloat(sa.budget));
+    if (sa.hours_per_week) document.getElementById('hoursLabel').textContent = HOURS_MSG(parseInt(sa.hours_per_week));
+
+    // Toast confirming data was restored
+    setTimeout(() => showCeleb('✅ Profile restored — welcome back!'), 600);
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════════ */
+initLabChart();
+update('_init', null);  // C19-01: render initial radar shape from answers on page load
+
+// C19-10: Prompt after 10s if budget slider is still at $0
+setTimeout(function() {
+    if (parseInt(document.getElementById('budgetSlider').value || '0') === 0) {
+        let _ph = document.getElementById('budgetSliderPrompt');
+        if (!_ph) {
+            _ph = document.createElement('div');
+            _ph.id = 'budgetSliderPrompt';
+            _ph.style.cssText = 'font-size:0.73rem;color:var(--yellow);font-weight:700;margin-top:6px;animation:pulse 1.5s infinite';
+            _ph.textContent = '👆 Move the slider to set your startup budget — this affects your Gold score!';
+            const _bw = document.querySelector('[data-wid="3"]');
+            if (_bw) _bw.appendChild(_ph);
+        }
+    }
+}, 10000);
+budgetSlider.addEventListener('input', function() {
+    const _ph = document.getElementById('budgetSliderPrompt');
+    if (_ph) _ph.remove();
+}, { once: true });
+
+// ITEM 3: Radar modal chart — sync from main radar on zoom
+let _modalChart = null;
+document.getElementById('radarZoomBtn').addEventListener('click', function() {
+    const modal = document.getElementById('radarModal');
+    modal.style.display = 'flex';
+    setTimeout(function() {
+        const ctx = document.getElementById('radarModalChart');
+        if (!ctx) return;
+        if (_modalChart) { _modalChart.destroy(); _modalChart = null; }
+        const mainData = radarChart.data.datasets[0].data.slice();
+        _modalChart = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: AXIS_INFO.map(a => a.label),
+                datasets: [{
+                    data: mainData,
+                    backgroundColor: 'rgba(255,217,61,0.12)',
+                    borderColor: '#FFD93D',
+                    borderWidth: 3,
+                    pointBackgroundColor: getPointColors(mainData),
+                    pointBorderColor: '#09090F',
+                    pointBorderWidth: 2,
+                    pointRadius: 7,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: { r: { min:0, max:10, ticks:{display:false}, grid:{color:'rgba(255,255,255,0.08)'}, angleLines:{color:'rgba(255,255,255,0.1)'}, pointLabels:{color:'rgba(240,239,244,0.75)',font:{size:13,weight:'900',family:"'Nunito',sans-serif"}} }},
+                plugins: { legend: { display: false } }
+            }
+        });
+    }, 80);
+
+    // Item 5: Show "last visited X days ago" on radar title
+    try {
+        const _prev = JSON.parse(localStorage.getItem('lrnbiz_prev_radar') || '{}');
+        if (_prev.ts) {
+            const _days = Math.floor((Date.now() - _prev.ts) / 86400000);
+            if (_days >= 1) {
+                const _el = document.querySelector('.mini-radar-title') || document.querySelector('.dash-radar-label');
+                if (_el) _el.title = `Last visited ${_days} day${_days > 1 ? 's' : ''} ago`;
+            }
+        }
+        localStorage.setItem('lrnbiz_prev_radar', JSON.stringify({ts: Date.now()}));
+    } catch(e) {}
+});
+
+/* ═══════════════════════════════════════════════════════════
+   ITEM 7 — Next Chapter CTA bar
+═══════════════════════════════════════════════════════════ */
+function _showNextCTA() {
+    if (document.getElementById('nextChapterBar')) return;
+    const _b = document.createElement('div');
+    _b.id = 'nextChapterBar';
+    _b.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:9000;background:linear-gradient(90deg,#A78BFA,#34D399);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;font-family:Nunito,sans-serif;font-weight:900;font-size:0.9rem;color:#09090F;gap:10px';
+    _b.innerHTML = '🎉 Background saved! Ready for the next chapter? <a href="/idea" style="background:#09090F;color:#A78BFA;padding:6px 16px;border-radius:99px;text-decoration:none;font-size:0.85rem;white-space:nowrap" onclick="sessionStorage.setItem(\'lrnbiz_ctx_bar_ok\',\'1\');document.getElementById(\'nextChapterBar\').remove()">💡 Idea →</a><button onclick="document.getElementById(\'nextChapterBar\').remove()" style="background:none;border:none;color:#09090F;opacity:0.6;cursor:pointer;font-size:1rem">✕</button>';
+    document.body.appendChild(_b);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ITEM 17 — Grade bands helper
+═══════════════════════════════════════════════════════════ */
+function _scoreBand(s) {
+    if (s >= 80) return {label:'🏆 Excellent', color:'#34D399'};
+    if (s >= 60) return {label:'👍 Good', color:'#A78BFA'};
+    if (s >= 40) return {label:'📚 Developing', color:'#FFD93D'};
+    return {label:'🌱 Early Stage', color:'var(--muted)'};
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ITEM 22 — Confetti
+═══════════════════════════════════════════════════════════ */
+function _launchConfetti() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const _cols = ['#A78BFA','#34D399','#FFD93D','#F87171','#60A5FA'];
+    for (let _i = 0; _i < 55; _i++) {
+        const _el = document.createElement('div');
+        _el.className = 'confetti-dot';
+        _el.style.left = (Math.random() * 100) + 'vw';
+        _el.style.animationDelay = (Math.random() * 0.5) + 's';
+        _el.style.animationDuration = (1.2 + Math.random() * 1.5) + 's';
+        _el.style.background = _cols[Math.floor(Math.random() * _cols.length)];
+        const _sz = (6 + Math.random() * 6) + 'px';
+        _el.style.width = _el.style.height = _sz;
+        document.body.appendChild(_el);
+        setTimeout(() => _el.remove(), 3000);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ITEM 28 — XP float (C6-37: floats near HUD XP bar)
+═══════════════════════════════════════════════════════════ */
+function _showXpFloat(xp, btn) {
+    const _el = document.createElement('div'); _el.className = 'xp-float';
+    _el.textContent = '+' + Math.round(xp) + ' XP';
+    // C6-37: Anchor float near HUD XP bar instead of near button
+    const hudXP = document.querySelector('.hud-xp');
+    if (hudXP) {
+        const _r = hudXP.getBoundingClientRect();
+        _el.style.left = (_r.left + _r.width/2 - 20) + 'px';
+        _el.style.top  = (_r.bottom + window.scrollY + 4) + 'px';
+    } else {
+        const _r = btn ? btn.getBoundingClientRect() : {left:window.innerWidth/2-20,top:200,width:40};
+        _el.style.left = (_r.left + _r.width/2 - 20) + 'px';
+        _el.style.top  = (_r.top + window.scrollY - 10) + 'px';
+    }
+    _el.style.zIndex = '99999';
+    document.body.appendChild(_el); setTimeout(() => _el.remove(), 2000);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   C6-36 — Full-screen rank-up modal
+═══════════════════════════════════════════════════════════ */
+function _showRankUpModal(rank) {
+    let modal = document.getElementById('rankUpModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'rankUpModal';
+        modal.style.cssText = 'display:none;position:fixed;inset:0;z-index:99998;background:rgba(9,9,15,0.92);align-items:center;justify-content:center;flex-direction:column;text-align:center;font-family:Nunito,sans-serif';
+        modal.innerHTML = `<div style="background:var(--s2);border:1px solid rgba(167,139,250,0.3);border-radius:24px;padding:32px 28px;max-width:380px;width:90%">
+            <div id="rankUpEmoji" style="font-size:3.5rem;margin-bottom:12px">🔨</div>
+            <div id="rankUpName" style="font-size:1.4rem;font-weight:900;color:var(--purple);margin-bottom:8px">Builder</div>
+            <div id="rankUpMeaning" style="font-size:0.88rem;color:rgba(240,239,244,0.85);margin-bottom:16px;line-height:1.6"></div>
+            <div id="rankUpNext" style="font-size:0.75rem;color:var(--muted);margin-bottom:20px"></div>
+            <button onclick="document.getElementById('rankUpModal').style.display='none'" style="background:linear-gradient(135deg,#A78BFA,#34D399);border:none;border-radius:12px;color:#09090F;font-size:0.9rem;font-weight:900;padding:10px 28px;cursor:pointer;width:100%">🚀 Keep going!</button>
+        </div>`;
+        document.body.appendChild(modal);
+    }
+    const emoji = rank.name.split(' ')[0];
+    const namePart = rank.name.split(' ').slice(1).join(' ');
+    document.getElementById('rankUpEmoji').textContent = emoji;
+    document.getElementById('rankUpName').textContent  = 'You\'re now a ' + namePart + '!';
+    document.getElementById('rankUpMeaning').textContent = rank.meaning || '';
+    document.getElementById('rankUpNext').textContent  = rank.next ? '⬆️ Next rank: ' + rank.next : '🏆 You\'ve reached the top rank!';
+    modal.style.display = 'flex';
+    _launchConfetti();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ITEM 14 — Restore Mentor panel open state on page load
+═══════════════════════════════════════════════════════════ */
+if (localStorage.getItem('lrnbiz_ctx_rs_open') === '1') {
+    const _rtIn = document.querySelector('.rt-toggle input[type="checkbox"]');
+    if (_rtIn) _rtIn.checked = true;
+    const _rv = document.getElementById('researchView');
+    if (_rv) _rv.style.display = '';
+    const _kv = document.getElementById('kidView');
+    if (_kv) _kv.style.display = 'none';
+    const _hybBtnRestore = document.querySelector('.rs-tab[onclick*="hybrid"]');
+    if (_hybBtnRestore) switchRsTab(_hybBtnRestore, 'hybrid');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ITEM 29 — Auto-save indicator (debounced)
+═══════════════════════════════════════════════════════════ */
+let _autoSaveTimer = null;
+document.querySelectorAll('#ctxForm input, #ctxForm textarea, #ctxForm select').forEach(function(_inp) {
+    _inp.addEventListener('input', function() {
+        clearTimeout(_autoSaveTimer);
+        _autoSaveTimer = setTimeout(function() {
+            const _ind = document.getElementById('autoSaveIndicator');
+            if (_ind) { _ind.style.display = ''; setTimeout(function(){ _ind.style.display = 'none'; }, 2000); }
+        }, 800);
+    });
+});
+
+/* ═══════════════════════════════════════════════════════════
+   ITEM 31 — Character counters for maxlength textareas
+   (strongest_part already has sCount — skip it, handle others)
+═══════════════════════════════════════════════════════════ */
+document.querySelectorAll('#ctxForm textarea[maxlength]').forEach(function(_ta) {
+    if (_ta.id === 'strongest_part') return; // already has sCount counter
+    const _ml = parseInt(_ta.getAttribute('maxlength'));
+    const _cc = document.createElement('div');
+    _cc.className = 'char-ctr';
+    _cc.innerHTML = '<span class="_ta-count">0</span>/' + _ml;
+    _ta.parentNode.insertBefore(_cc, _ta.nextSibling);
+    _ta.addEventListener('input', function() {
+        _cc.querySelector('._ta-count').textContent = _ta.value.length;
+    });
+});
+
+// Item 43: Unsaved changes warning
+let _ctxDirty = false;
+let _analysisRunThisSession = parseInt(localStorage.getItem('lrnbiz_ctx_score') || '0') > 0;
+
+/* ── Analysis Reminder Modal ── */
+let _reminderPendingUrl = null;
+function _showAnalysisReminder(continueUrl) {
+    _reminderPendingUrl = continueUrl;
+    const overlay = document.getElementById('analysisReminderOverlay');
+    overlay.style.display = 'flex';
+}
+document.getElementById('reminderRunBtn').addEventListener('click', () => {
+    document.getElementById('analysisReminderOverlay').style.display = 'none';
+    _reminderPendingUrl = null;
+    document.getElementById('analyseLabBtn').click();
+    document.getElementById('analyseLabBtn').scrollIntoView({behavior:'smooth', block:'center'});
+});
+document.getElementById('reminderContinueBtn').addEventListener('click', () => {
+    document.getElementById('analysisReminderOverlay').style.display = 'none';
+    if (_reminderPendingUrl) { window.location.href = _reminderPendingUrl; _reminderPendingUrl = null; }
+});
+document.addEventListener('click', function(e) {
+    const link = e.target.closest('a[href]');
+    if (!link) return;
+    const href = link.getAttribute('href');
+    if (!href || href.startsWith('javascript') || href.startsWith('#')) return;
+    if (_ctxDirty && !_analysisRunThisSession) {
+        e.preventDefault();
+        _showAnalysisReminder(href);
+    }
+});
+document.querySelectorAll('.vcard, .pill, input, select, textarea').forEach(el => {
+    el.addEventListener('change', () => { _ctxDirty = true; });
+    el.addEventListener('click', () => { if (el.classList.contains('vcard') || el.classList.contains('pill')) _ctxDirty = true; });
+});
+document.querySelector('form[method="POST"]') && document.querySelector('form[method="POST"]').addEventListener('submit', () => { _ctxDirty = false; });
+window.addEventListener('beforeunload', e => { if (_ctxDirty) { e.preventDefault(); e.returnValue = ''; } });
+
+// Bfcache fix: reset overlay and button state when page is restored from cache.
+window.addEventListener('pageshow', function(_psEv) {
+    if (_psEv.persisted) {
+        const _ov = document.getElementById('analysisReminderOverlay');
+        if (_ov) _ov.style.display = 'none';
+        const _btn = document.getElementById('analyseLabBtn');
+        if (_btn && _btn.textContent.includes('Checking')) {
+            _btn.textContent = '🔬 Run Analysis';
+            _btn.disabled = false;
+            _btn.classList.remove('lab-btn-run--remind');
+        }
+    }
+});
+</script>
+
+<style>
+@keyframes dnaFlash {
+    0%   { filter: brightness(1); }
+    20%  { filter: brightness(1.25) hue-rotate(30deg); }
+    60%  { filter: brightness(1.15); }
+    100% { filter: brightness(1); }
+}
+/* Item 22 — Confetti dot */
+@keyframes confettiFall {
+    0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+.confetti-dot {
+    position: fixed;
+    top: -10px;
+    border-radius: 3px;
+    animation: confettiFall linear forwards;
+    pointer-events: none;
+    z-index: 99999;
+}
+/* Item 28 — XP float */
+@keyframes xpFloatUp {
+    0%   { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-50px); }
+}
+.xp-float {
+    position: absolute;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: #FFD93D;
+    pointer-events: none;
+    z-index: 9999;
+    animation: xpFloatUp 1.5s ease forwards;
+    text-shadow: 0 0 8px rgba(255,217,61,0.6);
+}
+/* Item 9 — Back link row */
+.chapter-back-row {
+    padding: 8px 0 4px 0;
+}
+.chapter-back-link {
+    font-size: 0.78rem;
+    font-weight: 900;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 4px 10px;
+    border-radius: 99px;
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: color 0.2s;
+}
+.chapter-back-link:hover { color: var(--purple); }
+/* Item 41 — Why matters box */
+.why-matters-box {
+    background: rgba(167,139,250,0.07);
+    border: 1px solid rgba(167,139,250,0.22);
+    border-radius: 12px;
+    padding: 8px 14px;
+    margin-bottom: 10px;
+    font-size: 0.8rem;
+}
+.why-matters-box summary {
+    font-weight: 900;
+    color: var(--purple);
+    cursor: pointer;
+    list-style: none;
+}
+.why-matters-box summary::-webkit-details-marker { display: none; }
+.why-matters-body {
+    margin-top: 8px;
+    color: rgba(240,239,244,0.8);
+    line-height: 1.6;
+    font-size: 0.78rem;
+}
+/* Item 5 — CTA sub-hint */
+.validate-sub-hint {
+    font-size: 0.68rem;
+    color: var(--muted);
+    text-align: center;
+    margin: 4px 0 0;
+    line-height: 1.5;
+}
+</style>
+{% if 'context' in audit_scores %}
+<script>
+(function() {
+    if (!sessionStorage.getItem('lrnbiz_ctx_bar_ok')) {
+        _showNextCTA();
+    }
+})();
+</script>
+{% endif %}
+{% endblock %}

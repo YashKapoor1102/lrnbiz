@@ -1,0 +1,201 @@
+[
+  {
+    "id": "BR001",
+    "title": "Food needs startup money",
+    "emoji": "🍕💸",
+    "condition": {"all": [
+      {"field": "business_type", "eq": "food-beverage"},
+      {"field": "budget", "lt": 2000}
+    ]},
+    "severity": "error",
+    "axes": [2],
+    "message": "A real food business needs commercial kitchen access, ingredients, packaging, food safety certification and insurance — rarely under $2,000 to launch.",
+    "socratic": "If a commercial kitchen rental alone can cost $500/month, and you still need ingredients, packaging and certification — where does your current budget get spent first?",
+    "socratic_hint": "The student wants a food business with under $2,000. Probe the real line-item costs: commercial kitchen, ingredients, packaging, food handler certification, and liability insurance.",
+    "score_impact": {"Gold": -40, "Passion": -10}
+  },
+  {
+    "id": "BR002",
+    "title": "Products need materials to exist",
+    "emoji": "🛍️💸",
+    "condition": {"all": [
+      {"field": "business_type", "eq": "physical-product"},
+      {"field": "budget", "lt": 1000}
+    ]},
+    "severity": "error",
+    "axes": [2],
+    "message": "Physical products need materials, manufacturing, packaging, and starter inventory — a realistic minimum is $1,000 before the first sale.",
+    "socratic": "Have you priced out materials, packaging, and minimum order quantities? What's the actual cost to produce your first 20 units?",
+    "socratic_hint": "Student wants to sell physical products with under $1,000. Ask them to name specific materials, packaging costs, and minimum order quantities — the real startup cost is almost always higher than expected.",
+    "score_impact": {"Gold": -35, "Target": -10}
+  },
+  {
+    "id": "BR003",
+    "title": "Hard to grind on something you don't love",
+    "emoji": "⏰😞",
+    "condition": {"all": [
+      {"field": "hours_per_week", "gt": 9},
+      {"field": "interest_level", "eq": "Not really"}
+    ]},
+    "severity": "error",
+    "axes": [0, 1],
+    "message": "10+ hours per week is serious commitment. Disinterest makes pushing through the hard days almost impossible.",
+    "socratic": "What will you tell yourself on a bad day to keep working 10+ hours on an idea you're not excited about?",
+    "socratic_hint": "Student commits 10+ hours/week but rates their excitement as 'Not really'. Challenge them to articulate a specific motivation that could sustain that workload long-term.",
+    "score_impact": {"Energy": -30, "Passion": -40}
+  },
+  {
+    "id": "BR004",
+    "title": "Enthusiasm gap",
+    "emoji": "⏰🤔",
+    "condition": {"all": [
+      {"field": "hours_per_week", "gte": 7},
+      {"field": "hours_per_week", "lte": 9},
+      {"field": "interest_level", "eq": "Not really"}
+    ]},
+    "severity": "warning",
+    "axes": [0],
+    "message": "Passion makes 7 hours feel like 3 — and its absence makes 3 feel like 30.",
+    "socratic": "Is there a similar idea you'd actually be excited about? What would it take to pursue that instead?",
+    "socratic_hint": "Student commits 7-9 hours/week but feels low excitement. Help them explore whether a slight pivot in their idea could unlock genuine enthusiasm.",
+    "score_impact": {"Passion": -25, "Energy": -10}
+  },
+  {
+    "id": "BR005",
+    "title": "You love it — but do your customers?",
+    "emoji": "💡🤫",
+    "condition": {"all": [
+      {"field": "who_talked_to", "eq": "Nobody yet"},
+      {"field": "interest_level", "eq": "I love it"},
+      {"field": "why_this_idea", "neq": "Spotted a problem"}
+    ]},
+    "severity": "warning",
+    "axes": [3],
+    "message": "Your passion doesn't guarantee others share the same problem. You need at least one real conversation before investing time or money.",
+    "socratic": "What if your first potential customer says they don't actually need this — what would you do next?",
+    "socratic_hint": "Student is highly passionate but hasn't validated with a single customer, and started from interest/money not a real problem. Probe the gap between internal excitement and confirmed external demand.",
+    "score_impact": {"Influence": -30, "Knowledge": -15}
+  },
+  {
+    "id": "BR006",
+    "title": "Food needs taste-testers first",
+    "emoji": "🍕🤫",
+    "condition": {"all": [
+      {"field": "business_type", "eq": "food-beverage"},
+      {"field": "who_talked_to", "eq": "Nobody yet"}
+    ]},
+    "severity": "warning",
+    "axes": [3],
+    "message": "Flavours, allergies, and preferences vary hugely. Spending money on ingredients before getting feedback is a real risk.",
+    "socratic": "Who could you give a free sample to this week and get brutally honest feedback from?",
+    "socratic_hint": "Student wants a food business but has talked to nobody. Ask them to identify one specific person they could give a free sample to before spending any money.",
+    "score_impact": {"Influence": -20, "Gold": -10}
+  },
+  {
+    "id": "BR007",
+    "title": "Travel-based biz needs independence",
+    "emoji": "🚗🏡",
+    "condition": {"all": [
+      {"field": "delivery_model", "eq": "Requires Travel"},
+      {"field": "grade_level", "eq": "Grade 6-8"},
+      {"field": "location", "eq": "Rural"}
+    ]},
+    "severity": "error",
+    "axes": [3],
+    "message": "At Grade 6-8 in a rural area, every customer visit would depend on an adult driving you. That's a fragile plan.",
+    "socratic": "Who would drive you to your customers every single week, and have you actually confirmed they can commit to that?",
+    "socratic_hint": "Young student in a rural area chose travel-based delivery. Ask them to name the specific adult who will drive them and whether that person knows this plan.",
+    "score_impact": {"Influence": -40, "Energy": -15}
+  },
+  {
+    "id": "BR008",
+    "title": "Big effort with no clear 'why'",
+    "emoji": "🤷⏰",
+    "condition": {"all": [
+      {"field": "why_this_idea", "eq": "Not sure"},
+      {"field": "hours_per_week", "gt": 6}
+    ]},
+    "severity": "warning",
+    "axes": [0],
+    "message": "When things get tough — and they always do — not knowing why you started makes it easy to quit.",
+    "socratic": "Think of a time you worked really hard on something. What kept you going when it got difficult?",
+    "socratic_hint": "Student invests 7+ hours/week but doesn't know their own 'why'. Guide them to identify a personal motivation or past experience that could anchor their commitment.",
+    "score_impact": {"Passion": -35, "Target": -20}
+  },
+  {
+    "id": "BR009",
+    "title": "No passion + no purpose = high risk",
+    "emoji": "😞🤷",
+    "condition": {"all": [
+      {"field": "interest_level", "eq": "Not really"},
+      {"field": "why_this_idea", "eq": "Not sure"}
+    ]},
+    "severity": "error",
+    "axes": [0, 5],
+    "message": "Two red flags at once: you're not excited AND not sure why you're doing it. This combination rarely leads to follow-through.",
+    "socratic": "What would a business you actually get excited about look like? Let's start there instead.",
+    "socratic_hint": "Student has both low passion and unclear purpose — the most dangerous combination. Help them identify one thing they genuinely enjoy that could become a business, before addressing any other detail.",
+    "score_impact": {"Passion": -50, "Target": -25}
+  },
+  {
+    "id": "BR010",
+    "title": "Experienced seller, zero research",
+    "emoji": "🌳🤫",
+    "condition": {"all": [
+      {"field": "prior_experience", "eq": "Sell regularly"},
+      {"field": "who_talked_to", "eq": "Nobody yet"}
+    ]},
+    "severity": "warning",
+    "axes": [3],
+    "message": "You know HOW to sell — but have you checked if people actually want this specific idea?",
+    "socratic": "Your sales skills are a real advantage. Why haven't you tested this specific idea with even one person yet?",
+    "socratic_hint": "An experienced seller who has not validated their specific new idea. Challenge them to apply their sales instincts to market research — they already have the skill, just not the habit.",
+    "score_impact": {"Influence": -25, "Knowledge": -15}
+  },
+  {
+    "id": "BR011",
+    "title": "Service business with no skills or experience",
+    "emoji": "🛠️🤷",
+    "condition": {"all": [
+      {"field": "business_type", "in": ["service", "skills-for-hire"]},
+      {"field": "budget", "lt": 100},
+      {"field": "prior_experience", "eq": "Never sold"}
+    ]},
+    "severity": "warning",
+    "axes": [3, 4],
+    "message": "A service business with no budget and no experience is possible — but you need to explain exactly what skill you're selling. What can you do better than a peer?",
+    "socratic": "What specifically would you do for a customer, and why would they choose you over someone with more experience?",
+    "socratic_hint": "Student wants a service business but has no budget and no experience. Don't dismiss it — ask: what specific task or skill could you offer right now? Lawn mowing, tutoring a subject you're strong in, helping neighbours with technology?",
+    "score_impact": {"Knowledge": -20, "Target": -10}
+  },
+  {
+    "id": "BR012",
+    "title": "Very high commitment for a junior student",
+    "emoji": "📚⏰",
+    "condition": {"all": [
+      {"field": "grade_level", "in": ["Grade 6-8"]},
+      {"field": "hours_per_week", "gt": 9}
+    ]},
+    "severity": "warning",
+    "axes": [1],
+    "message": "10+ hours per week is a very large commitment at your school stage — have you accounted for homework, sport, travel, and family time? A more realistic target is 3–6 hours.",
+    "socratic": "Walk me through a typical school week. Where exactly do these 10 hours fit in without missing anything important?",
+    "socratic_hint": "A Grade 6-8 student is committing 10+ hours per week. Ask them to map out a full school week — classes, homework, sport, family dinner — and find where the hours actually come from. This is usually a planning gap, not a motivation gap.",
+    "score_impact": {"Energy": -15}
+  },
+  {
+    "id": "BR013",
+    "title": "Online business with no outreach plan",
+    "emoji": "🌐🤫",
+    "condition": {"all": [
+      {"field": "delivery_model", "eq": "Online"},
+      {"field": "who_talked_to", "eq": "Nobody yet"}
+    ]},
+    "severity": "warning",
+    "axes": [3],
+    "message": "An online business that has spoken to nobody yet has no idea if anyone will find their page. What platform or channel will your first 10 customers come from?",
+    "socratic": "Name one specific online place — a group chat, a community forum, a social media page — where your target customer already hangs out. How would you reach them there?",
+    "socratic_hint": "Student has an online delivery model but has spoken to zero potential customers. Ask them to name one specific online community or platform where their customer type is already active — then ask how they'd make their first 10 sales from there.",
+    "score_impact": {"Influence": -20}
+  }
+]

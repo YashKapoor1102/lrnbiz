@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}LrnBiz{% endblock %}</title>
+    <!-- Favicon — brain emoji rendered to a 32px canvas -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+    <meta name="description" content="{% block meta_description %}LrnBiz — validate your business idea in 5 chapters with an AI mentor that tells you the truth.{% endblock %}">
+    <!-- Open Graph -->
+    <meta property="og:title"       content="{% block og_title %}LrnBiz — Your AI Business Mentor{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Build a real business plan step-by-step. Get honest AI feedback, fix your weak spots, and earn your certificate.{% endblock %}">
+    <meta property="og:type"        content="website">
+    <meta property="og:image"       content="{% block og_image %}https://lrnbiz.com/static/og-cover.png{% endblock %}">
+    <!-- Twitter card -->
+    <meta name="twitter:card"        content="summary">
+    <meta name="twitter:title"       content="{% block twitter_title %}LrnBiz — Your AI Business Mentor{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}5-chapter AI-powered business planning tool for students.{% endblock %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <!-- Item 48: Offline banner -->
+    <div id="offlineBanner">📶 You're offline — your answers are saved locally. Validation will run when you're back online.</div>
+
+    <!-- S21-11: AI degraded-mode banner — shown when Groq is unavailable -->
+    {% if not groq_available %}
+    <div id="aiDegradedBanner" style="background:rgba(251,146,60,0.12);border-bottom:1px solid rgba(251,146,60,0.3);padding:8px 16px;text-align:center;font-family:Nunito,sans-serif;font-size:0.8rem;font-weight:700;color:#FB923C;display:flex;align-items:center;justify-content:center;gap:8px">
+        <span>🤖 AI mentor is temporarily offline — your Rules Check score is still accurate. AI feedback will return shortly.</span>
+        <button onclick="document.getElementById('aiDegradedBanner').style.display='none'" style="background:none;border:none;color:rgba(251,146,60,0.6);cursor:pointer;font-size:1rem;padding:0 4px;line-height:1">✕</button>
+    </div>
+    {% endif %}
+
+    <!-- C7-42: First-time chapter onboarding overlay (shown once, then dismissed) -->
+    {% if request.path in ['/context', '/idea', '/customer', '/money', '/discovery'] %}
+    <div id="onboardOverlay" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(9,9,15,0.85);align-items:center;justify-content:center;padding:16px">
+        <div style="background:var(--s2);border:1px solid rgba(167,139,250,0.3);border-radius:20px;padding:28px 24px;max-width:360px;width:100%;text-align:center;font-family:Nunito,sans-serif;box-shadow:0 16px 48px rgba(0,0,0,0.6)">
+            <div id="onboardStep" style="min-height:160px">
+                <!-- Steps injected by JS -->
+            </div>
+            <div style="display:flex;gap:8px;justify-content:center;margin-top:16px">
+                <span class="onboard-dot" id="od0" style="width:8px;height:8px;border-radius:50%;background:#A78BFA"></span>
+                <span class="onboard-dot" id="od1" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.2)"></span>
+                <span class="onboard-dot" id="od2" style="width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.2)"></span>
+            </div>
+            <div style="display:flex;gap:10px;justify-content:center;margin-top:16px">
+                <button id="onboardBack" onclick="_onboardPrev()" style="display:none;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:var(--muted);font-family:Nunito,sans-serif;font-size:0.82rem;font-weight:700;padding:8px 18px;border-radius:99px;cursor:pointer">← Back</button>
+                <button id="onboardNext" onclick="_onboardNext()" style="background:rgba(167,139,250,0.2);border:1px solid rgba(167,139,250,0.4);color:#A78BFA;font-family:Nunito,sans-serif;font-size:0.82rem;font-weight:800;padding:8px 20px;border-radius:99px;cursor:pointer">Next →</button>
+            </div>
+            <button onclick="_onboardDone()" style="background:none;border:none;color:var(--muted);font-size:0.72rem;cursor:pointer;margin-top:10px;font-family:Nunito,sans-serif">Skip intro</button>
+        </div>
+    </div>
+    <script>
+    const _ONBOARD_STEPS = [
+        { emoji: '📝', title: 'Fill in your answers', body: 'Each chapter has a form on the left. Fill in your idea, customers, and numbers — the more detail you give, the better feedback you\'ll get!' },
+        { emoji: '🔬', title: 'Click "Run Analysis"', body: 'When you\'re ready, click the <strong>Run Analysis</strong> button. Three systems check your plan: Rules Check 🐍, AI Optimist 🤖, and your Mentor 🧠.' },
+        { emoji: '🧠', title: 'Trust the Mentor Score', body: 'Your <strong>Mentor Score</strong> is the most honest score — it reads both your answers AND the rules. Improve your answers and re-run to boost it!' },
+    ];
+    let _onboardIdx = 0;
+    function _onboardRender() {
+        const s = _ONBOARD_STEPS[_onboardIdx];
+        document.getElementById('onboardStep').innerHTML = `<div style="font-size:3rem;margin-bottom:10px">${s.emoji}</div><div style="font-size:1rem;font-weight:900;color:var(--text);margin-bottom:8px">${s.title}</div><p style="font-size:0.82rem;color:rgba(240,239,244,0.75);line-height:1.65">${s.body}</p>`;
+        document.getElementById('onboardBack').style.display = _onboardIdx > 0 ? '' : 'none';
+        document.getElementById('onboardNext').textContent = _onboardIdx === _ONBOARD_STEPS.length - 1 ? "Let's go! 🚀" : 'Next →';
+        [0,1,2].forEach(i => { const d = document.getElementById('od'+i); if (d) d.style.background = i === _onboardIdx ? '#A78BFA' : 'rgba(255,255,255,0.2)'; });
+    }
+    function _onboardNext() { if (_onboardIdx < _ONBOARD_STEPS.length - 1) { _onboardIdx++; _onboardRender(); } else { _onboardDone(); } }
+    function _onboardPrev() { if (_onboardIdx > 0) { _onboardIdx--; _onboardRender(); } }
+    function _onboardDone() { localStorage.setItem('lrnbiz_onboarded','1'); document.getElementById('onboardOverlay').style.display='none'; }
+    (function(){
+        if (!localStorage.getItem('lrnbiz_onboarded') && !localStorage.getItem('lrnbiz_visited')) {
+            _onboardRender();
+            document.getElementById('onboardOverlay').style.display = 'flex';
+        } else {
+            document.getElementById('onboardOverlay').style.display = 'none';
+        }
+    })();
+    // Bfcache: if user pressed Back while the onboard overlay was open, hide it on restore.
+    window.addEventListener('pageshow', function(_ob_ps) {
+        if (_ob_ps.persisted) {
+            var _obOv = document.getElementById('onboardOverlay');
+            if (_obOv) _obOv.style.display = 'none';
+        }
+    });
+    </script>
+    {% endif %}
+
+    {% if request.path in ['/idea', '/customer', '/money', '/discovery'] %}
+    <!-- Run Analysis nudge — shown when student tries to proceed without running analysis -->
+    <div id="runAnalysisNudge" style="display:none;position:fixed;inset:0;z-index:19000;background:rgba(9,9,15,0.7);align-items:center;justify-content:center;padding:20px">
+        <div style="background:#16161E;border:1px solid rgba(167,139,250,0.4);border-radius:18px;padding:26px 28px;max-width:380px;width:100%;font-family:Nunito,sans-serif;box-shadow:0 12px 48px rgba(0,0,0,0.65);text-align:center">
+            <div style="font-size:2.4rem;margin-bottom:6px">🔬</div>
+            <div style="font-size:1.05rem;font-weight:900;color:var(--text);margin-bottom:8px">Run Analysis first!</div>
+            <p style="font-size:0.82rem;color:rgba(240,239,244,0.75);line-height:1.65;margin-bottom:20px">
+                You haven't checked this chapter yet.<br>
+                <strong style="color:#A78BFA">Run Analysis</strong> takes ~10 seconds and gives you a <strong style="color:#34D399">score + AI mentor tips</strong> — it's the most important step!
+            </p>
+            <button id="nudgeRunBtn" style="width:100%;background:linear-gradient(135deg,#A78BFA,#60A5FA);color:#09090F;font-weight:900;font-size:0.9rem;border:none;border-radius:99px;padding:12px 20px;cursor:pointer;font-family:Nunito,sans-serif;margin-bottom:10px">🔬 Yes, Run Analysis!</button>
+            <button id="nudgeSkipBtn" style="width:100%;background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(240,239,244,0.55);font-size:0.8rem;font-weight:700;border-radius:99px;padding:9px 20px;cursor:pointer;font-family:Nunito,sans-serif">Skip for now →</button>
+        </div>
+    </div>
+    <script>
+    function _showRunAnalysisNudge(onSkip) {
+        var ov = document.getElementById('runAnalysisNudge');
+        if (!ov) { onSkip(); return; }
+        ov.style.display = 'flex';
+        document.getElementById('nudgeRunBtn').onclick = function() {
+            ov.style.display = 'none';
+            var lb = document.getElementById('analyseLabBtn');
+            if (lb) { lb.scrollIntoView({behavior:'smooth', block:'center'}); setTimeout(function(){ lb.click(); }, 400); }
+        };
+        document.getElementById('nudgeSkipBtn').onclick = function() {
+            ov.style.display = 'none';
+            onSkip();
+        };
+        // Close on backdrop click
+        ov.addEventListener('click', function(e) { if (e.target === ov) { ov.style.display = 'none'; } }, {once:true});
+    }
+    </script>
+    {% endif %}
+
+    <!-- C7-27: Comeback message after 3+ day absence -->
+    <div id="comebackBanner" style="display:none;background:linear-gradient(90deg,rgba(167,139,250,0.15),rgba(52,211,153,0.1));border-bottom:1px solid rgba(167,139,250,0.25);padding:8px 16px;text-align:center;font-family:Nunito,sans-serif;font-size:0.82rem;font-weight:700;color:rgba(240,239,244,0.9)">
+        👋 Welcome back! You were last here <span id="comebackDays"></span> ago — your progress is saved. Ready to keep building? 🚀
+        <button onclick="document.getElementById('comebackBanner').style.display='none'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.9rem;margin-left:10px">✕</button>
+    </div>
+    <script>
+    (function(){
+        const last = localStorage.getItem('lrnbiz_last_visit');
+        const today = new Date().toDateString();
+        if (last && last !== today) {
+            const days = Math.round((new Date() - new Date(last)) / 86400000);
+            if (days >= 3) {
+                const el = document.getElementById('comebackBanner');
+                const dEl = document.getElementById('comebackDays');
+                if (el && dEl) {
+                    dEl.textContent = days === 1 ? 'yesterday' : days + ' days';
+                    el.style.display = 'block';
+                }
+            }
+        }
+        localStorage.setItem('lrnbiz_last_visit', today);
+    })();
+    </script>
+
+    <!-- ── Global Chapter Navigation ── -->
+    {% if request.path != '/' %}
+    <nav class="chapter-nav-strip">
+        <a href="/" class="cn-home" title="Home">🏠</a>
+        <span class="cn-divider">|</span>
+        {% for ch in chapters %}
+        <!-- Item 10: accesskey Alt+1..5 for keyboard nav -->
+        <!-- C6-45: aria-label for screen readers -->
+        {% set _ch_sc = audit_scores.get(ch.id) %}
+        {% set _ch_has_errors = _ch_sc and _ch_sc.get('violated_rules') and (_ch_sc.violated_rules | selectattr('severity', 'equalto', 'error') | list | length > 0) %}
+        <a href="{{ ch.route }}"
+           accesskey="{{ ch.chapter }}"
+           title="{{ ch.name }} (Alt+{{ ch.chapter }}){% if _ch_sc %}{% if _ch_has_errors %} — has errors to fix{% else %} — no errors{% endif %}{% endif %}"
+           aria-label="Chapter {{ ch.chapter }}: {{ ch.name }}{% if _ch_sc %} (completed{% if _ch_has_errors %}, has errors{% endif %}){% endif %}"
+           class="cn-step {% if request.path == ch.route %}cn-step--active{% endif %} {% if _ch_sc %}cn-step--done{% endif %} {% if _ch_has_errors %}cn-step--errors{% endif %}">
+            <!-- Item 2: step number badge -->
+            <span class="cn-num">{{ ch.chapter }}</span>
+            <span class="cn-emoji">{{ ch.emoji }}</span>
+            <span class="cn-name">{{ ch.name }}</span>
+            {% if _ch_sc %}
+                {% if _ch_has_errors %}
+                <span class="cn-done-tick" style="color:#F87171" title="Has errors to fix">✗</span>
+                {% else %}
+                <span class="cn-done-tick" style="color:#34D399" title="No errors">✓</span>
+                {% endif %}
+            {% endif %}
+            <!-- C6-26: Score pill under completed chapters -->
+            {% if _ch_sc and _ch_sc.hybrid_truth is defined %}
+            <span class="cn-score-pill" style="{% if _ch_has_errors %}background:rgba(248,113,113,0.15);color:#F87171;border-color:rgba(248,113,113,0.3){% endif %}">{{ _ch_sc.hybrid_truth }}</span>
+            {% endif %}
+        </a>
+        {% if not loop.last %}<span class="cn-arrow">›</span>{% endif %}
+        {% endfor %}
+        <span class="cn-divider">|</span>
+        <!-- Item 13: labelled icons for Final and Progress -->
+        <a href="/final" class="cn-audit-wrap" style="color:#34D399;border-color:rgba(52,211,153,.3)" title="Final Summary">
+            🏁<span class="cn-label">My Plan</span>
+        </a>
+        <span class="cn-divider">|</span>
+        <a href="/progress" class="cn-audit-wrap" title="Report Card & Scores">
+            📊<span class="cn-label">Scores</span>
+        </a>
+        {% if session.get('teacher_mode') %}
+        <a href="/eval" class="cn-audit-wrap" style="color:var(--orange);border-color:rgba(251,146,60,.3)" title="Evaluation Lab (Research)">
+            🧪<span class="cn-label">Eval</span>
+        </a>
+        <a href="/teacher/dashboard" class="cn-audit-wrap" style="color:#34D399;border-color:rgba(52,211,153,.3)" title="Teacher Dashboard — Create or view a class roster">
+            👩‍🏫<span class="cn-label">Teacher</span>
+        </a>
+        <a href="/about" class="cn-audit-wrap" style="color:#60A5FA;border-color:rgba(96,165,250,.3)" title="How LrnBiz Works — architecture overview">
+            ℹ️<span class="cn-label">About</span>
+        </a>
+        {% endif %}
+        <!-- Light / dark theme toggle -->
+        <button id="themeToggleBtn" class="cn-audit" title="Switch to light mode"
+                style="background:none;border:1px solid rgba(255,255,255,0.12);cursor:pointer;font-size:0.9rem;padding:3px 8px;border-radius:99px;color:var(--muted)"
+                onclick="(function(){const lt=document.body.classList.toggle('light-theme');localStorage.setItem('lrnbiz_theme',lt?'light':'dark');const btn=document.getElementById('themeToggleBtn');btn.textContent=lt?'🌙':'☀️';btn.title=lt?'Switch to dark mode':'Switch to light mode';})()">
+            ☀️
+        </button>
+        <button id="soundToggleBtn" class="cn-audit" title="Toggle sound effects"
+                style="background:none;border:1px solid rgba(255,255,255,0.12);cursor:pointer;font-size:1rem;padding:3px 8px;border-radius:99px;color:var(--muted)"
+                onclick="(function(){const on=SoundFX.toggle();document.getElementById('soundToggleBtn').textContent=on?'🔊':'🔇';document.getElementById('soundToggleBtn').title=on?'Sound on (click to mute)':'Sound off (click to enable)'})()">
+            🔊
+        </button>
+        <!-- Item 44 / C6-29: Glossary slide-in drawer toggle -->
+        <button id="glossaryBtn" class="cn-audit" title="Open glossary of terms"
+                style="background:none;border:1px solid rgba(255,255,255,0.12);cursor:pointer;font-size:0.85rem;padding:3px 8px;border-radius:99px;color:var(--muted)"
+                onclick="openGlossary()">
+            📖
+        </button>
+        <!-- C6-30: Reset moved to Progress page — kept here as emergency but with harder confirm -->
+        <a href="/reset" class="cn-restart" title="Start over — reset all progress (also available on Scores page)"
+           style="color:#F87171;border-color:rgba(248,113,113,0.2);font-size:0.7rem;padding:3px 8px"
+           onclick="const v=prompt('Type RESET to confirm — all your progress will be permanently deleted!');return v==='RESET'">↺ Reset</a>
+    </nav>
+    <!-- Item 12: Sticky mobile chapter sub-header -->
+    <div class="mobile-chapter-header" id="mobileChapterHeader">
+        {% for ch in chapters %}{% if request.path == ch.route %}{{ ch.emoji }} {{ ch.name }}{% endif %}{% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- C6-29: Glossary as slide-in drawer (stays visible while reading, doesn't close on scroll) -->
+    <!-- Backdrop: click outside to close -->
+    <div id="glossaryBackdrop" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(9,9,15,0.5)" onclick="closeGlossary()"></div>
+    <div id="glossaryOverlay" role="dialog" aria-label="Glossary" style="position:fixed;top:0;right:-340px;width:320px;max-width:95vw;height:100%;z-index:9999;background:var(--s2);border-left:1px solid rgba(255,255,255,0.1);overflow-y:auto;padding:20px 18px 40px;transition:right 0.3s cubic-bezier(0.4,0,0.2,1);box-shadow:-4px 0 24px rgba(0,0,0,0.4)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+            <h2 style="margin:0;font-size:1rem;font-weight:900">📖 Glossary</h2>
+            <button onclick="closeGlossary()" aria-label="Close glossary" style="background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;padding:2px 6px">✕</button>
+        </div>
+        <dl>
+            <div class="glossary-term"><dt>Triple Truth — </dt><dd>LrnBiz's 3-engine feedback: Rules Check + AI Optimist + Mentor Feedback. Three views of your business idea at once.</dd></div>
+            <div class="glossary-term"><dt>Rules Check 🐍 — </dt><dd>Pure computer logic that checks your answers against predefined rules. No AI involved — just facts.</dd></div>
+            <div class="glossary-term"><dt>AI Optimist 🤖 — </dt><dd>An AI that reads only your answers and acts like a cheerful friend. It's encouraging but can be too nice!</dd></div>
+            <div class="glossary-term"><dt>Mentor Feedback 🧠 — </dt><dd>An AI that reads your answers AND which rules you broke. It's honest and helpful — this is the score that matters most.</dd></div>
+            <div class="glossary-term"><dt>AI Honesty Score — </dt><dd>How much more optimistic the AI Optimist was vs the Mentor. A low score means the AI was genuinely right to be positive!</dd></div>
+            <div class="glossary-term"><dt>Mentor Score 🧠 — </dt><dd>Your real business readiness score (0–100). The Mentor reads both your answers and the rules — this is the most honest score. Always trust this one!</dd></div>
+            <div class="glossary-term"><dt>XP — </dt><dd>Experience Points earned for completing chapters. Max 240 XP per chapter, 1200 total.</dd></div>
+            <div class="glossary-term"><dt>Niche — </dt><dd>The specific WHO + WHAT + WHERE of your business. Not "everyone" — a precise target.</dd></div>
+            <div class="glossary-term"><dt>Break-even — </dt><dd>When your revenue has paid back your startup costs. After this point, everything is profit.</dd></div>
+            <div class="glossary-term"><dt>Unit Cost — </dt><dd>What it costs YOU to make or deliver one item or service.</dd></div>
+            <div class="glossary-term"><dt>Unit Price — </dt><dd>What you charge the customer for one item or service.</dd></div>
+            <div class="glossary-term"><dt>Monthly Profit — </dt><dd>(Unit Price − Unit Cost) × number sold per month.</dd></div>
+            <div class="glossary-term"><dt>Startup Cost — </dt><dd>Total money needed to start the business before your first sale.</dd></div>
+            <div class="glossary-term"><dt>Empathy Map — </dt><dd>A tool showing what your customer Thinks, Feels, Sees, and Does about their problem.</dd></div>
+            <div class="glossary-term"><dt>Radar — </dt><dd>The 6-axis chart showing your Entrepreneur Stats: Knowledge, Skills, Gold, Influence, Target, Spirit.</dd></div>
+        </dl>
+    </div>
+
+    <!-- O15-03: Mobile ITS drawer — floating button + bottom sheet (hidden on desktop) -->
+    {% if request.path in ['/context', '/idea', '/customer', '/money', '/discovery'] %}
+    <button id="mobileItsBtn"
+            onclick="toggleMobileItsDrawer()"
+            style="display:none;position:fixed;bottom:16px;left:16px;z-index:7900;background:rgba(167,139,250,0.18);border:1px solid rgba(167,139,250,0.4);color:#A78BFA;border-radius:99px;font-size:0.78rem;font-weight:900;padding:8px 14px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.35)">
+        📊 Feedback
+    </button>
+    <div id="mobileItsBackdrop" onclick="closeMobileItsDrawer()"
+         style="display:none;position:fixed;inset:0;z-index:7901;background:rgba(9,9,15,0.6)"></div>
+    <div id="mobileItsDrawer"
+         style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:7902;background:var(--s2);border-top:1px solid rgba(167,139,250,0.25);border-radius:20px 20px 0 0;padding:16px 16px 32px;max-height:75vh;overflow-y:auto;box-shadow:0 -8px 32px rgba(0,0,0,0.5)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <div style="font-size:0.8rem;font-weight:900;color:#A78BFA">📊 Mentor Feedback</div>
+            <button onclick="closeMobileItsDrawer()" style="background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;padding:2px 8px">✕</button>
+        </div>
+        <div id="mobileItsContent" style="font-size:0.82rem;color:rgba(240,239,244,0.85);line-height:1.65">
+            <em style="color:var(--muted)">Run Analysis to see your feedback here.</em>
+        </div>
+    </div>
+    <script>
+    function toggleMobileItsDrawer() {
+        const open = document.getElementById('mobileItsDrawer').style.display !== 'none'
+            && document.getElementById('mobileItsDrawer').style.display !== '';
+        if (open) { closeMobileItsDrawer(); } else { openMobileItsDrawer(); }
+    }
+    function openMobileItsDrawer() {
+        // Sync content from Kid View panel
+        const kidView = document.getElementById('kidView');
+        const dest = document.getElementById('mobileItsContent');
+        if (kidView && dest) dest.innerHTML = kidView.innerHTML;
+        document.getElementById('mobileItsDrawer').style.display = '';
+        document.getElementById('mobileItsBackdrop').style.display = '';
+    }
+    function closeMobileItsDrawer() {
+        document.getElementById('mobileItsDrawer').style.display = 'none';
+        document.getElementById('mobileItsBackdrop').style.display = 'none';
+    }
+    // Show button only on mobile (≤1200px where research panel is hidden)
+    (function() {
+        const btn = document.getElementById('mobileItsBtn');
+        if (!btn) return;
+        function checkMobile() { btn.style.display = window.innerWidth <= 1200 ? '' : 'none'; }
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+    })();
+    </script>
+    {% endif %}
+
+    {% block story_banner %}{% endblock %}
+
+    <!-- C6-27: Floating "Stuck? Get a hint" button (shown on chapter pages) -->
+    {% if request.path in ['/context', '/idea', '/customer', '/money', '/discovery'] %}
+    <button id="stuckHintBtn" onclick="showStuckHint()"
+            title="Stuck? Get a Socratic hint"
+            style="position:fixed;bottom:80px;right:16px;z-index:8000;background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.3);color:#A78BFA;border-radius:99px;font-size:0.78rem;font-weight:900;padding:8px 14px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.3);transition:all 0.2s"
+            onmouseenter="this.style.background='rgba(167,139,250,0.28)'"
+            onmouseleave="this.style.background='rgba(167,139,250,0.15)'">
+        💬 Stuck?
+    </button>
+    <div id="stuckHintModal" style="display:none;position:fixed;bottom:140px;right:16px;z-index:8001;background:var(--s2);border:1px solid rgba(167,139,250,0.3);border-radius:14px;padding:16px 18px;max-width:280px;box-shadow:0 8px 24px rgba(0,0,0,0.4)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+            <div style="font-size:0.75rem;font-weight:900;color:#A78BFA">💬 Mentor Hint</div>
+            <button onclick="document.getElementById('stuckHintModal').style.display='none'" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.9rem">✕</button>
+        </div>
+        <div id="stuckHintText" style="font-size:0.82rem;color:rgba(240,239,244,0.85);line-height:1.6">
+            <em style="color:var(--muted)">Loading hint…</em>
+        </div>
+    </div>
+    <script>
+    let _stuckCooling = false;
+    async function showStuckHint() {
+        if (_stuckCooling) return;
+        const modal = document.getElementById('stuckHintModal');
+        const textEl = document.getElementById('stuckHintText');
+        modal.style.display = '';
+        textEl.innerHTML = '<em style="color:var(--muted)">⏳ Getting your hint…</em>';
+        _stuckCooling = true;
+        setTimeout(() => { _stuckCooling = false; }, 10000);
+        const page = window.location.pathname.replace('/', '') || 'context';
+        const answers = {};
+        document.querySelectorAll('input[name], select[name], textarea[name]').forEach(el => {
+            if (el.value) answers[el.name] = el.value;
+        });
+        try {
+            const res = await fetch('/api/hint', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({page, answers})
+            });
+            const data = await res.json();
+            textEl.textContent = data.hint || '💡 Try describing your customer more specifically — who exactly has this problem?';
+        } catch {
+            textEl.textContent = '💡 Think about who your customer really is, and whether they would pay money to solve this problem.';
+        }
+    }
+    </script>
+    {% endif %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div id="flashMessages" style="position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none">
+        {% for category, message in messages %}
+        <div style="background:{% if category=='locked' %}rgba(251,191,36,0.97){% else %}rgba(52,211,153,0.97){% endif %};color:#09090F;padding:10px 20px;border-radius:10px;font-size:0.82rem;font-weight:700;box-shadow:0 4px 20px rgba(0,0,0,0.35);pointer-events:auto;cursor:pointer"
+             onclick="this.parentElement.remove()">
+            {% if category == 'locked' %}🔒{% endif %} {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    <script>setTimeout(()=>{const f=document.getElementById('flashMessages');if(f)f.remove();},4000);</script>
+    {% endif %}
+    {% endwith %}
+
+    <script src="{{ url_for('static', filename='main.js') }}?v=6"></script>
+    {% block content %}{% endblock %}
+    <script>
+    // Init sound toggle from saved preference
+    (function(){
+        const btn = document.getElementById('soundToggleBtn');
+        if (!btn) return;
+        const on = SoundFX.isEnabled();
+        btn.textContent = on ? '🔊' : '🔇';
+        btn.title = on ? 'Sound on (click to mute)' : 'Sound off (click to enable)';
+    })();
+
+    // Restore light/dark theme preference
+    (function(){
+        const btn = document.getElementById('themeToggleBtn');
+        if (localStorage.getItem('lrnbiz_theme') === 'light') {
+            document.body.classList.add('light-theme');
+            if (btn) { btn.textContent = '🌙'; btn.title = 'Switch to dark mode'; }
+        }
+    })();
+
+    // Story banner: persist dismiss across page loads
+    (function() {
+        const path = window.location.pathname.replace(/\//g,'') || 'home';
+        const key  = 'lrnbiz_banner_' + path;
+        const b = document.getElementById('storyBanner');
+        if (b && localStorage.getItem(key) === '1') b.style.display = 'none';
+        if (b) {
+            const closeBtn = b.querySelector('.story-banner-close');
+            if (closeBtn) closeBtn.addEventListener('click', () => localStorage.setItem(key, '1'));
+        }
+    })();
+
+    // C7-37: Starter sentence helper — prefills a textarea if it's empty or just started
+    function _starter(fieldId, text) {
+        const el = document.getElementById(fieldId);
+        if (!el) return;
+        if (!el.value || el.value.trim() === '') {
+            el.value = text;
+        } else if (!el.value.includes(text)) {
+            // Append the starter only if not already started
+            el.value = text;
+        }
+        el.focus();
+        el.setSelectionRange(el.value.length, el.value.length);
+        el.dispatchEvent(new Event('input'));
+    }
+
+    // C7-28: Inline glossary tooltips — any element with data-gloss="term" gets a ? badge
+    (function(){
+        const GLOSS = {
+            'break-even':    'The point where your revenue has paid back all startup costs. After this, everything is profit!',
+            'unit cost':     'What it costs YOU to make or deliver one item or service.',
+            'unit price':    'What you charge the customer for one unit.',
+            'startup cost':  'Total money you need to spend BEFORE your first sale.',
+            'monthly profit':'(Unit Price − Unit Cost) × units sold per month.',
+            'niche':         'Your specific WHO + WHAT + WHERE. Not "everyone" — a precise target customer.',
+            'mentor score':  'Your real business readiness score (0–100). The Mentor reads both your answers AND the rules.',
+            'ai honesty':    'How much more optimistic the AI was vs the Mentor. High = AI was too kind!',
+            'empathy map':   'A tool showing what your customer Thinks, Feels, Sees, and Does about their problem.',
+            'triple truth':  'LrnBiz\'s 3-engine feedback: Rules Check + AI Optimist + Mentor Score.',
+        };
+        document.querySelectorAll('[data-gloss]').forEach(el => {
+            const term = (el.dataset.gloss || '').toLowerCase();
+            const def = GLOSS[term];
+            if (!def) return;
+            const badge = document.createElement('span');
+            badge.title = def;
+            badge.setAttribute('aria-label', 'Definition: ' + def);
+            badge.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;background:rgba(167,139,250,0.25);color:#A78BFA;font-size:0.6rem;font-weight:900;cursor:help;margin-left:4px;vertical-align:middle;border:1px solid rgba(167,139,250,0.4)';
+            badge.textContent = '?';
+            el.appendChild(badge);
+        });
+    })();
+
+    // C6-29: Glossary slide-in drawer functions
+    function openGlossary() {
+        const d = document.getElementById('glossaryOverlay');
+        const b = document.getElementById('glossaryBackdrop');
+        if (d) d.style.right = '0';
+        if (b) b.style.display = '';
+    }
+    function closeGlossary() {
+        const d = document.getElementById('glossaryOverlay');
+        const b = document.getElementById('glossaryBackdrop');
+        if (d) d.style.right = '-340px';
+        if (b) b.style.display = 'none';
+    }
+
+    // C6-47: Keyboard support for Research View tabs (Enter/Space to activate)
+    document.querySelectorAll('.rs-tab').forEach(function(tab) {
+        tab.setAttribute('tabindex', '0');
+        tab.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tab.click(); }
+        });
+    });
+
+    // Item 48: Offline state detection
+    (function(){
+        const banner = document.getElementById('offlineBanner');
+        if (!banner) return;
+        function updateOnline() { banner.style.display = navigator.onLine ? 'none' : 'block'; }
+        updateOnline();
+        window.addEventListener('online',  updateOnline);
+        window.addEventListener('offline', updateOnline);
+    })();
+    </script>
+    <script>
+    // C8-24: toggleHint with aria-expanded support
+    function toggleHint(id,btn){
+        const el=document.getElementById(id);
+        const open=el.style.display==='none'||el.style.display==='';
+        el.style.display=open?'block':'none';
+        if(btn){btn.setAttribute('aria-expanded',open?'true':'false');}
+        else{const b=document.querySelector('[onclick*="toggleHint(\''+id+'\'"]');if(b)b.setAttribute('aria-expanded',open?'true':'false');}
+    }
+    // C8-26: pill aria-pressed helper — works with data-pill-group or .pill-row[data-field]
+    function setPillPressed(btn){
+        const grp=btn.closest('[data-pill-group]')||btn.closest('.pill-row[data-field]');
+        if(grp){grp.querySelectorAll('.pill,[role="radio"]').forEach(b=>{b.setAttribute('aria-checked','false');b.setAttribute('aria-pressed','false');});}
+        btn.setAttribute('aria-checked','true');
+        btn.setAttribute('aria-pressed','true');
+    }
+    // C8-26: Initialize role="radio" and aria-checked on all pill buttons at DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', function(){
+        document.querySelectorAll('.pill-row[data-field]').forEach(function(row){
+            row.setAttribute('role','radiogroup');
+            row.querySelectorAll('.pill').forEach(function(btn){
+                btn.setAttribute('role','radio');
+                btn.setAttribute('aria-checked', btn.classList.contains('active') ? 'true' : 'false');
+                btn.setAttribute('aria-pressed', btn.classList.contains('active') ? 'true' : 'false');
+            });
+        });
+    });
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

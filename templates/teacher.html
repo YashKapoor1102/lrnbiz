@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Plan — LrnBiz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body { max-width: 780px; margin: 0 auto; padding: 24px 16px 60px; font-family: Nunito, sans-serif; }
+
+        /* ── Header ── */
+        .tv-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+        .tv-logo { font-size: 1.5rem; font-weight: 900; color: var(--purple); letter-spacing: -0.02em; }
+        .tv-error { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); border-radius: 10px; padding: 18px 20px; color: #F87171; font-size: 0.9rem; text-align: center; margin-top: 60px; }
+
+        /* ── Overall banner ── */
+        .tv-banner { border-radius: 16px; padding: 20px 22px; margin-bottom: 20px; display: flex; align-items: center; gap: 20px; }
+        .tv-banner-score { font-size: 3rem; font-weight: 900; line-height: 1; min-width: 64px; text-align: center; }
+        .tv-banner-label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.7; margin-top: 2px; }
+        .tv-banner-desc { font-size: 1rem; font-weight: 800; color: var(--text); }
+        .tv-banner-sub { font-size: 0.75rem; color: var(--muted); margin-top: 3px; }
+
+        /* ── Two-column info grid ── */
+        .tv-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+        @media (max-width: 580px) { .tv-info-grid { grid-template-columns: 1fr; } }
+        .tv-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 16px 18px; }
+        .tv-card-title { font-size: 0.68rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 10px; }
+        .tv-info-row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 5px; }
+        .tv-info-label { font-size: 0.75rem; color: var(--muted); }
+        .tv-info-val { font-size: 0.82rem; font-weight: 700; color: var(--text); text-align: right; max-width: 58%; word-break: break-word; }
+
+        /* ── Needs attention ── */
+        .tv-alert { background: rgba(248,113,113,0.07); border: 1px solid rgba(248,113,113,0.2); border-radius: 12px; padding: 14px 16px; margin-bottom: 20px; }
+        .tv-alert-title { font-size: 0.72rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.07em; color: #F87171; margin-bottom: 10px; }
+        .tv-alert-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .tv-alert-module { font-size: 0.78rem; font-weight: 800; color: var(--text); min-width: 80px; }
+        .tv-alert-score { font-size: 0.78rem; font-weight: 900; color: #F87171; min-width: 36px; }
+        .tv-alert-why { font-size: 0.72rem; color: rgba(240,239,244,0.7); line-height: 1.5; }
+
+        /* ── Chapter accordion ── */
+        .tv-chapters { margin-bottom: 20px; }
+        .tv-chapter { border: 1px solid var(--card-border); border-radius: 12px; margin-bottom: 8px; overflow: hidden; }
+        .tv-chapter-header { display: flex; align-items: center; gap: 12px; padding: 13px 16px; cursor: pointer; background: var(--card-bg); transition: background 0.15s; user-select: none; }
+        .tv-chapter-header:hover { background: rgba(255,255,255,0.04); }
+        .tv-chapter-label { font-size: 0.85rem; font-weight: 800; color: var(--text); flex: 1; }
+        .tv-chapter-grade { font-size: 0.78rem; font-weight: 900; padding: 3px 10px; border-radius: 99px; }
+        .grade-high  { background: rgba(52,211,153,0.15); color: #34D399; }
+        .grade-mid   { background: rgba(255,217,61,0.15);  color: #FFD93D; }
+        .grade-low   { background: rgba(248,113,113,0.15); color: #F87171; }
+        .grade-none  { background: rgba(255,255,255,0.06); color: var(--muted); }
+        .tv-chapter-arrow { font-size: 0.75rem; color: var(--muted); transition: transform 0.2s; }
+        .tv-chapter.open .tv-chapter-arrow { transform: rotate(90deg); }
+        .tv-chapter-body { display: none; padding: 14px 16px 16px; border-top: 1px solid var(--card-border); background: rgba(255,255,255,0.01); }
+        .tv-chapter.open .tv-chapter-body { display: block; }
+
+        /* Score bars inside chapter */
+        .tv-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+        .tv-bar-label { font-size: 0.68rem; color: var(--muted); font-weight: 700; min-width: 72px; }
+        .tv-bar-track { flex: 1; height: 7px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; }
+        .tv-bar-fill  { height: 100%; border-radius: 4px; transition: width 0.5s; }
+        .tv-bar-num   { font-size: 0.72rem; font-weight: 900; min-width: 30px; text-align: right; }
+        .tv-gap-pill  { display: inline-block; margin-top: 8px; padding: 3px 10px; border-radius: 99px; font-size: 0.68rem; font-weight: 800; }
+
+        /* Teacher notes */
+        .tv-notes-card { margin-bottom: 20px; }
+        .tv-meta { font-size: 0.68rem; color: var(--muted); text-align: right; margin-top: 16px; }
+        .tv-radar-wrap { max-width: 260px; margin: 0 auto; }
+
+        /* Explainer toggle */
+        .tv-explainer { background: rgba(255,217,61,0.05); border: 1px solid rgba(255,217,61,0.15); border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
+        .tv-explainer-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; cursor: pointer; }
+        .tv-explainer-title { font-size: 0.75rem; font-weight: 800; color: #FFD93D; }
+        .tv-explainer-body { display: none; padding: 0 14px 12px; font-size: 0.75rem; color: rgba(240,239,244,0.75); line-height: 1.7; }
+        .tv-explainer.open .tv-explainer-body { display: block; }
+    </style>
+</head>
+<body>
+
+{% if request.args.get('print') == '1' %}
+<style>.tv-print-hide { display: none !important; } @media print { body { -webkit-print-color-adjust: exact; color-adjust: exact; } }</style>
+{% endif %}
+
+<div class="tv-header tv-print-hide">
+    <div class="tv-logo">📋 LrnBiz</div>
+    <div style="display:flex;gap:8px;align-items:center">
+        {% if not snapshot.is_sample %}
+        <a href="?{{ request.query_string.decode() }}&print=1" target="_blank"
+           style="font-size:0.75rem;font-weight:700;color:var(--muted);text-decoration:none;padding:5px 12px;border:1px solid rgba(255,255,255,0.12);border-radius:8px">🖨️ Print</a>
+        {% endif %}
+        {% if snapshot.is_sample %}
+        <span style="font-size:0.72rem;font-weight:800;background:rgba(167,139,250,0.15);color:#A78BFA;padding:4px 12px;border-radius:99px">Sample Plan</span>
+        {% endif %}
+    </div>
+</div>
+
+{% if error %}
+<div class="tv-error">
+    ⚠️ {{ error }}<br>
+    <small style="opacity:0.7;margin-top:6px;display:block">Ask the student to generate a new share link from their Progress page.</small>
+</div>
+{% else %}
+
+{% set modules = ['context','idea','customer','money','discovery'] %}
+{% set mod_labels = {'context':'🌟 Context','idea':'💡 Idea','customer':'🎯 Customer','money':'💰 Money','discovery':'🔍 Discovery'} %}
+{% set audit = snapshot.audit_scores %}
+
+{# Compute overall #}
+{% set ns = namespace(total=0, count=0) %}
+{% for m in modules %}{% if m in audit %}{% set ns.total = ns.total + (audit[m].hybrid_truth or 0) %}{% set ns.count = ns.count + 1 %}{% endif %}{% endfor %}
+{% set overall = (ns.total / ns.count) | round | int if ns.count > 0 else 0 %}
+
+{# Banner colour #}
+{% if overall >= 75 %}{% set banner_color = '#34D399' %}{% set banner_bg = 'rgba(52,211,153,0.08)' %}{% set banner_border = 'rgba(52,211,153,0.25)' %}
+{% elif overall >= 50 %}{% set banner_color = '#FFD93D' %}{% set banner_bg = 'rgba(255,217,61,0.08)' %}{% set banner_border = 'rgba(255,217,61,0.25)' %}
+{% else %}{% set banner_color = '#F87171' %}{% set banner_bg = 'rgba(248,113,113,0.08)' %}{% set banner_border = 'rgba(248,113,113,0.25)' %}{% endif %}
+
+<!-- Overall banner -->
+<div class="tv-banner" style="background:{{ banner_bg }};border:1px solid {{ banner_border }}">
+    <div style="text-align:center">
+        <div class="tv-banner-score" style="color:{{ banner_color }}">{{ overall }}</div>
+        <div class="tv-banner-label">/100</div>
+    </div>
+    <div>
+        <div class="tv-banner-desc">
+            {% if overall >= 75 %}🏆 Strong business plan
+            {% elif overall >= 60 %}👍 Good progress — a few areas to strengthen
+            {% elif overall >= 40 %}📚 Developing — keep working on the plan
+            {% else %}🌱 Early stage — lots of room to grow
+            {% endif %}
+        </div>
+        <div class="tv-banner-sub">{{ ns.count }} of 5 chapters completed · {{ snapshot.name or 'Student' }}{% if snapshot.grade_level %} · {{ snapshot.grade_level }}{% endif %}</div>
+        {% if ns.count > 0 %}
+        {% set weakest = namespace(mod='', score=999) %}
+        {% for m in modules %}{% if m in audit and (audit[m].hybrid_truth or 0) < weakest.score %}{% set weakest.mod = mod_labels[m] %}{% set weakest.score = audit[m].hybrid_truth or 0 %}{% endif %}{% endfor %}
+        {% if weakest.score < 60 %}
+        <div style="margin-top:6px;font-size:0.72rem;color:#F87171;font-weight:800">Weakest area: {{ weakest.mod }} ({{ weakest.score }}/100)</div>
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+<!-- Student info + radar -->
+<div class="tv-info-grid">
+    <div class="tv-card">
+        <p class="tv-card-title">Student Profile</p>
+        <div class="tv-info-row"><span class="tv-info-label">What they sell</span><span class="tv-info-val">{{ snapshot.sell_what or '—' }}</span></div>
+        <div class="tv-info-row"><span class="tv-info-label">Who they sell to</span><span class="tv-info-val">{{ snapshot.sell_to or '—' }}</span></div>
+        <div class="tv-info-row"><span class="tv-info-label">Where they sell</span><span class="tv-info-val">{{ snapshot.sell_where or '—' }}</span></div>
+        <div class="tv-info-row"><span class="tv-info-label">Business type</span><span class="tv-info-val">{{ {'food-beverage':'Food & Drink','service':'Service','skills-for-hire':'Skills & Tutoring','digital-product':'Digital Product','physical-product':'Physical Product','resale-retail':'Resale','maker':'Custom / Maker','content-media':'Content & Media','event-experience':'Events & Experience','marketplace':'Marketplace','expert':'Expert / Coaching'}.get(snapshot.business_type, snapshot.business_type) or '—' }}</span></div>
+        {% if snapshot.ch1_profile and snapshot.ch1_profile.get('_archetype') and snapshot.ch1_profile['_archetype'] not in ('other', '') %}
+        <div class="tv-info-row"><span class="tv-info-label">Archetype</span><span class="tv-info-val" style="color:#A78BFA">{{ snapshot.ch1_profile['_archetype'].replace('-',' ') }}</span></div>
+        {% endif %}
+        {% if snapshot.ch1_profile %}
+        <div class="tv-info-row"><span class="tv-info-label">Weekly hours</span><span class="tv-info-val">{{ snapshot.ch1_profile.hours_per_week or '—' }} hrs/week</span></div>
+        <div class="tv-info-row"><span class="tv-info-label">Budget</span><span class="tv-info-val">${{ snapshot.ch1_profile.budget or '—' }}</span></div>
+        {% endif %}
+    </div>
+    <div class="tv-card">
+        <p class="tv-card-title">Entrepreneur Radar</p>
+        {% if snapshot.radar_scores %}
+        <div class="tv-radar-wrap"><canvas id="tvRadar" width="240" height="240"></canvas></div>
+        {% else %}
+        <p style="font-size:0.8rem;color:var(--muted);text-align:center;padding:24px 0">No radar data yet</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- What do these scores mean? (collapsible) -->
+<div class="tv-explainer tv-print-hide" id="scoreExplainer">
+    <div class="tv-explainer-header" onclick="toggleExplainer()">
+        <span class="tv-explainer-title">ℹ️ What do the three scores mean?</span>
+        <span style="font-size:0.75rem;color:var(--muted)" id="explainerArrow">▶</span>
+    </div>
+    <div class="tv-explainer-body">
+        <strong style="color:#60A5FA">Rules score</strong> — deterministic checks: does the plan have a specific customer, a real problem, a viable margin?<br>
+        <strong style="color:#34D399">AI Optimist</strong> — what a purely encouraging AI says when not shown any rules. Naturally generous.<br>
+        <strong style="color:#A78BFA">Mentor score</strong> — the honest mentor, aware of violations. Should be ≤ AI Optimist.<br><br>
+        <strong style="color:#FFD93D">AI Honesty Gap</strong> = AI Optimist − Mentor. A gap > 20 pts means the AI gave much more credit than the plan deserved — a conversation prompt for the student.
+    </div>
+</div>
+
+{# Find chapters with score < 60 for the "needs attention" block #}
+{% set needs_work = namespace(items=[]) %}
+{% for m in modules %}
+  {% if m in audit and (audit[m].hybrid_truth or 0) < 60 %}
+    {% set needs_work.items = needs_work.items + [m] %}
+  {% endif %}
+{% endfor %}
+
+{% if needs_work.items %}
+<div class="tv-alert">
+    <div class="tv-alert-title">⚠️ Needs Attention (Mentor score below 60)</div>
+    {% for m in needs_work.items %}
+    {% set a = audit[m] %}
+    <div class="tv-alert-row">
+        <span class="tv-alert-module">{{ mod_labels[m] }}</span>
+        <span class="tv-alert-score">{{ a.hybrid_truth or 0 }}/100</span>
+        <span class="tv-alert-why">
+            {% if (a.hybrid_truth or 0) < 30 %}Major gaps — review this chapter with the student
+            {% elif (a.hybrid_truth or 0) < 50 %}Several issues to address before moving forward
+            {% else %}A few things to strengthen — nearly there
+            {% endif %}
+        </span>
+    </div>
+    {% endfor %}
+    <div style="font-size:0.7rem;color:var(--muted);margin-top:6px">Click each chapter below to see detailed scores and AI feedback.</div>
+</div>
+{% endif %}
+
+<!-- Chapter accordion -->
+<div class="tv-chapters">
+    <div style="font-size:0.68rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:10px">Chapter Results — click any chapter to expand</div>
+
+    {% for m in modules %}
+    {% if m in audit %}
+    {% set a = audit[m] %}
+    {% set ht = a.hybrid_truth or 0 %}
+    {% set gap = ((a.pure_truth or 0) - ht) %}
+    {% set gradeclass = 'grade-high' if ht >= 70 else ('grade-mid' if ht >= 45 else 'grade-low') %}
+    {# Auto-open chapters with low scores #}
+    <div class="tv-chapter {% if ht < 60 %}open{% endif %}" id="ch-{{ m }}">
+        <div class="tv-chapter-header" onclick="toggleChapter('{{ m }}')">
+            <span class="tv-chapter-label">{{ mod_labels[m] }}</span>
+            <span class="tv-chapter-grade {{ gradeclass }}">{{ ht }}/100</span>
+            {% if gap > 20 %}<span style="font-size:0.65rem;color:#FB923C;font-weight:800;margin-left:4px">AI gap +{{ gap }}</span>{% endif %}
+            <span class="tv-chapter-arrow">▶</span>
+        </div>
+        <div class="tv-chapter-body">
+            <div class="tv-bar-row">
+                <span class="tv-bar-label">📐 Rules</span>
+                <div class="tv-bar-track"><div class="tv-bar-fill" style="width:{{ a.symbolic_score or 0 }}%;background:#60A5FA"></div></div>
+                <span class="tv-bar-num" style="color:#60A5FA">{{ a.symbolic_score or 0 }}</span>
+            </div>
+            <div class="tv-bar-row">
+                <span class="tv-bar-label">🤖 AI Optimist</span>
+                <div class="tv-bar-track"><div class="tv-bar-fill" style="width:{{ a.pure_truth or 0 }}%;background:#34D399"></div></div>
+                <span class="tv-bar-num" style="color:#34D399">{{ a.pure_truth or 0 }}</span>
+            </div>
+            <div class="tv-bar-row">
+                <span class="tv-bar-label">🧑‍🏫 Mentor</span>
+                <div class="tv-bar-track"><div class="tv-bar-fill" style="width:{{ ht }}%;background:#A78BFA"></div></div>
+                <span class="tv-bar-num" style="color:#A78BFA">{{ ht }}</span>
+            </div>
+            {% if gap > 20 %}
+            <div class="tv-gap-pill" style="background:rgba(251,146,60,0.15);color:#FB923C">⚠️ AI was {{ gap }} pts more generous than Mentor — worth a conversation</div>
+            {% elif gap > 10 %}
+            <div class="tv-gap-pill" style="background:rgba(255,217,61,0.15);color:#FFD93D">ℹ️ AI slightly optimistic (+{{ gap }} pts)</div>
+            {% else %}
+            <div class="tv-gap-pill" style="background:rgba(52,211,153,0.12);color:#34D399">✅ AI and Mentor aligned</div>
+            {% endif %}
+        </div>
+    </div>
+    {% else %}
+    <div class="tv-chapter" id="ch-{{ m }}">
+        <div class="tv-chapter-header" style="cursor:default">
+            <span class="tv-chapter-label" style="color:var(--muted)">{{ mod_labels[m] }}</span>
+            <span class="tv-chapter-grade grade-none">Not started</span>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+
+<!-- Business story -->
+{% if snapshot.story %}
+<div class="tv-card" style="margin-bottom:16px">
+    <p class="tv-card-title">💬 Student's Business Story</p>
+    <div style="font-size:0.82rem;line-height:1.65;color:var(--text);white-space:pre-wrap">{{ snapshot.story }}</div>
+</div>
+{% endif %}
+
+<!-- Teacher notes (hidden from sample) -->
+{% if not snapshot.is_sample %}
+<div class="tv-card tv-notes-card tv-print-hide">
+    <p class="tv-card-title">✍️ Teacher Notes (private — saved in your browser only)</p>
+    <textarea id="teacherNotes" rows="3" placeholder="Add your feedback or notes here..."
+              style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 12px;font-family:Nunito,sans-serif;font-size:0.8rem;color:var(--text);resize:vertical;box-sizing:border-box"
+              oninput="localStorage.setItem('lrnbiz_tn_{{ snapshot.token|default('') }}', this.value)"></textarea>
+    <div style="font-size:0.65rem;color:var(--muted);margin-top:4px">Not shared with the student. Print to include in report.</div>
+</div>
+<div id="teacherNotesPrint" style="display:none;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:12px;margin-bottom:16px">
+    <div style="font-size:0.65rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:6px">Teacher Notes:</div>
+    <div id="teacherNotesPrintText" style="font-size:0.8rem;color:var(--text);white-space:pre-wrap;line-height:1.6"></div>
+</div>
+<script>
+(function(){
+    const k = 'lrnbiz_tn_{{ snapshot.token|default('') }}';
+    const v = localStorage.getItem(k);
+    if (v) document.getElementById('teacherNotes').value = v;
+})();
+</script>
+{% endif %}
+
+<div class="tv-meta">{{ (snapshot.created_at or '')[:16].replace('T',' ') }} UTC · {% if snapshot.is_sample %}Sample plan — demonstration only{% else %}Read-only snapshot{% endif %}</div>
+
+<script>
+function toggleChapter(id) {
+    const el = document.getElementById('ch-' + id);
+    if (el) el.classList.toggle('open');
+}
+function toggleExplainer() {
+    const el = document.getElementById('scoreExplainer');
+    const arrow = document.getElementById('explainerArrow');
+    el.classList.toggle('open');
+    arrow.textContent = el.classList.contains('open') ? '▼' : '▶';
+}
+window.addEventListener('beforeprint', function() {
+    // Open all chapters for print
+    document.querySelectorAll('.tv-chapter').forEach(el => el.classList.add('open'));
+    const notes = document.getElementById('teacherNotes');
+    const printDiv = document.getElementById('teacherNotesPrint');
+    const printText = document.getElementById('teacherNotesPrintText');
+    if (notes && printDiv && printText) {
+        printText.textContent = notes.value || '(no notes)';
+        printDiv.style.display = 'block';
+        notes.closest('.tv-card').style.display = 'none';
+    }
+});
+window.addEventListener('afterprint', function() {
+    const notes = document.getElementById('teacherNotes');
+    const printDiv = document.getElementById('teacherNotesPrint');
+    if (notes) notes.closest('.tv-card').style.display = '';
+    if (printDiv) printDiv.style.display = 'none';
+});
+</script>
+
+{% if snapshot.radar_scores %}
+<script>
+(function(){
+    const radar = {{ snapshot.radar_scores | tojson | safe }};
+    new Chart(document.getElementById('tvRadar'), {
+        type: 'radar',
+        data: {
+            labels: Object.keys(radar),
+            datasets: [{ data: Object.values(radar),
+                backgroundColor: 'rgba(167,139,250,0.15)',
+                borderColor: 'rgba(167,139,250,0.7)',
+                pointBackgroundColor: 'rgba(167,139,250,0.9)',
+                pointRadius: 3, borderWidth: 2 }]
+        },
+        options: {
+            responsive: true,
+            scales: { r: { min: 0, max: 100,
+                ticks: { display: false, stepSize: 25 },
+                grid: { color: 'rgba(255,255,255,0.07)' },
+                angleLines: { color: 'rgba(255,255,255,0.07)' },
+                pointLabels: { color: '#9CA3AF', font: { size: 10, family: 'Nunito', weight: '700' } }
+            }},
+            plugins: { legend: { display: false } }
+        }
+    });
+})();
+</script>
+{% endif %}
+
+{% endif %}
+</body>
+</html>
