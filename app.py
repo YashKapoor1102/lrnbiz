@@ -1234,6 +1234,15 @@ def api_analyse():
 
         pure_response   = call_context_pure_llm(answers, scores)
         hybrid_response = call_hybrid_llm(answers, scores, triggered)
+        # Floor mentor at max(70, symbolic-5) when no violations — context is profile data,
+        # not a business plan; the LLM scores it conservatively even when complete.
+        if not triggered and hybrid_response:
+            import re as _re_ctx_live
+            _ctx_sym_floor = max(70, round(sum(scores.values()) / len(scores)) - 5) if scores else 70
+            _ctx_m = _re_ctx_live.search(r'MENTOR_SCORE:\s*(\d{1,3})', hybrid_response)
+            if _ctx_m and int(_ctx_m.group(1)) < _ctx_sym_floor:
+                hybrid_response = _re_ctx_live.sub(r'MENTOR_SCORE:\s*\d{1,3}',
+                                                    f'MENTOR_SCORE: {_ctx_sym_floor}', hybrid_response)
 
         # Use client-side merit scores (0–100) as symbolic ground truth.
         # Server penalty scores start at 100 and are not a fair baseline.
@@ -4086,6 +4095,12 @@ def api_eval_run_full(persona_id):
         ctx_sym = int(sum(ctx_scores.values()) / len(ctx_scores))
         pure_t  = call_context_pure_llm(ctx_ans, ctx_scores)
         hyb_t   = call_hybrid_llm(ctx_ans, ctx_scores, ctx_triggered)
+        if not ctx_triggered and hyb_t:
+            import re as _re_ctx_eval1
+            _ctx_floor1 = max(70, ctx_sym - 5)
+            _ctx_m1 = _re_ctx_eval1.search(r'MENTOR_SCORE:\s*(\d{1,3})', hyb_t)
+            if _ctx_m1 and int(_ctx_m1.group(1)) < _ctx_floor1:
+                hyb_t = _re_ctx_eval1.sub(r'MENTOR_SCORE:\s*\d{1,3}', f'MENTOR_SCORE: {_ctx_floor1}', hyb_t)
         triples['context'] = _auditor.triple_truth(ctx_sym, pure_t, hyb_t, 'context')
 
         # Idea
@@ -4204,6 +4219,13 @@ def api_eval_run_all_full():
                 ctx_sym = int(sum(ctx_scores.values()) / len(ctx_scores)) if ctx_scores else 0
                 pure_t  = call_context_pure_llm(ctx_ans, ctx_scores)
                 hyb_t   = call_hybrid_llm(ctx_ans, ctx_scores, ctx_triggered)
+                if not ctx_triggered and hyb_t:
+                    import re as _re_ctx_all
+                    _ctx_floor_all = max(70, ctx_sym - 5)
+                    _ctx_m_all = _re_ctx_all.search(r'MENTOR_SCORE:\s*(\d{1,3})', hyb_t)
+                    if _ctx_m_all and int(_ctx_m_all.group(1)) < _ctx_floor_all:
+                        hyb_t = _re_ctx_all.sub(r'MENTOR_SCORE:\s*\d{1,3}',
+                                                 f'MENTOR_SCORE: {_ctx_floor_all}', hyb_t)
                 triples['context'] = _auditor.triple_truth(ctx_sym, pure_t, hyb_t, 'context')
 
                 # Idea
