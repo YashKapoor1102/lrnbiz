@@ -1,10 +1,8 @@
-# LrnBiz — AI-Powered Intelligent Tutoring System for Young Entrepreneurs
+# LrnBiz — AI-Powered Intelligent Tutoring System for Entrepreneurial education
 
-**LrnBiz** is a 5-chapter web-based Intelligent Tutoring System (ITS) that guides school students (grades 6–12) through building and validating a real business plan. It combines a deterministic rules engine with two simultaneous AI models to detect AI sycophancy — showing students where automated feedback is over-optimistic versus what an honest mentor actually thinks.
+**LrnBiz** is a 5-chapter web-based Intelligent Tutoring System (ITS) that guides school students (grades 6–12) through building and validating a real business plan. It combines a deterministic rules engine with LLM models. It captures AI sycophancy where automated feedback is over-optimistic versus what an honest mentor actually thinks.
 
-This project was built as an academic submission exploring how AI tutoring tools can be made *honest* and *pedagogically sound*, rather than just encouraging.
 
----
 
 ## Live Demo
 
@@ -12,11 +10,12 @@ This project was built as an academic submission exploring how AI tutoring tools
 
 > First load may take ~30 seconds if the server is sleeping (free tier on Render).
 
----
+
 
 ## What It Does
 
 Students work through five sequential chapters. Each chapter unlocks only when the previous one is complete:
+When the name is written on the first screen, the app will take the student to chapter. The student can click on the home button to see the home screen.
 
 | Chapter | Topic | What students do |
 |---------|-------|-----------------|
@@ -28,38 +27,20 @@ Students work through five sequential chapters. Each chapter unlocks only when t
 
 After all five chapters, students receive a **certificate** with their final Business DNA radar chart showing readiness across six axes: Passion, Energy, Gold, Influence, Knowledge, Target.
 
----
 
-## The Triple Truth Scoring System
 
-The core academic contribution of LrnBiz is its **Triple Truth** approach to scoring student plans. Each chapter produces three simultaneous scores:
+## The Three scores System
 
-```
-┌────────────────────┬──────────────────────────────────────────────────────┐
-│ Score Type         │ How It Works                                         │
-├────────────────────┼──────────────────────────────────────────────────────┤
-│ Rules Check        │ Deterministic rules engine — always consistent,      │
-│ (Symbolic Score)   │ no randomness. Fires JSON-defined rules against the  │
-│                    │ student's answers. Each rule has a severity (error /  │
-│                    │ warning) and a score impact.                         │
-├────────────────────┼──────────────────────────────────────────────────────┤
-│ AI Optimist        │ llama-3.1-8b-instant with a "blindly positive"       │
-│ (Pure LLM Score)   │ system prompt. Ignores all problems, only praises.   │
-│                    │ Self-reports its own score (SCORE: N) so sycophancy  │
-│                    │ is measured genuinely, not estimated.                │
-├────────────────────┼──────────────────────────────────────────────────────┤
-│ Mentor Score       │ llama-3.1-8b-instant given the rule violations    │
-│ (Hybrid Score)     │ as context. Asks ONE Socratic question about the     │
-│                    │ most critical issue. Self-reports MENTOR_SCORE: N.   │
-└────────────────────┴──────────────────────────────────────────────────────┘
+Each chapter produces three simultaneous scores:
+
+Rules Score- Deterministic. Based on rules checked against the answers. 
+AI Optimist- llama-3.1-8b-instant and is encouraging and helpful
+Mentor - lama-3.1-8b-instant and is encouraging and given the rule violations as context. Leveraged rules and LLM both
 
 Sycophancy Gap = AI Optimist Score − Mentor Score
 
 A positive gap means the AI was over-enthusiastic relative to the rules-grounded mentor.
-Students can see this gap — it teaches them that AI praise is not the same as good advice.
-```
 
----
 
 ## Architecture
 
@@ -71,7 +52,7 @@ lrnbiz/
 │   ├── context.html        Chapter 1 — personal context form
 │   ├── idea.html           Chapter 2 — business idea + niche validation
 │   ├── customer.html       Chapter 3 — customer persona builder
-│   ├── money.html          Chapter 4 — money math + break-even calculator
+│   ├── money.html          Chapter 4 — money/financial math + break-even calculator
 │   ├── discovery.html      Chapter 5 — customer discovery evidence
 │   ├── final.html          Summary dashboard with all five scores
 │   ├── certificate.html    Printable completion certificate
@@ -87,7 +68,7 @@ lrnbiz/
 ├── share_tokens.json       Teacher share tokens (auto-generated)
 ├── flask_sessions/         Server-side session storage (auto-generated)
 ├── requirements.txt        Python dependencies
-└── .env                    Environment variables (not committed to git)
+└── .env                    Environment variables 
 ```
 
 ### Rule Files
@@ -104,7 +85,7 @@ Each chapter has its own JSON rule file:
 
 ---
 
-## How to Run Locally
+## Getting started: How to Run Locally
 
 ### 1. Install Python dependencies
 ```bash
@@ -120,7 +101,7 @@ LRNBIZ_ADMIN_PASSWORD=choose-a-password
 
 - Get a free Groq API key at [console.groq.com](https://console.groq.com) — no credit card required.
 - Generate a secret key: `python -c "import secrets; print(secrets.token_hex(32))"`
-- The app runs without a Groq key — the rules engine still works, AI feedback is disabled.
+- The app runs without a Groq key — the rules engine still works, AI feedback is disabled. The results will not be as expected.
 
 ### 3. Start the server
 ```bash
@@ -134,28 +115,24 @@ netstat -ano | findstr :5000
 taskkill /F /PID <pid>
 ```
 
----
 
 ## Key Features
 
 | Feature | Description |
 |---------|-------------|
-| Triple Truth Scoring | Rules engine + AI Optimist + Hybrid Mentor — three simultaneous scores per chapter |
+| Three Scores | Rules engine + AI Optimist + Hybrid Mentor — three simultaneous scores per chapter |
 | Sycophancy Detection | Measures how much the AI over-praised relative to the mentor's honest assessment |
-| Business DNA Radar | Live 6-axis spider chart (Passion, Energy, Gold, Influence, Knowledge, Target) |
-| Chapter Guard | Linear progression — chapter 3 cannot be accessed until chapters 1 and 2 are done |
+| Business DNA Radar | Live 6-axis radar chart (Passion, Energy, Gold, Influence, Knowledge, Target) |
+| Chapter Progression | Linear progression — chapter 3 cannot be accessed until chapters 1 and 2 are done |
 | Audit Trail | After any chapter, students can go back, improve their answers, and re-run analysis |
 | Score History | Each chapter tracks up to 10 analysis attempts — students can see their improvement |
-| Pulse Reminder | The "Run Analysis" button pulses when the student changes inputs without re-running |
-| Run Analysis Nudge | If the student tries to proceed without running analysis, a modal asks them to run it first |
 | Teacher Dashboard | Create class codes, view student plans, class roster with all scores |
-| ITS Evaluation Lab | `/eval` — run triple-truth scoring on 20 synthetic student personas for benchmarking |
-| Research Log | `/admin/research` — anonymised log of all scoring sessions for academic analysis |
+| ITS Evaluation Lab | `/eval` — run 20 synthetic student personas for benchmarking |
 | Gamification | XP points, badges, streak tracking, improvement celebrations |
 | Offline Mode | App works without a Groq API key — rules engine always runs, AI feedback is disabled |
-| Bfcache Safe | All pages handle browser back-forward cache restore correctly (pageshow event) |
+| Bfcache Safe | All pages handle browser back-forward cache restore (pageshow event) |
 
----
+
 
 ## Teacher and Admin Access
 
@@ -166,7 +143,7 @@ taskkill /F /PID <pid>
 | `/eval` | Open | Run ITS benchmarking on 20 synthetic personas |
 | `/admin/research` | HTTP Basic Auth (`admin` / `LRNBIZ_ADMIN_PASSWORD`) | View anonymised research log |
 
----
+
 
 ## Tech Stack
 
@@ -180,7 +157,6 @@ taskkill /F /PID <pid>
 | Rule Files | JSON flat files, loaded once at startup via `functools.lru_cache` |
 | Deployment | Render.com (free tier), Gunicorn WSGI server |
 
----
 
 ## Environment Variables
 
@@ -190,7 +166,6 @@ taskkill /F /PID <pid>
 | `GROQ_API_KEY` | No | Enables AI feedback. Without it, only the rules engine runs |
 | `LRNBIZ_ADMIN_PASSWORD` | No | Protects the `/admin/research` endpoint |
 
----
 
 ## Known Limitations
 
@@ -201,29 +176,10 @@ taskkill /F /PID <pid>
 | No CSRF protection | Forms are not protected against cross-site request forgery | Acceptable for classroom demo; not for open public deployment |
 | Single-server only | Filesystem sessions cannot be shared across multiple instances | Would need Redis or a database to scale |
 | LLM score variability | Even at temperature=0, different Groq model versions may produce slightly different scores | Score drift between sessions is possible |
-| Rules are threshold-based | Pass/fail is binary at fixed thresholds (e.g. break-even > 6 months = error) | Real businesses sit on a spectrum — a threshold cannot capture every edge case |
-| No input sanitisation beyond basic trimming | Long or malformed text inputs pass through to the LLM | Not a security issue for classroom use but relevant for public deployment |
+| Rules are threshold-based | Pass/fail is binary at fixed thresholds (e.g. break-even > 6 months = error) | Real businesses sit on a spectrum — a threshold cannot capture every edge case | No input sanitisation beyond basic trimming | Long or malformed text inputs pass through to the LLM | Not a security issue for classroom use but relevant for public deployment |
 
----
 
-## Design Decisions
 
-### Why Flask instead of a full framework?
-The application is a single-teacher, classroom-scale tool. A monolithic Flask file keeps the entire backend readable in one place, which is appropriate for an academic project where the code must be understandable by evaluators.
-
-### Why filesystem sessions instead of cookies?
-A student completing all five chapters accumulates ~8–12 KB of session data (LLM text, violation lists, score history). Browser cookies are capped at 4 KB. Filesystem sessions avoid silent data loss.
-
-### Why two different LLM models?
-The AI Optimist uses the smaller, faster `llama-3.1-8b-instant` to simulate a naive AI reviewer. The Hybrid Mentor uses the larger `llama-3.1-8b-instant` to produce more nuanced Socratic questions. The gap between them is the pedagogical point.
-
-### Why temperature=0 for both models?
-Consistency. A student re-running analysis on the same answers should get the same score. Temperature=0 minimises random variation, making the sycophancy measurement repeatable.
-
-### Why JSON rule files instead of a database?
-Rules are edited by a teacher/author, not by students. Flat JSON files are human-readable, version-controllable, and editable without a database migration. They are loaded once at server start via `lru_cache`.
-
----
 
 ## File-by-File Code Notes
 
@@ -234,5 +190,5 @@ See inline comments in `app.py` for detailed explanations of every major section
 - **Lines 243–317**: `ModuleAuditor.triple_truth()` — combines all three scores into one result dict
 - **Lines 364–388**: Per-session LLM rate limiter (max 10 calls/minute)
 - **Lines 535–682**: Two LLM call functions with their system prompts
-- **Lines 776–788**: Chapter guard — enforces linear chapter progression
+- **Lines 776–788**: Chapter progression enforces linear chapter progression
 - **Lines 791 onwards**: Flask routes, one per chapter
