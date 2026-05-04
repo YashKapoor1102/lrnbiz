@@ -48,7 +48,7 @@ The core academic contribution of LrnBiz is its **Triple Truth** approach to sco
 │                    │ Self-reports its own score (SCORE: N) so sycophancy  │
 │                    │ is measured genuinely, not estimated.                │
 ├────────────────────┼──────────────────────────────────────────────────────┤
-│ Mentor Score       │ llama-3.3-70b-versatile given the rule violations    │
+│ Mentor Score       │ llama-3.1-8b-instant given the rule violations    │
 │ (Hybrid Score)     │ as context. Asks ONE Socratic question about the     │
 │                    │ most critical issue. Self-reports MENTOR_SCORE: N.   │
 └────────────────────┴──────────────────────────────────────────────────────┘
@@ -173,7 +173,7 @@ taskkill /F /PID <pid>
 | Layer | Technology |
 |-------|-----------|
 | Backend | Python 3.11+, Flask 3.1, Flask-Session 0.8 |
-| AI / LLM | Groq API — `llama-3.1-8b-instant` (AI Optimist), `llama-3.3-70b-versatile` (Mentor) |
+| AI / LLM | Groq API — `llama-3.1-8b-instant` (AI Optimist), `llama-3.1-8b-instant` (Mentor) |
 | Frontend | Vanilla JavaScript, Chart.js 4.4.3 for radar charts |
 | Fonts | Nunito, Fredoka One (Google Fonts) |
 | Session Storage | Filesystem (flask_sessions/) — avoids the 4KB cookie limit |
@@ -215,7 +215,7 @@ The application is a single-teacher, classroom-scale tool. A monolithic Flask fi
 A student completing all five chapters accumulates ~8–12 KB of session data (LLM text, violation lists, score history). Browser cookies are capped at 4 KB. Filesystem sessions avoid silent data loss.
 
 ### Why two different LLM models?
-The AI Optimist uses the smaller, faster `llama-3.1-8b-instant` to simulate a naive AI reviewer. The Hybrid Mentor uses the larger `llama-3.3-70b-versatile` to produce more nuanced Socratic questions. The gap between them is the pedagogical point.
+The AI Optimist uses the smaller, faster `llama-3.1-8b-instant` to simulate a naive AI reviewer. The Hybrid Mentor uses the larger `llama-3.1-8b-instant` to produce more nuanced Socratic questions. The gap between them is the pedagogical point.
 
 ### Why temperature=0 for both models?
 Consistency. A student re-running analysis on the same answers should get the same score. Temperature=0 minimises random variation, making the sycophancy measurement repeatable.
